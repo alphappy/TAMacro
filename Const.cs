@@ -10,6 +10,6 @@ namespace alphappy.TAMacro
     {
         public const string PLUGIN_GUID = "alphappy.tamacro";
         public const string PLUGIN_NAME = "Debug - TAMacro";
-        public const string PLUGIN_VERSION = "0.3.4.17";
+        public const string PLUGIN_VERSION = "0.3.4.18";
     }
 }
