@@ -25,15 +25,20 @@ namespace alphappy.TAMacro
         public Player.InputPackage package;
         public int throwDirection;
         public Stack<object> stack = new Stack<object>();
+        private int instructionsWithoutTick = 0;
+        public bool terminated = false;
 
         public Player.InputPackage? GetPackage(Player player)
         {
+            instructionsWithoutTick = 0;
             readyToTick = false;
             if (hold > 0) hold--; else currentIndex++;
             while (currentIndex < instructions.Count)
             {
+                instructionsWithoutTick++;
                 current.Enter(this, player);
-                if (readyToTick) { return package; }
+                if (instructionsWithoutTick > Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK) terminated = true;
+                if (readyToTick || terminated) { return package; }
                 currentIndex++;
             }
             return null;
@@ -41,10 +46,20 @@ namespace alphappy.TAMacro
 
         public void Initialize(Player player)
         {
-            currentIndex = -1; hold = 0; readyToTick = false; package = default;
+            currentIndex = -1; hold = 0; readyToTick = false; package = default; instructionsWithoutTick = 0; terminated = false;
             throwDirection = player.ThrowDirection;
-            labels.Clear(); stack.Clear();
+            stack.Clear();
             DisplayPanel.TrackMe(this);
+        }
+
+        public void AddInstruction(Instruction inst)
+        {
+            instructions.Add(inst);
+            lineNumbers.Add(lines);
+            if (inst.type is InstructionType.DefineLabelFromString)
+            {
+                labels.Add((string)inst.value, instructions.Count);
+            }
         }
     }
 }

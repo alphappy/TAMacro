@@ -98,8 +98,7 @@ namespace alphappy.TAMacro
                     newestMacro.lines += 1;
                     foreach (Instruction instruction in list)
                     {
-                        newestMacro.instructions.Add(instruction);
-                        newestMacro.lineNumbers.Add(newestMacro.lines);
+                        newestMacro.AddInstruction(instruction);
                     }
                     return true;
                 }

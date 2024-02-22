@@ -65,10 +65,7 @@ namespace alphappy.TAMacro
                 macro.package.analogueDir.x *= -1;
             }
         }
-        public static void EnterDefineLabelFromString(Instruction self, Macro macro, Player player)
-        {
-            macro.labels[(string)self.value] = macro.currentIndex;
-        }
+        public static void EnterDefineLabelFromString(Instruction self, Macro macro, Player player) { }
         public static void EnterGotoLabelFromStringIfTrue(Instruction self, Macro macro, Player player)
         {
             if ((bool)macro.stack.Pop())

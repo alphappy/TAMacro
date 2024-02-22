@@ -71,7 +71,7 @@ namespace alphappy.TAMacro
         }
         public static void Update()
         {
-            if (macro == null || macro.currentIndex >= macro.instructions.Count)
+            if (macro == null || macro.terminated || macro.currentIndex >= macro.instructions.Count)
             {
                 pointer.isVisible = false;
                 return;

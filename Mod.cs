@@ -75,13 +75,6 @@ namespace alphappy.TAMacro
         {
             orig(self);
             if (self.AI != null || !self.Consious) return;
-            if (Input.GetKey(KeyCode.F2))
-            {
-                Log($"Macro terminated: {MacroLibrary.activeMacro.name}");
-                MacroLibrary.activeMacro = null;
-
-                return;
-            }
 
             for (int i = 0; i < debugKeys.Length; i++)
             {
@@ -95,6 +88,7 @@ namespace alphappy.TAMacro
             }
             if (MacroLibrary.activeMacro?.GetPackage(self) is Player.InputPackage package)
             {
+                if (MacroLibrary.activeMacro.terminated) { Log("Macro terminated - ran too long without ticking"); MacroLibrary.activeMacro = null; return; }
                 self.input[0] = package.WithDownDiagonals();
             }
         }
@@ -106,6 +100,14 @@ namespace alphappy.TAMacro
             orig(self);
             try
             {
+                if (Input.GetKey(KeyCode.F2))
+                {
+                    if (keyDown == KeyCode.F2) return;
+                    Log($"Macro terminated manually");
+                    MacroLibrary.activeMacro = null;
+                    keyDown = KeyCode.F2;
+                    return;
+                }
                 if (Input.GetKey(KeyCode.F5))
                 {
                     if (keyDown == KeyCode.F5) return;
