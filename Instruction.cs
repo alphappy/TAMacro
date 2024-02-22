@@ -27,6 +27,7 @@ namespace alphappy.TAMacro
             { InstructionType.SetFlippablePackageFromPackage, EnterSetFlippablePackageFromPackage },
             { InstructionType.DefineLabelFromString, EnterDefineLabelFromString },
             { InstructionType.GotoLabelFromStringIfTrue, EnterGotoLabelFromStringIfTrue },
+            { InstructionType.GotoLabelFromStringUnlessTrue, EnterGotoLabelFromStringUnlessTrue },
             { InstructionType.TestScugTouch, EnterTestScugTouch },
         };
         public void Enter(Macro macro, Player player)
@@ -73,13 +74,20 @@ namespace alphappy.TAMacro
                 macro.currentIndex = macro.labels[(string)self.value] - 1;
             }
         }
+        public static void EnterGotoLabelFromStringUnlessTrue(Instruction self, Macro macro, Player player)
+        {
+            if (!(bool)macro.stack.Pop())
+            {
+                macro.currentIndex = macro.labels[(string)self.value] - 1;
+            }
+        }
         public static void EnterTestScugTouch(Instruction self, Macro macro, Player player)
         {
             switch ((string)self.value)
             {
-                case "floor": macro.stack.Push(!player.bodyChunks.Any(chunk => chunk.ContactPoint.y < 0)); break;
-                case "wall": macro.stack.Push(!player.bodyChunks.Any(chunk => chunk.ContactPoint.x != 0)); break;
-                case "ceiling": macro.stack.Push(!player.bodyChunks.Any(chunk => chunk.ContactPoint.y > 0)); break;
+                case "floor": macro.stack.Push(player.bodyChunks.Any(chunk => chunk.ContactPoint.y < 0)); break;
+                case "wall": macro.stack.Push(player.bodyChunks.Any(chunk => chunk.ContactPoint.x != 0)); break;
+                case "ceiling": macro.stack.Push(player.bodyChunks.Any(chunk => chunk.ContactPoint.y > 0)); break;
                 default: macro.stack.Push(false); break;
             }
         }
@@ -88,7 +96,7 @@ namespace alphappy.TAMacro
     public enum InstructionType
     {
         NoOp, SetPackageFromNumber, Tick, SetHoldFromNumber, SetPackageFromString, SetPackageFromPackage,
-        DefineLabelFromString, GotoLabelFromStringIfTrue, SetFlippablePackageFromPackage,
+        DefineLabelFromString, GotoLabelFromStringIfTrue, GotoLabelFromStringUnlessTrue, SetFlippablePackageFromPackage,
 
         TestScugTouch
     }
