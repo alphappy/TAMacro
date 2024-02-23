@@ -14,10 +14,6 @@ namespace alphappy.TAMacro
     {
         private static bool initialized = false;
 
-        public static string configPath = Application.persistentDataPath + "\\ModConfigs\\TAMacro";
-
-        public static string defaultCookbookFilepath = Application.persistentDataPath + "\\ModConfigs\\TAMacro\\main.tmc";
-
         public static void Log(object obj) { Debug.Log($"[TAMacro]  {obj}"); }
         public static void Log(Exception exc) { Log($"UNCAUGHT EXCEPTION: {exc}"); }
 
@@ -40,9 +36,9 @@ namespace alphappy.TAMacro
                 Log("Hooking complete");
                 initialized = true;
 
-                Log($"Ensuring main cookbook ready:  {defaultCookbookFilepath}");
-                if (!Directory.Exists(configPath)) Directory.CreateDirectory(configPath);
-                if (!File.Exists(defaultCookbookFilepath)) File.WriteAllText(defaultCookbookFilepath, "");
+                Log($"Ensuring main cookbook ready:  {Const.COOKBOOK_MAIN_FILE}");
+                if (!Directory.Exists(Const.COOKBOOK_ROOT_PATH)) Directory.CreateDirectory(Const.COOKBOOK_ROOT_PATH);
+                if (!File.Exists(Const.COOKBOOK_MAIN_FILE)) File.WriteAllText(Const.COOKBOOK_MAIN_FILE, "");
             }
             catch (Exception e) { Log(e); }
         }
@@ -69,7 +65,7 @@ namespace alphappy.TAMacro
             DisplayPanel.Initialize();
         }
 
-        public static KeyCode[] debugKeys = new KeyCode[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0 };
+        
 
         private void Player_checkInput(On.Player.orig_checkInput orig, Player self)
         {
@@ -77,17 +73,6 @@ namespace alphappy.TAMacro
             try
             {
                 if (self.AI != null || !self.Consious) return;
-
-                for (int i = 0; i < debugKeys.Length; i++)
-                {
-                    if (Input.GetKey(debugKeys[i]))
-                    {
-                        MacroLibrary.activeMacro = MacroLibrary.SelectOnCurrentPage(i);
-                        MacroLibrary.activeMacro.Initialize(self);
-                        Log($"Macro started: {MacroLibrary.activeMacro.name}");
-                        return;
-                    }
-                }
                 if (MacroLibrary.activeMacro?.GetPackage(self) is Player.InputPackage package)
                 {
                     if (MacroLibrary.activeMacro.terminated)
@@ -108,43 +93,51 @@ namespace alphappy.TAMacro
             catch (Exception e) { Log(e); }
         }
 
-        private KeyCode keyDown;
+        private KeyCode keyDown = KeyCode.None;
 
         private void RainWorldGame_Update(On.RainWorldGame.orig_Update orig, RainWorldGame self)
         {
             orig(self);
             try
             {
+                if (keyDown != KeyCode.None && Input.GetKey(keyDown)) return;
+
                 if (Input.GetKey(KeyCode.F2))
                 {
-                    if (keyDown == KeyCode.F2) return;
-                    Log($"Macro terminated manually");
-                    MacroLibrary.activeMacro = null;
                     keyDown = KeyCode.F2;
+                    MacroLibrary.TerminateMacro();
                     return;
                 }
                 if (Input.GetKey(KeyCode.F5))
                 {
-                    if (keyDown == KeyCode.F5) return;
-                    MacroLibrary.LoadCookbook(defaultCookbookFilepath);
                     keyDown = KeyCode.F5;
+                    MacroLibrary.ReloadFromTopLevel();
                     return;
                 }
                 if (Input.GetKey(KeyCode.F1))
                 {
-                    if (keyDown == KeyCode.F1) return;
                     keyDown = KeyCode.F1;
                     MacroLibrary.ChangePage(-1);
                     return;
                 }
                 if (Input.GetKey(KeyCode.F3))
                 {
-                    if (keyDown == KeyCode.F3) return;
                     keyDown = KeyCode.F3;
                     MacroLibrary.ChangePage(1);
                     return;
                 }
-                keyDown = default;
+
+                for (int i = 0; i < Const.SELECT_KEYS.Length; i++)
+                {
+                    if (Input.GetKey(Const.SELECT_KEYS[i]))
+                    {
+                        MacroLibrary.SelectOnPage(i, self);
+                        Log($"Macro started: {MacroLibrary.activeMacro.name}");
+                        return;
+                    }
+                }
+
+                keyDown = KeyCode.None;
             }
             catch (Exception e) { Log(e); }
         }

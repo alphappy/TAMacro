@@ -95,14 +95,25 @@ namespace alphappy.TAMacro
             anchor.y = Mathf.Floor(anchor.y) + 0.5f;
             UpdateLabelPosition();
         }
-        public static void UpdateSelectableMacros()
+        public static void UpdateSelectMenu()
         {
             loadedMacros.Clear();
             loadedMacros.Append(header);
-            for (int i = 0; i < 10; i++)
+            if (MacroLibrary.currentContainer.IsCookbook)
             {
-                int e = MacroLibrary.page * MacroLibrary.macrosPerPage + i;
-                loadedMacros.AppendLine($"[{(i + 1) % 10}]  {(e < MacroLibrary.macros.Count ? MacroLibrary.macros.ElementAt(e).Key : "")}");
+                for (int i = 0; i < 10; i++)
+                {
+                    Macro macro = MacroLibrary.currentContainer?.SelectMacroOnViewedPage(i);
+                    loadedMacros.AppendLine($"[{(i + 1) % 10}]  {macro?.name ?? ""}");
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    MacroContainer cont = MacroLibrary.currentContainer?.SelectContainerOnViewedPage(i);
+                    loadedMacros.AppendLine($"[{(i + 1) % 10}]  {cont?.name ?? ""}");
+                }
             }
 
             labelInfo.text = loadedMacros.ToString();
