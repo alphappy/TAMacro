@@ -126,13 +126,19 @@ namespace alphappy.TAMacro
                     MacroLibrary.ChangePage(1);
                     return;
                 }
+                if (Input.GetKey(KeyCode.F4))
+                {
+                    keyDown = KeyCode.F4;
+                    MacroLibrary.UpOne();
+                    return;
+                }
 
                 for (int i = 0; i < Const.SELECT_KEYS.Length; i++)
                 {
                     if (Input.GetKey(Const.SELECT_KEYS[i]))
                     {
                         MacroLibrary.SelectOnPage(i, self);
-                        Log($"Macro started: {MacroLibrary.activeMacro.name}");
+                        keyDown = Const.SELECT_KEYS[i];
                         return;
                     }
                 }

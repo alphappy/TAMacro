@@ -99,6 +99,7 @@ namespace alphappy.TAMacro
         {
             loadedMacros.Clear();
             loadedMacros.Append(header);
+            loadedMacros.AppendLine($"{MacroLibrary.currentContainer?.name} ({MacroLibrary.currentContainer?.ViewedPage + 1} / {MacroLibrary.currentContainer?.PageCount})");
             if (MacroLibrary.currentContainer.IsCookbook)
             {
                 for (int i = 0; i < 10; i++)

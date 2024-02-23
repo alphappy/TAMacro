@@ -19,9 +19,9 @@ namespace alphappy.TAMacro
         public int ViewedPage
         {
             get { return viewedPage; }
-            set { viewedPage = Mathf.Clamp(viewedPage + value, 0, PageCount); }
+            set { viewedPage = Mathf.Clamp(value, 0, PageCount - 1); }
         }
-        public int PageCount => (children.Count + macros.Count - 1) / 10;
+        public int PageCount => 1 + (children.Count + macros.Count - 1) / 10;
         public bool IsCookbook => macros.Count > 0;
         public MacroContainer SelectContainerOnViewedPage(int offset)
         {
@@ -31,27 +31,42 @@ namespace alphappy.TAMacro
         public Macro SelectMacroOnViewedPage(int offset)
         {
             int idx = viewedPage * MacroLibrary.macrosPerPage + offset;
-            return idx >= children.Count ? null : macros.Values.ElementAt(idx - children.Count);
+            return idx >= macros.Count ? null : macros.Values.ElementAt(idx);
         }
 
         public MacroContainer(string path, MacroContainer parent, bool recurse = true)
         {
-            this.parent = parent;
-            sysPath = path;
-            if (File.Exists(path))
+            try
             {
-                if (Path.GetExtension(path) == ".tmc")
+                this.parent = parent;
+                sysPath = path;
+                if (File.Exists(path))
                 {
-                    LoadCookbook(path);
-                    name = Path.GetFileName(path);
+                    Mod.Log($"{path} exists as file");
+                    if (Path.GetExtension(path) == ".tmc")
+                    {
+                        Mod.Log($"{path} loading cookbook");
+                        LoadCookbook(path);
+                        name = Path.GetFileName(path);
+                        Mod.Log($"{path} loaded cookbook");
+                    }
+                }
+                else if (Directory.Exists(path) && recurse)
+                {
+                    Mod.Log($"{path} exists as directory");
+                    foreach (string folderpath in Directory.GetDirectories(path))
+                        children[folderpath] = new MacroContainer(folderpath, this);
+                    foreach (string filepath in Directory.GetFiles(path))
+                        children[filepath] = new MacroContainer(filepath, this);
+                    name = new DirectoryInfo(path).Name;
+                    Mod.Log($"{path} processed as directory");
+                }
+                else
+                {
+                    Mod.Log($"{path} couldn't be processed");
                 }
             }
-            else if (Directory.Exists(path) && recurse)
-            {
-                foreach (string folderpath in Directory.GetDirectories(path))
-                    children[folderpath] = new MacroContainer(folderpath, this);
-                name = Directory.GetParent(path).Name;
-            }
+            catch (Exception e) { Mod.Log(e); }
         }
 
         private Macro loading;

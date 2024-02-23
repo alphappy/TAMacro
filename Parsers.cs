@@ -112,7 +112,7 @@ namespace alphappy.TAMacro
         }
         public static List<Instruction> ConditionScugPosition(string line)
         {
-            if (Regex.Match(line, "^>goto ([\\w\\d]+) (unless|if) scug (left of|right of|above|below) (\\d+\\.?\\d*)$") is Match match && match.Success)
+            if (Regex.Match(line, "^>goto ([\\w\\d]+) (unless|if) scug located (left of|right of|above|below) (\\d+\\.?\\d*)$") is Match match && match.Success)
             {
                 return new List<Instruction>
                 {
