@@ -27,6 +27,10 @@ namespace alphappy.TAMacro
             { InstructionType.PushHeldPhysicalObject, EnterPushHeldPhysicalObject },
             { InstructionType.TestPhysicalObjectIs, EnterTestPhysicalObjectIs },
             { InstructionType.PushPickupCandidate, EnterPushPickupCandidate },
+            { InstructionType.PushMyX, EnterPushMyX },
+            { InstructionType.PushMyY, EnterPushMyY },
+            { InstructionType.TestGreaterThan, EnterTestGreaterThan },
+            { InstructionType.TestLessThan, EnterTestLessThan },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -109,14 +113,18 @@ namespace alphappy.TAMacro
         {
             macro.stack.Push(player.pickUpCandidate);
         }
+        public static void EnterPushMyX(Instruction self, Macro macro, Player player) => macro.stack.Push(player.DangerPos.x);
+        public static void EnterPushMyY(Instruction self, Macro macro, Player player) => macro.stack.Push(player.DangerPos.y);
+        public static void EnterTestGreaterThan(Instruction self, Macro macro, Player player) => macro.stack.Push((float)macro.stack.Pop() > (float)self.value);
+        public static void EnterTestLessThan(Instruction self, Macro macro, Player player) => macro.stack.Push((float)macro.stack.Pop() < (float)self.value);
     }
 
     public enum InstructionType
     {
         NoOp, SetPackageFromNumber, Tick, SetHoldFromNumber, SetPackageFromString, SetPackageFromPackage,
         DefineLabelFromString, GotoLabelFromStringIfTrue, GotoLabelFromStringUnlessTrue, SetFlippablePackageFromPackage,
-        TestScugTouch,
+        TestScugTouch, TestGreaterThan, TestLessThan,
         PushHeldPhysicalObject, TestPhysicalObjectIs,
-        PushPickupCandidate
+        PushPickupCandidate, PushMyX, PushMyY
     }
 }
