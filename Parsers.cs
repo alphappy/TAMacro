@@ -7,7 +7,7 @@ namespace alphappy.TAMacro
     internal class Parsers
     {
         public delegate List<Instruction> Parser(string line);
-        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold };
+        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant };
 
         public static List<Instruction> Simple(string line)
         {
@@ -84,6 +84,22 @@ namespace alphappy.TAMacro
                 return new List<Instruction>
                 {
                     new Instruction(InstructionType.PushHeldPhysicalObject, match.Groups[4].Value == "second" ? 1 : 0),
+                    new Instruction(InstructionType.TestPhysicalObjectIs, match.Groups[3].Value),
+                    new Instruction(
+                        match.Groups[2].Value == "if" ? InstructionType.GotoLabelFromStringIfTrue : InstructionType.GotoLabelFromStringUnlessTrue,
+                        match.Groups[1].Value
+                        )
+                };
+            }
+            return new List<Instruction>();
+        }
+        public static List<Instruction> ConditionScugWant(string line)
+        {
+            if (Regex.Match(line, "^>goto ([\\w\\d]+) (unless|if) scug want (\\w+)$") is Match match && match.Success)
+            {
+                return new List<Instruction>
+                {
+                    new Instruction(InstructionType.PushPickupCandidate),
                     new Instruction(InstructionType.TestPhysicalObjectIs, match.Groups[3].Value),
                     new Instruction(
                         match.Groups[2].Value == "if" ? InstructionType.GotoLabelFromStringIfTrue : InstructionType.GotoLabelFromStringUnlessTrue,

@@ -26,6 +26,7 @@ namespace alphappy.TAMacro
             { InstructionType.TestScugTouch, EnterTestScugTouch },
             { InstructionType.PushHeldPhysicalObject, EnterPushHeldPhysicalObject },
             { InstructionType.TestPhysicalObjectIs, EnterTestPhysicalObjectIs },
+            { InstructionType.PushPickupCandidate, EnterPushPickupCandidate },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -104,6 +105,10 @@ namespace alphappy.TAMacro
         {
             macro.stack.Push(player.grasps[(int)self.value]?.grabbed);
         }
+        public static void EnterPushPickupCandidate(Instruction self, Macro macro, Player player)
+        {
+            macro.stack.Push(player.pickUpCandidate);
+        }
     }
 
     public enum InstructionType
@@ -111,6 +116,7 @@ namespace alphappy.TAMacro
         NoOp, SetPackageFromNumber, Tick, SetHoldFromNumber, SetPackageFromString, SetPackageFromPackage,
         DefineLabelFromString, GotoLabelFromStringIfTrue, GotoLabelFromStringUnlessTrue, SetFlippablePackageFromPackage,
         TestScugTouch,
-        PushHeldPhysicalObject, TestPhysicalObjectIs
+        PushHeldPhysicalObject, TestPhysicalObjectIs,
+        PushPickupCandidate
     }
 }
