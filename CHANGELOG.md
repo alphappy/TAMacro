@@ -1,13 +1,12 @@
+### TAMacro v0.4.0.24
+
+- TAMacro now reads all `.tmc` files and subfolders in the `TAMacro` folder.  The in-game interface now allows navigating through these folders and files in the same way it previously navigated through all macros.
+- BREAKING CHANGE: the [position condition](https://github.com/alphappy/TAMacro/wiki/Condition#scug-located) must now start with `scug located`.
+- The display panel now shows the current page number and count.
+
 ### TAMacro v0.3.8.2
 
-- There are three new <code>goto</code> conditions:
-  - <code>scug hold *type* in *hand*</code>: True if Slugcat is holding an object of the given type.  
-    - <code>*type*</code> must be <code>ANY</code>, <code>WEAPON</code>, or an <code>AbstractObjectType</code>.  Does not work for creatures yet.
-    - <code>*hand*</code> must be <code>first</code> or <code>second</code>.  Objects in the <code>first</code> hand (player's left, Slugcat's right) will be thrown first.
-  - <code>scug want *type*</code>: True if Slugcat wants to pick up (read: has a <code>pickupCandidate</code>) a nearby object of the given <code>*type*</code>.
-  - <code>scug *direction* *threshold*</code>: True if Slugcat is beyond a certain <code>x</code> or <code>y</code> in tiles.
-    - <code>*direction*</code> must be <code>left of</code>, <code>right of</code>, <code>above</code>, or <code>below</code>.
-    - <code>*threshold*</code> must be a decimal number (e.g., <code>30.7</code>).
+- There are three new <code>goto</code> conditions: `scug hold`, `scug want`, and a position condition.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Condition) for details.
 - Some minor optimizations.
 
 ### TAMacro v0.3.5.4
