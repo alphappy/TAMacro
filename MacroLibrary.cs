@@ -9,6 +9,7 @@ namespace alphappy.TAMacro
     public class MacroLibrary
     {
         public static Dictionary<string, Macro> macros = new Dictionary<string, Macro>();
+        public static bool firstMacro => macros.Count <= 1;
         public static Macro activeMacro;
         public static Macro newestMacro;
         public static int page = 0;
@@ -99,6 +100,7 @@ namespace alphappy.TAMacro
                     foreach (Instruction instruction in list)
                     {
                         newestMacro.AddInstruction(instruction);
+                        if (Const.SUPER_DEBUG_MODE && firstMacro) Mod.Log(instruction);
                     }
                     return true;
                 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace alphappy.TAMacro
 {
@@ -29,6 +24,8 @@ namespace alphappy.TAMacro
             { InstructionType.GotoLabelFromStringIfTrue, EnterGotoLabelFromStringIfTrue },
             { InstructionType.GotoLabelFromStringUnlessTrue, EnterGotoLabelFromStringUnlessTrue },
             { InstructionType.TestScugTouch, EnterTestScugTouch },
+            { InstructionType.PushHeldPhysicalObject, EnterPushHeldPhysicalObject },
+            { InstructionType.TestPhysicalObjectIs, EnterTestPhysicalObjectIs },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -91,13 +88,29 @@ namespace alphappy.TAMacro
                 default: macro.stack.Push(false); break;
             }
         }
+        public static void EnterTestPhysicalObjectIs(Instruction self, Macro macro, Player player)
+        {
+            object obj0 = macro.stack.Pop();
+            if (obj0 == null) macro.stack.Push(false);
+            PhysicalObject obj = (PhysicalObject)obj0;
+            switch ((string)self.value)
+            {
+                case "ANY": macro.stack.Push(obj != null); break;
+                case "WEAPON": macro.stack.Push(obj is Weapon); break;
+                default: macro.stack.Push(obj.abstractPhysicalObject.type.value == (string)self.value); break;
+            }
+        }
+        public static void EnterPushHeldPhysicalObject(Instruction self, Macro macro, Player player)
+        {
+            macro.stack.Push(player.grasps[(int)self.value]?.grabbed);
+        }
     }
 
     public enum InstructionType
     {
         NoOp, SetPackageFromNumber, Tick, SetHoldFromNumber, SetPackageFromString, SetPackageFromPackage,
         DefineLabelFromString, GotoLabelFromStringIfTrue, GotoLabelFromStringUnlessTrue, SetFlippablePackageFromPackage,
-
-        TestScugTouch
+        TestScugTouch,
+        PushHeldPhysicalObject, TestPhysicalObjectIs
     }
 }

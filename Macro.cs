@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IL.JollyCoop;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace alphappy.TAMacro
             while (currentIndex < instructions.Count)
             {
                 instructionsWithoutTick++;
+                if (Const.SUPER_DEBUG_MODE) Mod.Log($"  ({currentIndex:D4}) {current}");
                 current.Enter(this, player);
                 if (instructionsWithoutTick > Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK) terminated = true;
                 if (readyToTick || terminated) { return package; }
