@@ -31,6 +31,7 @@ namespace alphappy.TAMacro
 
         public Player.InputPackage? GetPackage(Player player)
         {
+            if (Const.SUPER_DEBUG_MODE) Mod.Log($"  enter GetPackage");
             instructionsWithoutTick = 0;
             readyToTick = false;
             if (hold > 0) hold--; else currentIndex++;

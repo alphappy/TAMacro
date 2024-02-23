@@ -97,7 +97,7 @@ namespace alphappy.TAMacro
             {
                 case "ANY": macro.stack.Push(obj != null); break;
                 case "WEAPON": macro.stack.Push(obj is Weapon); break;
-                default: macro.stack.Push(obj.abstractPhysicalObject.type.value == (string)self.value); break;
+                default: macro.stack.Push(obj?.abstractPhysicalObject.type.value == (string)self.value); break;
             }
         }
         public static void EnterPushHeldPhysicalObject(Instruction self, Macro macro, Player player)

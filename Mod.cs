@@ -74,23 +74,38 @@ namespace alphappy.TAMacro
         private void Player_checkInput(On.Player.orig_checkInput orig, Player self)
         {
             orig(self);
-            if (self.AI != null || !self.Consious) return;
-
-            for (int i = 0; i < debugKeys.Length; i++)
+            try
             {
-                if (Input.GetKey(debugKeys[i]))
+                if (self.AI != null || !self.Consious) return;
+
+                for (int i = 0; i < debugKeys.Length; i++)
                 {
-                    MacroLibrary.activeMacro = MacroLibrary.SelectOnCurrentPage(i);
-                    MacroLibrary.activeMacro.Initialize(self);
-                    Log($"Macro started: {MacroLibrary.activeMacro.name}");
-                    return;
+                    if (Input.GetKey(debugKeys[i]))
+                    {
+                        MacroLibrary.activeMacro = MacroLibrary.SelectOnCurrentPage(i);
+                        MacroLibrary.activeMacro.Initialize(self);
+                        Log($"Macro started: {MacroLibrary.activeMacro.name}");
+                        return;
+                    }
+                }
+                if (MacroLibrary.activeMacro?.GetPackage(self) is Player.InputPackage package)
+                {
+                    if (MacroLibrary.activeMacro.terminated)
+                    { 
+                        Log("Macro terminated - ran too long without ticking");
+                        MacroLibrary.activeMacro = null; 
+                        return; 
+                    }
+                    if (Const.SUPER_DEBUG_MODE) Log($"Received {package.AsString()}");
+                    self.input[0] = package.WithDownDiagonals();
+                }
+                else
+                {
+                    Log("Macro finished");
+                    MacroLibrary.activeMacro = null;
                 }
             }
-            if (MacroLibrary.activeMacro?.GetPackage(self) is Player.InputPackage package)
-            {
-                if (MacroLibrary.activeMacro.terminated) { Log("Macro terminated - ran too long without ticking"); MacroLibrary.activeMacro = null; return; }
-                self.input[0] = package.WithDownDiagonals();
-            }
+            catch (Exception e) { Log(e); }
         }
 
         private KeyCode keyDown;

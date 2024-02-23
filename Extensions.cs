@@ -31,5 +31,10 @@
             }
             return package;
         }
+
+        public static string AsString(this Player.InputPackage package)
+        {
+            return $"{(package.x == -1 ? "L" : (package.x == 1 ? "R" : " "))}{(package.y == -1 ? "D" : (package.y == 1 ? "U" : " "))}{(package.jmp ? "J" : " ")}{(package.pckp ? "G" : " ")}{(package.thrw ? "T" : " ")}{(package.mp ? "M" : " ")}";
+        }
     }
 }
