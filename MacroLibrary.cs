@@ -10,7 +10,8 @@ namespace alphappy.TAMacro
     {
         public static MacroContainer topContainer;
         public static MacroContainer currentContainer;
-        public static Macro activeMacro;
+        public static Macro activeMacro => stack.Peek();
+        private static Stack<Macro> stack = new Stack<Macro>();
         public static int macrosPerPage = 10;
 
         public static void ChangePage(int delta)
@@ -24,10 +25,11 @@ namespace alphappy.TAMacro
             if (currentContainer == null) return;
             if (currentContainer.IsCookbook)
             {
-                activeMacro = currentContainer.SelectMacroOnViewedPage(offset);
-                if (activeMacro != null && game.Players.Count > 0 && game.Players[0]?.realizedCreature is Player player) 
+                if (currentContainer.SelectMacroOnViewedPage(offset) is Macro macro 
+                    && game.Players.Count > 0 && game.Players[0]?.realizedCreature is Player player)
                 {
-                    activeMacro.Initialize(player);
+                    macro.Initialize(player);
+                    stack.Push(macro);
                 }
             }
             else
@@ -47,14 +49,38 @@ namespace alphappy.TAMacro
         {
             topContainer = new MacroContainer(Const.COOKBOOK_ROOT_PATH, null);
             currentContainer = topContainer;
-            activeMacro = null;
+            stack.Clear();
             ChangePage(0);
         }
 
         public static void TerminateMacro()
         {
-            Mod.Log("Macro terminated manually!");
-            activeMacro = null;
+            Mod.Log("Macro terminated by user!");
+            stack.Clear();
+        }
+
+        public static void Update(Player self)
+        {
+            if (self.AI != null || !self.Consious) return;
+            if (activeMacro is Macro macro)
+            {
+                if (macro.GetPackage(self) is Player.InputPackage package)
+                {
+                    if (macro.terminated)
+                    {
+                        Mod.Log("WARNING: Terminating macro which ran too long without ticking!");
+                        stack.Clear();
+                        return;
+                    }
+                    if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
+                    self.input[0] = package.WithDownDiagonals();
+                }
+                else
+                {
+                    Mod.Log("Macro finished");
+                    stack.Pop();
+                }
+            }
         }
     }
 }
