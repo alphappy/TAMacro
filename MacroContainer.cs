@@ -47,7 +47,7 @@ namespace alphappy.TAMacro
                     {
                         Mod.Log($"{path} loading cookbook");
                         LoadCookbook(path);
-                        name = Path.GetFileName(path);
+                        name = Path.GetFileNameWithoutExtension(path);
                         Mod.Log($"{path} loaded cookbook");
                     }
                 }
