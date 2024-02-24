@@ -37,8 +37,11 @@ namespace alphappy.TAMacro
                 initialized = true;
 
                 Log($"Ensuring main cookbook ready:  {Const.COOKBOOK_MAIN_FILE}");
-                if (!Directory.Exists(Const.COOKBOOK_ROOT_PATH)) Directory.CreateDirectory(Const.COOKBOOK_ROOT_PATH);
-                if (!File.Exists(Const.COOKBOOK_MAIN_FILE)) File.WriteAllText(Const.COOKBOOK_MAIN_FILE, "");
+                if (!Directory.Exists(Const.COOKBOOK_ROOT_PATH))
+                {
+                    Directory.CreateDirectory(Const.COOKBOOK_ROOT_PATH);
+                    if (!File.Exists(Const.COOKBOOK_MAIN_FILE)) File.WriteAllText(Const.COOKBOOK_MAIN_FILE, "");
+                }
             }
             catch (Exception e) { Log(e); }
         }
@@ -73,21 +76,24 @@ namespace alphappy.TAMacro
             try
             {
                 if (self.AI != null || !self.Consious) return;
-                if (MacroLibrary.activeMacro?.GetPackage(self) is Player.InputPackage package)
+                if (MacroLibrary.activeMacro is Macro macro)
                 {
-                    if (MacroLibrary.activeMacro.terminated)
-                    { 
-                        Log("Macro terminated - ran too long without ticking");
-                        MacroLibrary.activeMacro = null; 
-                        return; 
+                    if (macro.GetPackage(self) is Player.InputPackage package)
+                    {
+                        if (macro.terminated)
+                        {
+                            Log("Macro terminated - ran too long without ticking");
+                            MacroLibrary.activeMacro = null;
+                            return;
+                        }
+                        if (Const.SUPER_DEBUG_MODE) Log($"Received {package.AsString()}");
+                        self.input[0] = package.WithDownDiagonals();
                     }
-                    if (Const.SUPER_DEBUG_MODE) Log($"Received {package.AsString()}");
-                    self.input[0] = package.WithDownDiagonals();
-                }
-                else
-                {
-                    Log("Macro finished");
-                    MacroLibrary.activeMacro = null;
+                    else
+                    {
+                        Log("Macro finished");
+                        MacroLibrary.activeMacro = null;
+                    }
                 }
             }
             catch (Exception e) { Log(e); }
