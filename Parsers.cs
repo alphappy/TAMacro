@@ -132,7 +132,8 @@ namespace alphappy.TAMacro
             {
                 return new List<Instruction>
                 {
-                    new Instruction(InstructionType.ExecuteMacroByString, match.Groups[1].Value)
+                    new Instruction(InstructionType.ExecuteMacroByString, match.Groups[1].Value),
+                    new Instruction(InstructionType.ReturnTempNull)
                 };
             }
             return new List<Instruction>();

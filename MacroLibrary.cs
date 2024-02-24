@@ -75,10 +75,16 @@ namespace alphappy.TAMacro
                     if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
                     self.input[0] = package.WithDownDiagonals();
                 }
+                else if (activeMacro != macro)  // did the macro just call another
+                {
+                    Mod.Log($"Macro {macro.name} called {activeMacro.name}");
+                    Update(self);
+                }
                 else
                 {
-                    Mod.Log("Macro finished");
+                    Mod.Log($"Macro {macro.name} finished");
                     stack.Pop();
+                    Update(self);
                 }
             }
         }
