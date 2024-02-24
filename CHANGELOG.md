@@ -1,3 +1,9 @@
+### TAMacro v0.4.1.1
+
+- Cookbook names in-game no longer have the `.tmc` extension.
+- TAMacro will no longer recreate the `main.tmc` file unless the entire `TAMacro` folder is missing.
+- Removed console log spam.
+
 ### TAMacro v0.4.0.24
 
 - TAMacro now reads all `.tmc` files and subfolders in the `TAMacro` folder.  The in-game interface now allows navigating through these folders and files in the same way it previously navigated through all macros.
