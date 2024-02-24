@@ -10,7 +10,7 @@ namespace alphappy.TAMacro
     {
         public static MacroContainer topContainer;
         public static MacroContainer currentContainer;
-        public static Macro activeMacro => stack.Peek();
+        public static Macro activeMacro => stack.Count > 0 ? stack.Peek() : null;
         private static Stack<Macro> stack = new Stack<Macro>();
         public static int macrosPerPage = 10;
 
