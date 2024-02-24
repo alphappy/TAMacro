@@ -54,11 +54,11 @@ namespace alphappy.TAMacro
                 else if (Directory.Exists(path) && recurse)
                 {
                     Mod.Log($"{path} exists as directory");
-                    foreach (string folderpath in Directory.GetDirectories(path))
-                        children[folderpath] = new MacroContainer(folderpath, this);
-                    foreach (string filepath in Directory.GetFiles(path))
-                        children[filepath] = new MacroContainer(filepath, this);
                     name = new DirectoryInfo(path).Name;
+                    foreach (string folderpath in Directory.GetDirectories(path))
+                        children[name] = new MacroContainer(folderpath, this);
+                    foreach (string filepath in Directory.GetFiles(path))
+                        children[name] = new MacroContainer(filepath, this);
                     Mod.Log($"{path} processed as directory");
                 }
                 else
