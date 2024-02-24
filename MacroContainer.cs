@@ -56,9 +56,9 @@ namespace alphappy.TAMacro
                     Mod.Log($"{path} exists as directory");
                     name = new DirectoryInfo(path).Name;
                     foreach (string folderpath in Directory.GetDirectories(path))
-                        children[name] = new MacroContainer(folderpath, this);
+                        children[new DirectoryInfo(folderpath).Name] = new MacroContainer(folderpath, this);
                     foreach (string filepath in Directory.GetFiles(path))
-                        children[name] = new MacroContainer(filepath, this);
+                        children[Path.GetFileNameWithoutExtension(filepath)] = new MacroContainer(filepath, this);
                     Mod.Log($"{path} processed as directory");
                 }
                 else

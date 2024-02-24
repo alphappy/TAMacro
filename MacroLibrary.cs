@@ -98,7 +98,7 @@ namespace alphappy.TAMacro
                 }
                 else
                 {
-                    throw new ArgumentException($"Could not find a macro by the name {path}");
+                    throw new ArgumentException($"Couldn't find {identifier} while searching for {path}");
                 }
             }
             throw new ArgumentException($"Could not find a macro by the name {path}");
