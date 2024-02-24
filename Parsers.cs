@@ -8,7 +8,7 @@ namespace alphappy.TAMacro
     internal class Parsers
     {
         public delegate List<Instruction> Parser(string line);
-        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition };
+        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro };
 
         public static List<Instruction> Simple(string line)
         {
@@ -122,6 +122,17 @@ namespace alphappy.TAMacro
                         match.Groups[2].Value == "if" ? InstructionType.GotoLabelFromStringIfTrue : InstructionType.GotoLabelFromStringUnlessTrue,
                         match.Groups[1].Value
                         )
+                };
+            }
+            return new List<Instruction>();
+        }
+        public static List<Instruction> ExecuteMacro(string line)
+        {
+            if (Regex.Match(line, "^>execute ([\\w\\d\\-+ /]+)$") is Match match && match.Success)
+            {
+                return new List<Instruction>
+                {
+                    new Instruction(InstructionType.ExecuteMacroByString, match.Groups[1].Value)
                 };
             }
             return new List<Instruction>();

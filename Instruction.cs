@@ -31,6 +31,7 @@ namespace alphappy.TAMacro
             { InstructionType.PushMyY, EnterPushMyY },
             { InstructionType.TestGreaterThan, EnterTestGreaterThan },
             { InstructionType.TestLessThan, EnterTestLessThan },
+            { InstructionType.ExecuteMacroByString, EnterExecuteMacroByString },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -117,6 +118,7 @@ namespace alphappy.TAMacro
         public static void EnterPushMyY(Instruction self, Macro macro, Player player) => macro.stack.Push(player.DangerPos.y);
         public static void EnterTestGreaterThan(Instruction self, Macro macro, Player player) => macro.stack.Push((float)macro.stack.Pop() > (float)self.value);
         public static void EnterTestLessThan(Instruction self, Macro macro, Player player) => macro.stack.Push((float)macro.stack.Pop() < (float)self.value);
+        public static void EnterExecuteMacroByString(Instruction self, Macro macro, Player player) => MacroLibrary.PushNewMacro((string)self.value, player);
     }
 
     public enum InstructionType
@@ -125,6 +127,7 @@ namespace alphappy.TAMacro
         DefineLabelFromString, GotoLabelFromStringIfTrue, GotoLabelFromStringUnlessTrue, SetFlippablePackageFromPackage,
         TestScugTouch, TestGreaterThan, TestLessThan,
         PushHeldPhysicalObject, TestPhysicalObjectIs,
-        PushPickupCandidate, PushMyX, PushMyY
+        PushPickupCandidate, PushMyX, PushMyY,
+        ExecuteMacroByString
     }
 }

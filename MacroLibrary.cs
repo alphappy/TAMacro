@@ -82,5 +82,32 @@ namespace alphappy.TAMacro
                 }
             }
         }
+
+        public static Macro GetMacroByAbsolutePath(string path)
+        {
+            MacroContainer container = topContainer;
+            foreach (string identifier in path.Split('/'))
+            {
+                if (container.children.TryGetValue(identifier, out MacroContainer container2))
+                {
+                    container = container2;
+                }
+                else if (container.macros.TryGetValue(identifier, out Macro macro))
+                {
+                    return macro;
+                }
+                else
+                {
+                    throw new ArgumentException($"Could not find a macro by the name {path}");
+                }
+            }
+            throw new ArgumentException($"Could not find a macro by the name {path}");
+        }
+
+        public static void PushNewMacro(string path, Player player)
+        {
+            stack.Push(GetMacroByAbsolutePath(path));
+            activeMacro.Initialize(player);
+        }
     }
 }
