@@ -1,3 +1,9 @@
+### TAMacro 0.5.0.16
+
+- It is now possible for macros to `>execute` each other!  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Command#execute) for details.
+  - There are several known issues with this command, including one freeze, which will be addressed in a future update.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Known-issues) for details.
+- Some simplifications made to the `Macro` object which might slightly speed up loading macros.
+
 ### TAMacro v0.4.1.1
 
 - Cookbook names in-game no longer have the `.tmc` extension.
