@@ -84,6 +84,7 @@ namespace alphappy.TAMacro
         }
         public static void TrackMe(Macro m)
         {
+            if (m == null) return;
             macro = m;
             label.text = $"{macro.name}\n\n{macro.text}";
             UpdateLabelPosition();

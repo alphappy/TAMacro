@@ -84,6 +84,7 @@ namespace alphappy.TAMacro
                 {
                     Mod.Log($"Macro {macro.name} finished");
                     stack.Pop();
+                    DisplayPanel.TrackMe(activeMacro);
                     Update(self);
                 }
             }
