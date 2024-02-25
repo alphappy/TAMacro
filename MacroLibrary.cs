@@ -13,6 +13,7 @@ namespace alphappy.TAMacro
         public static Macro activeMacro => stack.Count > 0 ? stack.Peek() : null;
         private static Stack<Macro> stack = new Stack<Macro>();
         public static int macrosPerPage = 10;
+        public static int instructionsWithoutTick = 0;
 
         public static void ChangePage(int delta)
         {
@@ -30,6 +31,7 @@ namespace alphappy.TAMacro
                 {
                     macro.Initialize(player);
                     stack.Push(macro);
+                    instructionsWithoutTick = 0;
                 }
             }
             else
@@ -55,23 +57,24 @@ namespace alphappy.TAMacro
 
         public static void TerminateMacro()
         {
-            Mod.Log("Macro terminated by user!");
+            Mod.Log("Macro forcefully terminated!");
+            instructionsWithoutTick = 0;
             stack.Clear();
         }
 
         public static void Update(Player self)
         {
             if (self.AI != null || !self.Consious) return;
+            if (instructionsWithoutTick > Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK)
+            {
+                Mod.Log($"WARNING: {Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK} instructions ran without ticking!");
+                TerminateMacro();
+                return;
+            }
             if (activeMacro is Macro macro)
             {
                 if (macro.GetPackage(self) is Player.InputPackage package)
                 {
-                    if (macro.terminated)
-                    {
-                        Mod.Log("WARNING: Terminating macro which ran too long without ticking!");
-                        stack.Clear();
-                        return;
-                    }
                     if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
                     self.input[0] = package.WithDownDiagonals();
                 }

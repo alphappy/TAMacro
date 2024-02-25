@@ -36,6 +36,7 @@ namespace alphappy.TAMacro
         };
         public void Enter(Macro macro, Player player)
         {
+            MacroLibrary.instructionsWithoutTick++;
             enterHandlers[type].Invoke(this, macro, player);
         }
 

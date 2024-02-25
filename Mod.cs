@@ -92,7 +92,7 @@ namespace alphappy.TAMacro
                 if (Input.GetKey(KeyCode.F2))
                 {
                     keyDown = KeyCode.F2;
-                    MacroLibrary.TerminateMacro();
+                    MacroLibrary.TerminateMacro(); Log("User requested macro termination");
                     return;
                 }
                 if (Input.GetKey(KeyCode.F5))
