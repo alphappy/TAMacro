@@ -1,3 +1,9 @@
+### TAMacro 0.6.0.3
+
+- TAMacro can now record inputs!  Toggle recording with `F7`.
+  - Recorded macros are created in `recorded.tmc`.  You will have to reload (with `F5`) after recording to run the macro.
+  - This is still very much a work in progress.  There are probably some things that don't get recorded perfectly.
+
 ### TAMacro 0.5.0.16
 
 - It is now possible for macros to `>execute` each other!  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Command#execute) for details.
