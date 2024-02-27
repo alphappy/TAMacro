@@ -120,5 +120,27 @@ namespace alphappy.TAMacro
             stack.Push(GetMacroByAbsolutePath(path));
             activeMacro.Initialize(player);
         }
+        private static bool nowRecording;
+        private static List<List<Player.InputPackage>> recorded;
+        public static void ToggleRecording()
+        {
+            if (!nowRecording)
+            {
+                nowRecording = true;
+                recorded = new List<List<Player.InputPackage>> { new List<Player.InputPackage> { } };
+            }
+            else
+            {
+                nowRecording = false;
+                if (recorded.Count > 0)
+                {
+                    if (!File.Exists(Const.COOKBOOK_RECORDED_FILE))
+                    {
+                        File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, "//PARSER: 1\n//AUTHOR: [AUTOAMTICALLY RECORDED]\n\n");
+                    }
+                    File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, Macro.RepFromInputList(recorded));
+                }
+            }
+        }
     }
 }

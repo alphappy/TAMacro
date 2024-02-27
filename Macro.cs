@@ -61,5 +61,34 @@ namespace alphappy.TAMacro
                 labels.Add((string)inst.value, instructions.Count);
             }
         }
+
+        public static string RepFromInputList(List<List<Player.InputPackage>> lists)
+        {
+            StringBuilder sb = new StringBuilder($"/NAME: {UnityEngine.Random.Range(100000000, 999999999)}\n");
+            Player.InputPackage previous = default;
+            int consecutive = -1;
+            foreach (List<Player.InputPackage> list in lists)
+            {
+                foreach (Player.InputPackage input in list)
+                {
+                    if (consecutive == -1)
+                    {
+                        consecutive = 1;
+                        previous = input;
+                    }
+                    else if (input.EqualTo(previous))
+                    {
+                        consecutive++;
+                    }
+                    else
+                    {
+                        sb.Append($"{previous.AsString()}~{consecutive}\n");
+                        consecutive = 1;
+                        previous = input;
+                    }
+                }
+            }
+            return sb.ToString();
+        }
     }
 }

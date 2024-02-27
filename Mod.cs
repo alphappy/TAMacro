@@ -119,6 +119,12 @@ namespace alphappy.TAMacro
                     MacroLibrary.UpOne();
                     return;
                 }
+                if (Input.GetKey(KeyCode.F7))
+                {
+                    keyDown = KeyCode.F7;
+                    MacroLibrary.ToggleRecording();
+                    return;
+                }
 
                 for (int i = 0; i < Const.SELECT_KEYS.Length; i++)
                 {
