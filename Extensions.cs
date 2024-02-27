@@ -32,9 +32,9 @@
             return package;
         }
 
-        public static string AsString(this Player.InputPackage package)
+        public static string AsString(this Player.InputPackage package, string filler = "")
         {
-            return $"{(package.x == -1 ? "L" : (package.x == 1 ? "R" : " "))}{(package.y == -1 ? "D" : (package.y == 1 ? "U" : " "))}{(package.jmp ? "J" : " ")}{(package.pckp ? "G" : " ")}{(package.thrw ? "T" : " ")}{(package.mp ? "M" : " ")}";
+            return $"{(package.x == -1 ? "L" : (package.x == 1 ? "R" : filler))}{(package.y == -1 ? "D" : (package.y == 1 ? "U" : filler))}{(package.jmp ? "J" : filler)}{(package.pckp ? "G" : filler)}{(package.thrw ? "T" : filler)}{(package.mp ? "M" : filler)}";
         }
 
         public static bool EqualTo(this Player.InputPackage self, Player.InputPackage other)

@@ -65,6 +65,10 @@ namespace alphappy.TAMacro
         public static void Update(Player self)
         {
             if (self.AI != null || !self.Consious) return;
+            if (nowRecording)
+            {
+                recorded[0].Add(self.input[0]);
+            }
             if (instructionsWithoutTick > Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK)
             {
                 Mod.Log($"WARNING: {Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK} instructions ran without ticking!");
@@ -136,9 +140,9 @@ namespace alphappy.TAMacro
                 {
                     if (!File.Exists(Const.COOKBOOK_RECORDED_FILE))
                     {
-                        File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, "//PARSER: 1\n//AUTHOR: [AUTOAMTICALLY RECORDED]\n\n");
+                        File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, "//PARSER: 1\n//AUTHOR: [AUTOMATICALLY RECORDED]\n\n");
                     }
-                    File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, Macro.RepFromInputList(recorded));
+                    File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, $"{Macro.RepFromInputList(recorded)}\n");
                 }
             }
         }

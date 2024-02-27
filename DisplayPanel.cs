@@ -16,7 +16,7 @@ namespace alphappy.TAMacro
         public static FSprite pointer;
         public static FSprite box1;
         public static Macro macro;
-        public static string header = $"TAMacro v{Const.PLUGIN_VERSION}\n\n[F1]  Previous page\n[F2]  Interrupt\n[F3]  Next page\n[F4]  Up one level\n[F5]  Reload\n[\\]  Move display panel\n\n";
+        public static string header = $"TAMacro v{Const.PLUGIN_VERSION}\n\n[F1]  Previous page\n[F2]  Interrupt\n[F3]  Next page\n[F4]  Up one level\n[F5]  Reload\n[F7]  Start/stop recording\n[\\]  Move display panel\n\n";
         public static StringBuilder loadedMacros = new StringBuilder();
         public static float lineHeight;
         public static FContainer container;
