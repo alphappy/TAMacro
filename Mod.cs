@@ -9,6 +9,7 @@ using System.Resources;
 
 namespace alphappy.TAMacro
 {
+    [BepInDependency("slime-cubed.devconsole", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(Const.PLUGIN_GUID, Const.PLUGIN_NAME, Const.PLUGIN_VERSION)]
     public class Mod : BaseUnityPlugin
     {
@@ -42,6 +43,8 @@ namespace alphappy.TAMacro
                     Directory.CreateDirectory(Const.COOKBOOK_ROOT_PATH);
                     if (!File.Exists(Const.COOKBOOK_MAIN_FILE)) File.WriteAllText(Const.COOKBOOK_MAIN_FILE, "");
                 }
+
+                if (Futile.atlasManager.DoesContainFontWithName("devconsolas")) { Const.FONT_NAME = "devconsolas"; }
             }
             catch (Exception e) { Log(e); }
         }
