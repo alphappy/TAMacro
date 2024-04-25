@@ -52,10 +52,12 @@ namespace alphappy.TAMacro
         private void RoomCamera_ClearAllSprites(On.RoomCamera.orig_ClearAllSprites orig, RoomCamera self)
         {
             DisplayPanel.Remove();
+            //paneManager.Remove();
             orig(self);
         }
 
-        private void RainWorldGame_GrafUpdate(On.RainWorldGame.orig_GrafUpdate orig, RainWorldGame self, float timeStacker)
+        public static PaneManager paneManager;
+        private static void RainWorldGame_GrafUpdate(On.RainWorldGame.orig_GrafUpdate orig, RainWorldGame self, float timeStacker)
         {
             orig(self, timeStacker);
             if (Input.GetKey(KeyCode.Backslash) && DisplayPanel.label != null)
@@ -63,12 +65,14 @@ namespace alphappy.TAMacro
                 DisplayPanel.AnchorToCursor();
             }
             DisplayPanel.Update();
+            //paneManager.Update();
         }
 
         private void RoomCamera_ctor(On.RoomCamera.orig_ctor orig, RoomCamera self, RainWorldGame game, int cameraNumber)
         {
             orig(self, game, cameraNumber);
             DisplayPanel.Initialize();
+            //paneManager = new PaneManager();
         }
 
         

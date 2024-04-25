@@ -1,4 +1,6 @@
-﻿namespace alphappy.TAMacro
+﻿using UnityEngine;
+
+namespace alphappy.TAMacro
 {
     public static class Extensions
     {
@@ -41,5 +43,15 @@
         {
             return self.x == other.x && self.y == other.y && self.jmp == other.jmp && self.pckp == other.pckp && self.thrw == other.thrw && self.mp == other.mp;
         }
+
+        public static Rect BoundingBox(this FSprite self)
+        {
+            return new Rect(
+                self.GetPosition() + self.container.GetPosition() - new Vector2(self.width, self.height) / 2f, 
+                new Vector2(self.width, self.height)
+                );
+        }
+
+        public static bool AmIBeingHovered(this FSprite self) => self.BoundingBox().Contains(Input.mousePosition);
     }
 }

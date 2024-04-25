@@ -6,6 +6,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using System.Security.Policy;
+using IL.MoreSlugcats;
+using System.ComponentModel;
+using static alphappy.TAMacro.Pane;
+using static alphappy.TAMacro.PaneButton;
 
 namespace alphappy.TAMacro
 {
@@ -129,5 +134,177 @@ namespace alphappy.TAMacro
         public static float LabelHeight => label.text.Split('\n').Length * lineHeight;  // (macro != null ? 2 + macro.lines : 1) * lineHeight;
         public static float LabelInfoHeight => labelInfo.text.Split('\n').Length * lineHeight;
         public static Vector2 anchor = new Vector2(700f, 100f);
+    }
+
+    public class PaneManager
+    {
+        public Pane infoPane;
+        public PaneManager()
+        {
+            infoPane = new Pane();
+            infoPane.InitiateSprites();
+            infoPane.AddButton("<-", 30f, 20f, () => { MacroLibrary.ChangePage(-1); });
+        }
+        public void Update()
+        {
+            infoPane.Update();
+        }
+        public void Remove()
+        {
+            infoPane.Remove();
+            infoPane = null;
+        }
+    }
+
+    public class Pane
+    {
+        public FContainer container;
+        public FSprite backdrop;
+        public FSprite titlebarbg;
+        public List<PaneButton> buttons;
+        public Vector2 dragRelPos;
+        public Vector2 anchor;
+        public DragState dragState = DragState.Neutral;
+        public enum DragState { Neutral, ClickedOutside, HoveringInside, ClickedInside }
+
+        public void InitiateSprites()
+        {
+            container = new FContainer();
+            Futile.stage.AddChild(container);
+            anchor = Vector2.zero - Vector2.one;
+            container.SetPosition(anchor);
+
+            backdrop = new FSprite("pixel")
+            {
+                alpha = 0.4f, color = Color.black, x = 500f, y = 500f, width = 200f, height = 600f
+            };
+
+            titlebarbg = new FSprite("pixel")
+            {
+                alpha = 0.0f, color = Color.white, x = 500f, y = 540f, width = 200f, height = 20f
+            };
+
+            container.AddChild(backdrop);
+            container.AddChild(titlebarbg);
+        }
+        public void Update()
+        {
+            DragUpdate();
+            foreach (PaneButton button in buttons) { button.Update(); }
+        }
+        public void DragUpdate()
+        {
+            bool nowClicking = Input.GetMouseButton(0);
+            Vector2 mousePos = Input.mousePosition;
+            bool nowHovering = titlebarbg.AmIBeingHovered();
+
+            switch (dragState)
+            {
+                case DragState.ClickedInside:
+                    if (nowClicking) { anchor = mousePos - dragRelPos; container.SetPosition(anchor); }
+                    else { dragState = DragState.HoveringInside; }
+                    break;
+
+                case DragState.HoveringInside:
+                    if (!nowHovering) { dragState = DragState.Neutral; }
+                    else if (nowClicking) { dragState = DragState.ClickedInside; dragRelPos = mousePos - anchor; }
+                    break;
+
+                case DragState.ClickedOutside:
+                    if (!nowClicking) { dragState = DragState.Neutral; }
+                    break;
+
+                case DragState.Neutral:
+                    if (nowHovering) { dragState = DragState.HoveringInside; }
+                    else if (nowClicking) { dragState = DragState.ClickedOutside; }
+                    break;
+            }
+
+            titlebarbg.alpha = dragState == DragState.HoveringInside ? 0.6f : 0f;
+        }
+        public void Remove()
+        {
+            container.RemoveFromContainer();
+            container.RemoveAllChildren();
+            container = null;
+        }
+
+        private float potentialX;
+        public void AddButton(string text, float width, float height, OnClickHandler onClick)
+        {
+            buttons.Add(new PaneButton(container, text, width, height, onClick));
+        }
+    }
+
+    public class PaneButton
+    {
+        public FSprite bgsprite;
+        public FLabel label;
+        public delegate void OnClickHandler();
+        public OnClickHandler onClick;
+        public enum ClickState { Neutral, ClickedOutside, HoveringInside, ClickedInside, DraggedOutside }
+        public ClickState clickState = ClickState.Neutral;
+
+        public PaneButton(FContainer container, string text, float width, float height, OnClickHandler onClick)
+        {
+            bgsprite = new FSprite("pixel")
+            {
+                alpha = 0.4f,
+                color = Const.BUTTON_COLOR,
+                width = width,
+                height = height
+            };
+            label = new FLabel(Const.FONT_NAME, text)
+            {
+                alpha = 0.6f,
+                color = Color.white
+            };
+            container.AddChild(label);
+            container.AddChild(bgsprite);
+            this.onClick = onClick;
+        }
+        public void Remove()
+        {
+            label.RemoveFromContainer();
+            bgsprite.RemoveFromContainer();
+        }
+        public void Update()
+        {
+            ClickUpdate();
+        }
+        public void ClickUpdate()
+        {
+            bool nowClicking = Input.GetMouseButton(0);
+            bool nowHovering = bgsprite.AmIBeingHovered();
+
+            switch (clickState)
+            {
+                case ClickState.ClickedOutside:
+                    if (!nowClicking) { clickState = ClickState.Neutral; }
+                    break;
+
+                case ClickState.Neutral:
+                    if (nowHovering) { clickState = ClickState.HoveringInside; }
+                    else if (nowClicking) { clickState = ClickState.ClickedOutside; }
+                    break;
+
+                case ClickState.HoveringInside:
+                    if (!nowHovering) { clickState = ClickState.Neutral; }
+                    else if (nowClicking) { clickState = ClickState.ClickedInside; }
+                    break;
+
+                case ClickState.ClickedInside:
+                    if (!nowHovering) { clickState = ClickState.DraggedOutside; }
+                    else if (!nowClicking) { onClick.Invoke(); clickState = ClickState.HoveringInside; }
+                    break;
+
+                case ClickState.DraggedOutside:
+                    if (nowHovering) { clickState = ClickState.ClickedInside; }
+                    else if (!nowClicking) { clickState = ClickState.Neutral; }
+                    break;
+            }
+
+            bgsprite.alpha = (clickState == ClickState.HoveringInside || clickState == ClickState.DraggedOutside) ? 0.8f : 0.4f;
+        }
     }
 }
