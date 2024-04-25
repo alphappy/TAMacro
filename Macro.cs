@@ -64,7 +64,8 @@ namespace alphappy.TAMacro
 
         public static string RepFromInputList(List<List<Player.InputPackage>> lists)
         {
-            StringBuilder sb = new StringBuilder($"/NAME: {UnityEngine.Random.Range(100000000, 999999999)}\n");
+            var dt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            StringBuilder sb = new StringBuilder($"/NAME: {dt}\n");
             Player.InputPackage previous = default;
             int consecutive = -1;
             foreach (List<Player.InputPackage> list in lists)
