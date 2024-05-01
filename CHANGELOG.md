@@ -1,3 +1,9 @@
+### TAMacro 0.6.4.0
+
+- TAMacro now uses the `devconsolas` font if Dev Console is enabled.
+- The names of recorded macros now use Unix timestamps instead of random numbers.
+- Bugfix: TAMacro should no longer send input to, or record input from, AI-controlled Slugcats or Slugpups.
+
 ### TAMacro 0.6.0.3
 
 - TAMacro can now record inputs!  Toggle recording with `F7`.

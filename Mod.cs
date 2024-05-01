@@ -82,6 +82,8 @@ namespace alphappy.TAMacro
             orig(self);
             try
             {
+                if (self.AI != null) return;
+                if (self.playerState.playerNumber != 0) return;
                 MacroLibrary.Update(self);
             }
             catch (Exception e) { Log(e); }
