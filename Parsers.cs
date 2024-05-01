@@ -119,7 +119,7 @@ namespace alphappy.TAMacro
                 return new List<Instruction>
                 {
                     new Instruction(match.Groups[3].Value.Contains("of") ? InstructionType.PushMyX : InstructionType.PushMyY),
-                    new Instruction(match.Groups[3].Value == "right of" || match.Groups[3].Value == "above" ? InstructionType.TestGreaterThan : InstructionType.TestLessThan, float.Parse(match.Groups[4].Value) * 20f),
+                    new Instruction(match.Groups[3].Value == "right of" || match.Groups[3].Value == "above" ? InstructionType.TestGreaterThan : InstructionType.TestLessThan, float.Parse(match.Groups[4].Value)),
                     new Instruction(
                         match.Groups[2].Value == "if" ? InstructionType.GotoLabelFromStringIfTrue : InstructionType.GotoLabelFromStringUnlessTrue,
                         match.Groups[1].Value

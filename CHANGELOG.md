@@ -1,5 +1,6 @@
 ### TAMacro 0.7.1.0
 
+- BREAKING CHANGE: `scug located` now requires specifying positions in units rather than tiles.
 - It is now possible for a macro to `!warp` Slugcat to a specific position.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#warp) for details.
   - Warp Menu must be enabled to warp to another room.
   - KNOWN ISSUE: Warping to a non-existent room freezes the simulation.  Pausing and warping manually unfreezes it.
