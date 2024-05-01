@@ -33,6 +33,8 @@ namespace alphappy.TAMacro
             { InstructionType.TestLessThan, EnterTestLessThan },
             { InstructionType.ExecuteMacroByString, EnterExecuteMacroByString },
             { InstructionType.ReturnTempNull, EnterReturnTempNull },
+            { InstructionType.RequestWarp, EnterRequestWarp },
+            { InstructionType.PushWarpWactive, EnterPushWarpActive },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -122,6 +124,15 @@ namespace alphappy.TAMacro
         public static void EnterTestLessThan(Instruction self, Macro macro, Player player) => macro.stack.Push((float)macro.stack.Pop() < (float)self.value);
         public static void EnterExecuteMacroByString(Instruction self, Macro macro, Player player) => MacroLibrary.PushNewMacro((string)self.value, player);
         public static void EnterReturnTempNull(Instruction self, Macro macro, Player player) => macro.returnNull = true;
+        public static void EnterRequestWarp(Instruction self, Macro macro, Player player)
+        {
+            if (!Const.WARP_MENU_ENABLED) return;
+            var arg = (WarpTarget)self.value;
+            WarpModMenu.newRoom = arg.room;
+            WarpModMenu.coords = new RWCustom.IntVector2(arg.x, arg.y);
+            WarpModMenu.warpActive = true;
+        }
+        public static void EnterPushWarpActive(Instruction self, Macro macro, Player player) => macro.stack.Push(Const.WARP_MENU_ENABLED && WarpModMenu.warpActive);
     }
 
     public enum InstructionType
@@ -131,6 +142,19 @@ namespace alphappy.TAMacro
         TestScugTouch, TestGreaterThan, TestLessThan,
         PushHeldPhysicalObject, TestPhysicalObjectIs,
         PushPickupCandidate, PushMyX, PushMyY,
-        ExecuteMacroByString, ReturnTempNull
+        ExecuteMacroByString, ReturnTempNull,
+        RequestWarp, PushWarpWactive
+    }
+
+    public struct WarpTarget
+    {
+        public string room; public int x; public int y;
+
+        public WarpTarget(string room, int x, int y)
+        {
+            this.room = room;
+            this.x = x;
+            this.y = y;
+        }
     }
 }

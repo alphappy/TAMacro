@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace alphappy.TAMacro
     internal class Parsers
     {
         public delegate List<Instruction> Parser(string line);
-        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro };
+        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, CheatWarp };
 
         public static List<Instruction> Simple(string line)
         {
@@ -134,6 +135,28 @@ namespace alphappy.TAMacro
                 {
                     new Instruction(InstructionType.ExecuteMacroByString, match.Groups[1].Value),
                     new Instruction(InstructionType.ReturnTempNull)
+                };
+            }
+            return new List<Instruction>();
+        }
+        public static List<Instruction> CheatWarp(string line)
+        {
+            if (Regex.Match(line, "!warp ([\\w_]+) (\\d+) (\\d+)") is Match match && match.Success)
+            {
+                if (!Const.WARP_MENU_ENABLED)
+                {
+                    Mod.Log("Warp Menu was not detected.  Warp command will be ignored.");
+                    return new List<Instruction>();
+                }
+                int.TryParse(match.Groups[2].Value, out int x);
+                int.TryParse(match.Groups[3].Value, out int y);
+                return new List<Instruction>
+                {
+                    new Instruction(InstructionType.RequestWarp, new WarpTarget(match.Groups[1].Value, x, y)),
+                    new Instruction(InstructionType.DefineLabelFromString, $"warp {match.Groups[1].Value} {x} {y}"),
+                    new Instruction(InstructionType.Tick),
+                    new Instruction(InstructionType.PushWarpWactive),
+                    new Instruction(InstructionType.GotoLabelFromStringIfTrue, $"warp {match.Groups[1].Value} {x} {y}"),
                 };
             }
             return new List<Instruction>();

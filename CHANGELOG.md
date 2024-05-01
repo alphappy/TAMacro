@@ -1,5 +1,7 @@
-### TAMacro 0.6.4.0
+### TAMacro 0.7.0.0
 
+- It is now possible to `!warp` to a position if Warp Menu is enabled.
+  - This is the first of several planned *cheat* commands which will begin with `!` to distinguish them from other commands.
 - TAMacro now uses the `devconsolas` font if Dev Console is enabled.
 - The names of recorded macros now use Unix timestamps instead of random numbers.
 - Bugfix: TAMacro should no longer send input to, or record input from, AI-controlled Slugcats or Slugpups.

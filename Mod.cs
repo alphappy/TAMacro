@@ -34,6 +34,7 @@ namespace alphappy.TAMacro
                 On.RoomCamera.ctor += RoomCamera_ctor;
                 On.RoomCamera.ClearAllSprites += RoomCamera_ClearAllSprites;
                 On.RainWorldGame.GrafUpdate += RainWorldGame_GrafUpdate;
+                On.RainWorld.PostModsInit += RainWorld_PostModsInit;
                 Log("Hooking complete");
                 initialized = true;
 
@@ -47,6 +48,12 @@ namespace alphappy.TAMacro
                 if (Futile.atlasManager.DoesContainFontWithName("devconsolas")) { Const.FONT_NAME = "devconsolas"; }
             }
             catch (Exception e) { Log(e); }
+        }
+
+        private void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
+        {
+            orig(self);
+            Const.WARP_MENU_ENABLED = ModManager.ActiveMods.Any(mod => mod.name == "Warp Menu" && mod.id == "warp");
         }
 
         private void RoomCamera_ClearAllSprites(On.RoomCamera.orig_ClearAllSprites orig, RoomCamera self)

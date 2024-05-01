@@ -6,7 +6,7 @@ namespace alphappy.TAMacro
     {
         public const string PLUGIN_GUID = "alphappy.tamacro";
         public const string PLUGIN_NAME = "Debug - TAMacro";
-        public const string PLUGIN_VERSION = "0.6.4.0";
+        public const string PLUGIN_VERSION = "0.7.0.0";
         public const int MAXIMUM_INSTRUCTIONS_WITHOUT_TICK = 100;
         
         public static bool SUPER_DEBUG_MODE = false;
@@ -16,5 +16,6 @@ namespace alphappy.TAMacro
         public static KeyCode[] SELECT_KEYS = new KeyCode[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0 };
         public static string FONT_NAME = RWCustom.Custom.GetFont();
         public static Color BUTTON_COLOR = new Color(0.4f, 0.2f, 0.6f);
+        public static bool WARP_MENU_ENABLED = false;
     }
 }

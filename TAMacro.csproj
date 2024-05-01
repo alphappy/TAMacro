@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="Const.cs" />
     <Compile Include="DisplayPanel.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="Macro.cs" />
@@ -105,6 +106,9 @@
     <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\.references\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Warp">
+      <HintPath>..\.references\Warp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
