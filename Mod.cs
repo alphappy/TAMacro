@@ -41,7 +41,7 @@ namespace alphappy.TAMacro
                 if (!Directory.Exists(Const.COOKBOOK_ROOT_PATH))
                 {
                     Directory.CreateDirectory(Const.COOKBOOK_ROOT_PATH);
-                    if (!File.Exists(Const.COOKBOOK_MAIN_FILE)) File.WriteAllText(Const.COOKBOOK_MAIN_FILE, "");
+                    File.WriteAllText(Const.COOKBOOK_MAIN_FILE, "");
                 }
 
                 if (Futile.atlasManager.DoesContainFontWithName("devconsolas")) { Const.FONT_NAME = "devconsolas"; }
