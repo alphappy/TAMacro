@@ -133,7 +133,9 @@ namespace alphappy.TAMacro
             }
             foreach (Parsers.Parser parser in Parsers.parsers)
             {
-                if (parser.Invoke(line) is List<Instruction> list && list.Count > 0)
+                var list = parser.Invoke(line);
+                if (list == null) return true; // parser recognized the line (so it's not an invalid command) but chose to add no instructions
+                if (list.Count > 0)
                 {
                     loading.text.AppendLine(rawline);
                     loading.lines += 1;

@@ -52,6 +52,7 @@ namespace alphappy.TAMacro
                 }
                 ret.Add(new Instruction(InstructionType.Tick));
             }
+            else { return null; }
 
             return ret;
         }
@@ -62,7 +63,7 @@ namespace alphappy.TAMacro
             {
                 return new List<Instruction> { new Instruction(InstructionType.DefineLabelFromString, match.Groups[1].Value) };
             }
-            return new List<Instruction>();
+            return null;
         }
         public static List<Instruction> ConditionScugTouch(string line)
         {
@@ -77,7 +78,7 @@ namespace alphappy.TAMacro
                         )
                 };
             }
-            return new List<Instruction>();
+            return null;
         }
         public static List<Instruction> ConditionScugHold(string line)
         {
@@ -93,7 +94,7 @@ namespace alphappy.TAMacro
                         )
                 };
             }
-            return new List<Instruction>();
+            return null;
         }
         public static List<Instruction> ConditionScugWant(string line)
         {
@@ -109,7 +110,7 @@ namespace alphappy.TAMacro
                         )
                 };
             }
-            return new List<Instruction>();
+            return null;
         }
         public static List<Instruction> ConditionScugPosition(string line)
         {
@@ -125,7 +126,7 @@ namespace alphappy.TAMacro
                         )
                 };
             }
-            return new List<Instruction>();
+            return null;
         }
         public static List<Instruction> ExecuteMacro(string line)
         {
@@ -137,7 +138,7 @@ namespace alphappy.TAMacro
                     new Instruction(InstructionType.ReturnTempNull)
                 };
             }
-            return new List<Instruction>();
+            return null;
         }
         public static List<Instruction> CheatWarp(string line)
         {
@@ -146,7 +147,7 @@ namespace alphappy.TAMacro
                 if (!Const.WARP_MENU_ENABLED)
                 {
                     Mod.Log("Warp Menu was not detected.  Warp command will be ignored.");
-                    return new List<Instruction>();
+                    return new();
                 }
                 int.TryParse(match.Groups[2].Value, out int x);
                 int.TryParse(match.Groups[3].Value, out int y);
@@ -159,7 +160,7 @@ namespace alphappy.TAMacro
                     new Instruction(InstructionType.GotoLabelFromStringIfTrue, $"warp {match.Groups[1].Value} {x} {y}"),
                 };
             }
-            return new List<Instruction>();
+            return null;
         }
     }
 }
