@@ -42,13 +42,10 @@ namespace alphappy.TAMacro
                 sysPath = path;
                 if (File.Exists(path))
                 {
-                    Mod.Log($"{path} exists as file");
                     if (Path.GetExtension(path) == ".tmc")
                     {
-                        Mod.Log($"{path} loading cookbook");
                         LoadCookbook(path);
                         name = Path.GetFileNameWithoutExtension(path);
-                        Mod.Log($"{path} loaded cookbook");
                     }
                 }
                 else if (Directory.Exists(path) && recurse)
@@ -59,7 +56,6 @@ namespace alphappy.TAMacro
                         children[new DirectoryInfo(folderpath).Name] = new MacroContainer(folderpath, this);
                     foreach (string filepath in Directory.GetFiles(path))
                         children[Path.GetFileNameWithoutExtension(filepath)] = new MacroContainer(filepath, this);
-                    Mod.Log($"{path} processed as directory");
                 }
                 else
                 {
@@ -134,17 +130,15 @@ namespace alphappy.TAMacro
             foreach (Parsers.Parser parser in Parsers.parsers)
             {
                 var list = parser.Invoke(line);
-                if (list == null) return true; // parser recognized the line (so it's not an invalid command) but chose to add no instructions
-                if (list.Count > 0)
+                if (list == null) continue; // parser recognized the line (so it's not an invalid command) but chose to add no instructions
+
+                loading.text.AppendLine(rawline);
+                loading.lines += 1;
+                foreach (Instruction instruction in list)
                 {
-                    loading.text.AppendLine(rawline);
-                    loading.lines += 1;
-                    foreach (Instruction instruction in list)
-                    {
-                        loading.AddInstruction(instruction);
-                    }
-                    return true;
+                    loading.AddInstruction(instruction);
                 }
+                return true;
             }
             return false;
         }
