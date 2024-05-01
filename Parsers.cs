@@ -142,22 +142,27 @@ namespace alphappy.TAMacro
         }
         public static List<Instruction> CheatWarp(string line)
         {
-            if (Regex.Match(line, "!warp ([\\w_]+) (\\d+) (\\d+)") is Match match && match.Success)
+            if (Regex.Match(line, "!warp (?:([\\w_]+) )?(-?\\d+(?:\\.\\d+)?) (-?\\d+(?:\\.\\d+)?)") is Match match && match.Success)
             {
+                float.TryParse(match.Groups[2].Value, out float x);
+                float.TryParse(match.Groups[3].Value, out float y);
+
+                if (match.Groups[1].Value == "") return new List<Instruction> { new(InstructionType.SuperHardSetPosition, new Vector2(x, y)) };
+
                 if (!Const.WARP_MENU_ENABLED)
                 {
-                    Mod.Log("Warp Menu was not detected.  Warp command will be ignored.");
+                    Mod.Log("Warp Menu must be enabled to warp to another room.  Warp command will be ignored.");
                     return new();
                 }
-                int.TryParse(match.Groups[2].Value, out int x);
-                int.TryParse(match.Groups[3].Value, out int y);
+
                 return new List<Instruction>
                 {
-                    new Instruction(InstructionType.RequestWarp, new WarpTarget(match.Groups[1].Value, x, y)),
-                    new Instruction(InstructionType.DefineLabelFromString, $"warp {match.Groups[1].Value} {x} {y}"),
+                    new Instruction(InstructionType.RequestWarp, new WarpTarget(match.Groups[1].Value, (int)(x / 20), (int)(y / 20))),
+                    new Instruction(InstructionType.DefineLabelFromString, line),
                     new Instruction(InstructionType.Tick),
                     new Instruction(InstructionType.PushWarpWactive),
-                    new Instruction(InstructionType.GotoLabelFromStringIfTrue, $"warp {match.Groups[1].Value} {x} {y}"),
+                    new Instruction(InstructionType.GotoLabelFromStringIfTrue, line),
+                    new Instruction(InstructionType.SuperHardSetPosition, new Vector2(x, y)),
                 };
             }
             return null;

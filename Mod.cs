@@ -54,6 +54,7 @@ namespace alphappy.TAMacro
         {
             orig(self);
             Const.WARP_MENU_ENABLED = ModManager.ActiveMods.Any(mod => mod.name == "Warp Menu" && mod.id == "warp");
+            Log($"Found Warp Menu: {Const.WARP_MENU_ENABLED}");
         }
 
         private void RoomCamera_ClearAllSprites(On.RoomCamera.orig_ClearAllSprites orig, RoomCamera self)

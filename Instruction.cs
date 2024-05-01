@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace alphappy.TAMacro
 {
@@ -35,6 +36,7 @@ namespace alphappy.TAMacro
             { InstructionType.ReturnTempNull, EnterReturnTempNull },
             { InstructionType.RequestWarp, EnterRequestWarp },
             { InstructionType.PushWarpWactive, EnterPushWarpActive },
+            { InstructionType.SuperHardSetPosition, EnterSuperHardSetPosition },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -133,6 +135,7 @@ namespace alphappy.TAMacro
             WarpModMenu.warpActive = true;
         }
         public static void EnterPushWarpActive(Instruction self, Macro macro, Player player) => macro.stack.Push(Const.WARP_MENU_ENABLED && WarpModMenu.warpActive);
+        public static void EnterSuperHardSetPosition(Instruction self, Macro macro, Player player) => player.SuperHardSetPosition((Vector2)self.value);
     }
 
     public enum InstructionType
@@ -143,7 +146,7 @@ namespace alphappy.TAMacro
         PushHeldPhysicalObject, TestPhysicalObjectIs,
         PushPickupCandidate, PushMyX, PushMyY,
         ExecuteMacroByString, ReturnTempNull,
-        RequestWarp, PushWarpWactive
+        RequestWarp, PushWarpWactive, SuperHardSetPosition
     }
 
     public struct WarpTarget

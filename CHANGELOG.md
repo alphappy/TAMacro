@@ -1,9 +1,12 @@
-### TAMacro 0.7.0.0
+### TAMacro 0.7.1.0
 
-- It is now possible to `!warp` to a position if Warp Menu is enabled.
+- It is now possible for a macro to `!warp` Slugcat to a specific position.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#warp) for details.
+  - Warp Menu must be enabled to warp to another room.
+  - KNOWN ISSUE: Warping to a non-existent room freezes the simulation.  Pausing and warping manually unfreezes it.
   - This is the first of several planned *cheat* commands which will begin with `!` to distinguish them from other commands.
 - TAMacro now uses the `devconsolas` font if Dev Console is enabled.
 - The names of recorded macros now use Unix timestamps instead of random numbers.
+- Removed some debugging logging.
 - Bugfix: TAMacro should no longer send input to, or record input from, AI-controlled Slugcats or Slugpups.
 
 ### TAMacro 0.6.0.3
