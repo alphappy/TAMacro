@@ -1,4 +1,4 @@
-### TAMacro 0.7.1.0
+### TAMacro 0.7.2.0
 
 - BREAKING CHANGE: `scug located` now requires specifying positions in units rather than tiles.
 - It is now possible for a macro to `!warp` Slugcat to a specific position.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#warp) for details.
