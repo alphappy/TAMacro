@@ -62,10 +62,10 @@ namespace alphappy.TAMacro
             }
         }
 
-        public static string RepFromInputList(List<List<Player.InputPackage>> lists)
+        public static string RepFromInputList(List<List<Player.InputPackage>> lists, string setup = "")
         {
             var dt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            StringBuilder sb = new StringBuilder($"/NAME: {dt}\n");
+            StringBuilder sb = new StringBuilder($"/NAME: {dt}\n{setup}");
             Player.InputPackage previous = default;
             int consecutive = -1;
             foreach (List<Player.InputPackage> list in lists)

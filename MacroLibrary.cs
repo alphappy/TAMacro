@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace alphappy.TAMacro
 {
@@ -67,6 +68,11 @@ namespace alphappy.TAMacro
             if (self.AI != null || !self.Consious) return;
             if (nowRecording)
             {
+                if (recordingStartRoom == null)
+                {
+                    recordingStartRoom = self.room?.game.IsArenaSession == true ? "" : self.room?.abstractRoom.name;
+                    recordingStartPosition = self.mainBodyChunk.pos;
+                }
                 recorded[0].Add(self.input[0]);
             }
             if (instructionsWithoutTick > Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK)
@@ -126,11 +132,14 @@ namespace alphappy.TAMacro
         }
         private static bool nowRecording;
         private static List<List<Player.InputPackage>> recorded;
+        private static Vector2 recordingStartPosition;
+        private static string recordingStartRoom;
         public static void ToggleRecording()
         {
             if (!nowRecording)
             {
                 nowRecording = true;
+                recordingStartPosition = default; recordingStartRoom = null;
                 recorded = new List<List<Player.InputPackage>> { new List<Player.InputPackage> { } };
             }
             else
@@ -142,7 +151,10 @@ namespace alphappy.TAMacro
                     {
                         File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, "//PARSER: 1\n//AUTHOR: [AUTOMATICALLY RECORDED]\n\n");
                     }
-                    File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, $"{Macro.RepFromInputList(recorded)}\n");
+                    string setup = recordingStartRoom == string.Empty 
+                        ? $"!warp {recordingStartPosition.x} {recordingStartPosition.y}\n" 
+                        : $"!warp {recordingStartRoom} {recordingStartPosition.x} {recordingStartPosition.y}\n";
+                    File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, $"{Macro.RepFromInputList(recorded, setup)}\n");
                 }
             }
         }
