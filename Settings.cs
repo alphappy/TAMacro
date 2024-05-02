@@ -19,6 +19,7 @@ namespace alphappy.TAMacro
         public static Configurable<KeyCode> kbToggleRecording = instance.config.Bind("kbToggleRecording", KeyCode.F7, new ConfigurableInfo("Record"));
         public static Configurable<KeyCode> kbMoveDisplayPanelToCursor = instance.config.Bind("kbMoveDisplayPanelToCursor", KeyCode.Backslash, new ConfigurableInfo("Move display panel"));
         public static Configurable<bool> showControls = instance.config.Bind("showControls", true, new ConfigurableInfo("Show controls on display panel"));
+        public static Configurable<bool> useDevconsolas = instance.config.Bind("useDevconsolas", true, new ConfigurableInfo("Use devconsolas font instead of default\n(requires Dev Console to be enabled)"));
         public override void Initialize()
         {
             base.Initialize();
@@ -33,9 +34,13 @@ namespace alphappy.TAMacro
                 pos += new Vector2(0f, -45f);
             }
 
-            list.Add(new OpCheckBox(showControls, pos));
-            list.Add(new OpLabel(pos.x + 35f, pos.y + 3f, showControls.info.description));
-            //pos += new Vector2(0f, -45f);
+            foreach (var c in new List<Configurable<bool>> { showControls, useDevconsolas })
+            {
+                list.Add(new OpCheckBox(c, pos));
+                list.Add(new OpLabel(pos.x + 35f, pos.y + 3f, c.info.description));
+                pos += new Vector2(0f, -35f);
+            }
+
 
             Tabs[0].AddItems(list.ToArray());
         }

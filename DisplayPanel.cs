@@ -25,13 +25,14 @@ namespace alphappy.TAMacro
         public static StringBuilder loadedMacros = new StringBuilder();
         public static float lineHeight;
         public static FContainer container;
+        public static string Font => Const.DEVCONSOLAS_AVAILABLE && Settings.useDevconsolas.Value ? "devconsolas" : RWCustom.Custom.GetFont();
         public static void Initialize()
         {
             container = new FContainer();
             Futile.stage.AddChild(container);
             container.SetPosition(Vector2.zero - Vector2.one);
 
-            label = new FLabel(Const.FONT_NAME, "");
+            label = new FLabel(Font, "");
             label.isVisible = true;
             label.alpha = 0.5f;
             label.color = new Color(0.75f, 0.55f, 0.87f);
@@ -39,7 +40,7 @@ namespace alphappy.TAMacro
             container.AddChild(label);
             lineHeight = label.FontLineHeight * label.scale;
 
-            labelInfo = new FLabel(Const.FONT_NAME, header);
+            labelInfo = new FLabel(Font, header);
             labelInfo.isVisible = true;
             labelInfo.alpha = 0.5f;
             labelInfo.color = new Color(0.55f, 0.55f, 0.87f);
@@ -254,7 +255,7 @@ namespace alphappy.TAMacro
                 width = width,
                 height = height
             };
-            label = new FLabel(Const.FONT_NAME, text)
+            label = new FLabel(DisplayPanel.Font, text)
             {
                 alpha = 0.6f,
                 color = Color.white
