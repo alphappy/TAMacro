@@ -167,5 +167,17 @@ namespace alphappy.TAMacro
             }
             return null;
         }
+        public static List<Instruction> CheatGetItem(string line)
+        {
+            if (Regex.Match(line, "!get (\\w+)") is Match match && match.Success)
+            {
+                string item = match.Groups[1].Value;
+                if (item == "Spear") return new List<Instruction> { new Instruction(InstructionType.GetSpear, false), };
+                if (item == "ExplosiveSpear") return new List<Instruction> { new Instruction(InstructionType.GetSpear, true), };
+
+                return new List<Instruction> { new Instruction(InstructionType.GetGenericItem, item), };
+            }
+            return null;
+        }
     }
 }

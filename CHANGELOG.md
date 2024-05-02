@@ -1,3 +1,7 @@
+### TAMacro 0.7.3.0
+
+- It is now possible to spontaneously `!get` an item (e.g., rocks or spears for throw movement).  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#get) for details.
+
 ### TAMacro 0.7.2.0
 
 - BREAKING CHANGE: `scug located` now requires specifying positions in units rather than tiles.

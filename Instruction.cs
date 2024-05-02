@@ -37,6 +37,8 @@ namespace alphappy.TAMacro
             { InstructionType.RequestWarp, EnterRequestWarp },
             { InstructionType.PushWarpWactive, EnterPushWarpActive },
             { InstructionType.SuperHardSetPosition, EnterSuperHardSetPosition },
+            { InstructionType.GetGenericItem, EnterGetGenericItem },
+            { InstructionType.GetSpear, EnterGetSpear },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -136,6 +138,21 @@ namespace alphappy.TAMacro
         }
         public static void EnterPushWarpActive(Instruction self, Macro macro, Player player) => macro.stack.Push(Const.WARP_MENU_ENABLED && WarpModMenu.warpActive);
         public static void EnterSuperHardSetPosition(Instruction self, Macro macro, Player player) => player.SuperHardSetPosition((Vector2)self.value);
+        public static void EnterGetGenericItem(Instruction self, Macro macro, Player player)
+        {
+            var type = new AbstractPhysicalObject.AbstractObjectType((string)self.value);
+            var obj = new AbstractPhysicalObject(player.room.world, type, null, player.abstractCreature.pos, player.room.game.GetNewID());
+            player.room.abstractRoom.AddEntity(obj);
+            obj.RealizeInRoom();
+            if (player.FreeHand() is int f && f > -1) player.SlugcatGrab(obj.realizedObject, f);
+        }
+        public static void EnterGetSpear(Instruction self, Macro macro, Player player)
+        {
+            var obj = new AbstractSpear(player.room.world, null, player.abstractCreature.pos, player.room.game.GetNewID(), (bool)self.value);
+            player.room.abstractRoom.AddEntity(obj);
+            obj.RealizeInRoom();
+            if (player.FreeHand() is int f && f > -1) player.SlugcatGrab(obj.realizedObject, f);
+        }
     }
 
     public enum InstructionType
@@ -146,7 +163,8 @@ namespace alphappy.TAMacro
         PushHeldPhysicalObject, TestPhysicalObjectIs,
         PushPickupCandidate, PushMyX, PushMyY,
         ExecuteMacroByString, ReturnTempNull,
-        RequestWarp, PushWarpWactive, SuperHardSetPosition
+        RequestWarp, PushWarpWactive, SuperHardSetPosition,
+        GetGenericItem, GetSpear
     }
 
     public struct WarpTarget
