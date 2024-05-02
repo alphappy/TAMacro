@@ -21,11 +21,12 @@ namespace alphappy.TAMacro
         public static FSprite pointer;
         public static FSprite box1;
         public static Macro macro;
-        public static string header = $"TAMacro v{Const.PLUGIN_VERSION}\n\n[F1]  Previous page\n[F2]  Interrupt\n[F3]  Next page\n[F4]  Up one level\n[F5]  Reload\n[F7]  Start/stop recording\n[\\]  Move display panel\n\n";
         public static StringBuilder loadedMacros = new StringBuilder();
         public static float lineHeight;
         public static FContainer container;
         public static string Font => Const.DEVCONSOLAS_AVAILABLE && Settings.useDevconsolas.Value ? "devconsolas" : RWCustom.Custom.GetFont();
+        public static string Header => $"TAMacro v{Const.PLUGIN_VERSION}\n\n{HeaderControls}";
+        public static string HeaderControls => Settings.showControls.Value ? $"[{Settings.kbPrevPage.Value}]  Previous page\n[{Settings.kbInterrupt.Value}]  Interrupt\n[{Settings.kbNextPage.Value}]  Next page\n[{Settings.kbUpOne.Value}]  Up one level\n[{Settings.kbReloadLibrary.Value}]  Reload\n[{Settings.kbToggleRecording.Value}]  Start/stop recording\n[{Settings.kbMoveDisplayPanelToCursor.Value}]  Move display panel\n\n" : "";
         public static void Initialize()
         {
             container = new FContainer();
@@ -40,7 +41,7 @@ namespace alphappy.TAMacro
             container.AddChild(label);
             lineHeight = label.FontLineHeight * label.scale;
 
-            labelInfo = new FLabel(Font, header);
+            labelInfo = new FLabel(Font, Header);
             labelInfo.isVisible = true;
             labelInfo.alpha = 0.5f;
             labelInfo.color = new Color(0.55f, 0.55f, 0.87f);
@@ -105,7 +106,7 @@ namespace alphappy.TAMacro
         public static void UpdateSelectMenu()
         {
             loadedMacros.Clear();
-            loadedMacros.Append(header);
+            loadedMacros.Append(Header);
             loadedMacros.AppendLine($"{MacroLibrary.currentContainer?.name} ({MacroLibrary.currentContainer?.ViewedPage + 1} / {MacroLibrary.currentContainer?.PageCount})");
             if (MacroLibrary.currentContainer.IsCookbook)
             {
