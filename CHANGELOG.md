@@ -1,10 +1,11 @@
-### TAMacro 0.7.6.1
+### TAMacro 0.7.7.0
 
 - It is now possible to spontaneously `!get` an item (e.g., rocks or spears for throw movement).  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#get) for details.
 - Start position is now saved as a `!warp` command when recording a macro.
 - Controls can now be rebound in the Remix settings.
 - Controls can now be hidden from the display panel in the Remix settings.
 - Font can now be toggled in the Remix settings.
+- Macro path (instead of just current folder) can now be shown via a toggle in the Remix settings.
 
 ### TAMacro 0.7.2.0
 

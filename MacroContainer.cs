@@ -14,6 +14,7 @@ namespace alphappy.TAMacro
         public Dictionary<string, MacroContainer> children = new Dictionary<string, MacroContainer>();
         public Dictionary<string, Macro> macros = new Dictionary<string, Macro>();
         public string sysPath;
+        public string DisplayName => parent == null ? name : $"{parent.name}/{name}";
         public string name;
         private int viewedPage;
         public int ViewedPage
