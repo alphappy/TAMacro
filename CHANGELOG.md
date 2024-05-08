@@ -1,3 +1,6 @@
+### TAMacro 0.8.3.30
+- Remove leftover debug logging (hopefully for the last time).
+
 ### TAMacro 0.8.3.29
 
 - TAMacro's interface has been overhauled and is now controllable by mouse input!  Most keyboard shortcuts will still continue to function.

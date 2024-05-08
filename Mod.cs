@@ -17,6 +17,7 @@ namespace alphappy.TAMacro
 
         public static void Log(object obj) { Debug.Log($"[TAMacro]  {obj}"); }
         public static void Log(Exception exc) { Log($"UNCAUGHT EXCEPTION: {exc}"); }
+        public static void LogDebug(object obj) { if (Const.SUPER_DEBUG_MODE) Log(obj); }
 
         private void OnEnable()
         {

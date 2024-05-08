@@ -47,7 +47,7 @@ namespace alphappy.TAMacro
         {
             size = bounds.size;
             SetPosition(bounds.position);
-            Mod.Log($"Panel {id} bounds set to {bounds}.  Absolute: {BoundsAbsolute}");
+            Mod.LogDebug($"Panel {id} bounds set to {bounds}.  Absolute: {BoundsAbsolute}");
         }
         public void Destroy()
         {
