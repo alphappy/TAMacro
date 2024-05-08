@@ -13,8 +13,17 @@ namespace alphappy.TAMacro
         public MacroContainer parent;
         public Dictionary<string, MacroContainer> children = new Dictionary<string, MacroContainer>();
         public Dictionary<string, Macro> macros = new Dictionary<string, Macro>();
+        public int SelectableCount => (IsCookbook ? macros.Count : children.Count) - ViewedPage * MacroLibrary.macrosPerPage;
+        public string SelectableName(int offset)
+        {
+            int idx = viewedPage * MacroLibrary.macrosPerPage + offset;
+            return IsCookbook
+                ? (idx >= macros.Count ? null : macros.Values.ElementAt(idx).name)
+                : (idx >= children.Count ? null : children.Values.ElementAt(idx).name);
+        }
+
         public string sysPath;
-        public string DisplayName => parent == null ? name : $"{parent.name}/{name}";
+        public string DisplayName => parent == null ? "." : (Settings.showFullPath.Value ? $"{parent.DisplayName}/{name}" : name);
         public string name;
         private int viewedPage;
         public int ViewedPage
@@ -51,7 +60,6 @@ namespace alphappy.TAMacro
                 }
                 else if (Directory.Exists(path) && recurse)
                 {
-                    Mod.Log($"{path} exists as directory");
                     name = new DirectoryInfo(path).Name;
                     foreach (string folderpath in Directory.GetDirectories(path))
                         children[new DirectoryInfo(folderpath).Name] = new MacroContainer(folderpath, this);
@@ -134,6 +142,7 @@ namespace alphappy.TAMacro
                 if (list == null) continue; // parser recognized the line (so it's not an invalid command) but chose to add no instructions
 
                 loading.text.AppendLine(rawline);
+                loading.newlinePositions.Add(loading.text.Length);
                 loading.lines += 1;
                 foreach (Instruction instruction in list)
                 {

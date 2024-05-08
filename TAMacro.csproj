@@ -32,7 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Const.cs" />
-    <Compile Include="DisplayPanel.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Instruction.cs" />
@@ -40,6 +39,12 @@
     <Compile Include="MacroContainer.cs" />
     <Compile Include="MacroLibrary.cs" />
     <Compile Include="Mod.cs" />
+    <Compile Include="Pane.cs" />
+    <Compile Include="PaneElement.cs" />
+    <Compile Include="Panel.cs" />
+    <Compile Include="PanelManager.cs" />
+    <Compile Include="PanelReactions.cs" />
+    <Compile Include="PaneManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Parsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

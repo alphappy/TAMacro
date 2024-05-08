@@ -16,10 +16,20 @@ namespace alphappy.TAMacro
         public static int macrosPerPage = 10;
         public static int instructionsWithoutTick = 0;
 
+        public static event Action<MacroContainer> OnDirectoryChange;
+        public static event Action<MacroContainer> OnPageChange;
+        public static event Action<Macro> OnMacroTick;
+
+        public static void ClearEvents()
+        {
+            OnDirectoryChange = null; OnPageChange = null; OnMacroTick = null;
+        }
+
         public static void ChangePage(int delta)
         {
             currentContainer.ViewedPage += delta;
-            DisplayPanel.UpdateSelectMenu();
+            //DisplayPanel.UpdateSelectMenu();
+            OnPageChange?.Invoke(currentContainer);
         }
 
         public static void SelectOnPage(int offset, RainWorldGame game)
@@ -38,6 +48,7 @@ namespace alphappy.TAMacro
             else
             {
                 currentContainer = currentContainer.SelectContainerOnViewedPage(offset) ?? currentContainer;
+                OnDirectoryChange?.Invoke(currentContainer);
                 ChangePage(0);
             }
         }
@@ -45,6 +56,7 @@ namespace alphappy.TAMacro
         public static void UpOne()
         {
             currentContainer = currentContainer.parent ?? currentContainer;
+            OnDirectoryChange?.Invoke(currentContainer);
             ChangePage(0);
         }
 
@@ -53,6 +65,7 @@ namespace alphappy.TAMacro
             topContainer = new MacroContainer(Const.COOKBOOK_ROOT_PATH, null);
             currentContainer = topContainer;
             stack.Clear();
+            OnDirectoryChange?.Invoke(currentContainer);
             ChangePage(0);
         }
 
@@ -98,9 +111,10 @@ namespace alphappy.TAMacro
                 {
                     Mod.Log($"Macro {macro.name} finished");
                     stack.Pop();
-                    DisplayPanel.TrackMe(activeMacro);
+                    //DisplayPanel.TrackMe(activeMacro);
                     Update(self);
                 }
+                OnMacroTick?.Invoke(macro);
             }
         }
 

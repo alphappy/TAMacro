@@ -1,11 +1,21 @@
-### TAMacro 0.7.7.0
+### TAMacro 0.8.3.29
 
-- It is now possible to spontaneously `!get` an item (e.g., rocks or spears for throw movement).  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#get) for details.
-- Start position is now saved as a `!warp` command when recording a macro.
-- Controls can now be rebound in the Remix settings.
-- Controls can now be hidden from the display panel in the Remix settings.
+- TAMacro's interface has been overhauled and is now controllable by mouse input!  Most keyboard shortcuts will still continue to function.
+  - Additionally, the control panel and the macro panel can now be separated.
+  - The macro panel also scrolls through the macro as it executes instead of becoming so long it falls off the screen.
+	- KNOWN ISSUE: If `label`-`goto` loops are involved, this can cause rapid flashing.
+- It is now possible to spontaneously `!get` an item.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#get) for details.
+- Start position is now saved as a `!warp` command, followed by 20 ticks of neutral input, when recording a macro.
+  - This is far from accurately saving Slugcat's state, which is a planned separately implemented command.
+- Macros are now automatically reloaded when the simulation starts.
+- Some controls can now be rebound in the Remix settings.
 - Font can now be toggled in the Remix settings.
-- Macro path (instead of just current folder) can now be shown via a toggle in the Remix settings.
+- The entire directory path is now shown on the control panel instead of just the current directory name.
+- KNOWN ISSUE: `!warp`ing to another room sometimes causes Slugcat's torso to become invisible.
+- KNOWN ISSUE: Dying during macro execution sometimes makes the game not respond to `PAUSE` input, resulting in a softlock.
+- KNOWN ISSUE: Infinite instruction loops freeze the application immediately now (instead of on simulation end).
+- Bugfix: Macro execution should no longer carry over between simulations.
+- Removed even more leftover logging.
 
 ### TAMacro 0.7.2.0
 

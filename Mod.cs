@@ -31,10 +31,11 @@ namespace alphappy.TAMacro
             {
                 On.Player.checkInput += Player_checkInput;
                 On.RainWorldGame.Update += RainWorldGame_Update;
-                On.RoomCamera.ctor += RoomCamera_ctor;
                 On.RoomCamera.ClearAllSprites += RoomCamera_ClearAllSprites;
                 On.RainWorldGame.GrafUpdate += RainWorldGame_GrafUpdate;
                 On.RainWorld.PostModsInit += RainWorld_PostModsInit;
+                On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
+                On.RainWorldGame.ctor += RainWorldGame_ctor;
                 Log("Hooking complete");
                 initialized = true;
                 MachineConnector.SetRegisteredOI(Const.PLUGIN_GUID, Settings.instance);
@@ -50,6 +51,28 @@ namespace alphappy.TAMacro
             catch (Exception e) { Log(e); }
         }
 
+        private void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
+        {
+            orig(self, manager);
+            try
+            {
+                //DisplayPanel.Initialize();
+                PanelManager.Initialize(self);
+                MacroLibrary.ReloadFromTopLevel();
+            }
+            catch (Exception e) { Log(e); }
+        }
+
+        private void RainWorldGame_ShutDownProcess(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
+        {
+            orig(self);
+            try
+            {
+                if (MacroLibrary.activeMacro != null) MacroLibrary.TerminateMacro();
+            }
+            catch (Exception e) { Log(e); }
+        }
+
         private void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
         {
             orig(self);
@@ -61,31 +84,21 @@ namespace alphappy.TAMacro
 
         private void RoomCamera_ClearAllSprites(On.RoomCamera.orig_ClearAllSprites orig, RoomCamera self)
         {
-            DisplayPanel.Remove();
-            //paneManager.Remove();
+            //DisplayPanel.Remove();
+            PanelManager.Shutdown();
             orig(self);
         }
 
-        public static PaneManager paneManager;
         private static void RainWorldGame_GrafUpdate(On.RainWorldGame.orig_GrafUpdate orig, RainWorldGame self, float timeStacker)
         {
             orig(self, timeStacker);
-            if (Input.GetKey(KeyCode.Backslash) && DisplayPanel.label != null)
-            {
-                DisplayPanel.AnchorToCursor();
-            }
-            DisplayPanel.Update();
-            //paneManager.Update();
+            //if (Input.GetKey(KeyCode.Backslash) && DisplayPanel.label != null)
+            //{
+            //    DisplayPanel.AnchorToCursor();
+            //}
+            //DisplayPanel.Update();
+            PanelManager.Frame();
         }
-
-        private void RoomCamera_ctor(On.RoomCamera.orig_ctor orig, RoomCamera self, RainWorldGame game, int cameraNumber)
-        {
-            orig(self, game, cameraNumber);
-            DisplayPanel.Initialize();
-            //paneManager = new PaneManager();
-        }
-
-        
 
         private void Player_checkInput(On.Player.orig_checkInput orig, Player self)
         {

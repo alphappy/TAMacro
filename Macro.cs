@@ -15,6 +15,7 @@ namespace alphappy.TAMacro
         public Dictionary<string, string> metadata = new Dictionary<string, string>();
         public StringBuilder text = new StringBuilder();
         public Dictionary<string, int> labels = new Dictionary<string, int>();
+        public List<int> newlinePositions = new() { 0 };
 
         public Instruction current => instructions[currentIndex];
         public int currentLine => lineNumbers[currentIndex];
@@ -49,7 +50,7 @@ namespace alphappy.TAMacro
             currentIndex = -1; hold = 0; readyToTick = false; package = default; returnNull = false;
             throwDirection = player.ThrowDirection;
             stack.Clear();
-            DisplayPanel.TrackMe(this);
+            //DisplayPanel.TrackMe(this);
         }
 
         public void AddInstruction(Instruction inst)

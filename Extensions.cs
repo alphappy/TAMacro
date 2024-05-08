@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 namespace alphappy.TAMacro
 {
@@ -53,5 +54,25 @@ namespace alphappy.TAMacro
         }
 
         public static bool AmIBeingHovered(this FSprite self) => self.BoundingBox().Contains(Input.mousePosition);
+
+        public static void SetBounds(this FSprite self, Rect bounds)
+        {
+            self.SetPosition(bounds.center);
+            self.width = bounds.width;
+            self.height = bounds.height;
+        }
+
+        public static Rect Shifted(this Rect self, Vector2 shift) => new(self.position + shift, self.size);
+
+        public static Rect GetFixedWidthBounds(this FLabel self)
+        {
+            var lines = self.text.Split('\n');
+            var width = lines.Max(line => line.Length) * 8;
+            var height = lines.Length * self.FontLineHeight;
+            return new(self.x - width / 2, self.y - height / 2, width, height);
+        }
+
+        public static Rect Resized(this Rect self, Vector2 resize) => new(self.position, self.size + resize);
+        public static Rect Resized(this Rect self, float w, float h) => new(self.x, self.y, self.width + w, self.height + h);
     }
 }

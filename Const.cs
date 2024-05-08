@@ -6,7 +6,7 @@ namespace alphappy.TAMacro
     {
         public const string PLUGIN_GUID = "alphappy.tamacro";
         public const string PLUGIN_NAME = "Debug - TAMacro";
-        public const string PLUGIN_VERSION = "0.7.7.0";
+        public const string PLUGIN_VERSION = "0.8.3.29";
         public const int MAXIMUM_INSTRUCTIONS_WITHOUT_TICK = 100;
         
         public static bool SUPER_DEBUG_MODE = false;
@@ -18,5 +18,7 @@ namespace alphappy.TAMacro
 
         public static bool WARP_MENU_ENABLED = false;
         public static bool DEVCONSOLAS_AVAILABLE = false;
+
+        public static string Font => DEVCONSOLAS_AVAILABLE && Settings.useDevconsolas.Value ? "devconsolas" : RWCustom.Custom.GetFont();
     }
 }
