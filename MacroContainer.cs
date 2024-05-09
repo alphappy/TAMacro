@@ -120,7 +120,7 @@ namespace alphappy.TAMacro
                 string value = match.Groups[2].Value;
                 if (key == "NAME")
                 {
-                    loading = new Macro();
+                    loading = new Macro(this);
                     macros.Add(value, loading);
                 }
                 loading.metadata.Add(key, value);

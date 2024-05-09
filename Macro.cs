@@ -28,6 +28,12 @@ namespace alphappy.TAMacro
         public int throwDirection;
         public Stack<object> stack = new Stack<object>();
         public bool returnNull = false;
+        public MacroContainer parent;
+
+        public Macro(MacroContainer parent)
+        {
+            this.parent = parent;
+        }
 
         public Player.InputPackage? GetPackage(Player player)
         {

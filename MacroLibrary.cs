@@ -139,9 +139,39 @@ namespace alphappy.TAMacro
             throw new ArgumentException($"Could not find a macro by the name {path}");
         }
 
+        public static Macro GetMacroByRelativePath(string path, Macro basis)
+        {
+            MacroContainer container = basis.parent;
+            foreach (string identifier in path.Split('/'))
+            {
+                if (identifier == "..")
+                {
+                    container = container.parent;
+                    if (container == null) throw new FileNotFoundException($"Couldn't find {path} (navigation tried to access parent of root)");
+                }
+                else if (identifier == ".")
+                {
+
+                }
+                else if (container.children.TryGetValue(identifier, out MacroContainer container2))
+                {
+                    container = container2;
+                }
+                else if (container.macros.TryGetValue(identifier, out Macro macro))
+                {
+                    return macro;
+                }
+                else
+                {
+                    throw new ArgumentException($"Couldn't find {identifier} while searching for {path}");
+                }
+            }
+            throw new ArgumentException($"Could not find a macro by the name {path}");
+        }
+
         public static void PushNewMacro(string path, Player player)
         {
-            stack.Push(GetMacroByAbsolutePath(path));
+            stack.Push(GetMacroByRelativePath(path, activeMacro));
             activeMacro.Initialize(player);
         }
         private static bool nowRecording;

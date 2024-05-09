@@ -1,4 +1,5 @@
-### TAMacro 0.8.3.30
+### TAMacro 0.8.4.1
+- `!execute` now accepts Unix-style relative paths.
 - Remove leftover debug logging (hopefully for the last time).
 
 ### TAMacro 0.8.3.29
