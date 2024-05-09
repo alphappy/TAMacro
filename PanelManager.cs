@@ -37,8 +37,10 @@ namespace alphappy.TAMacro
             main.CreateAndGotoPanel(new(165f, 190f, 30f, 30f), true, "X", $"Interrupt currently running macro [{Settings.kbInterrupt.Value}]", true)
                 .CreateFireEvent(MacroLibrary.TerminateMacro);
 
-            main.CreateAndGotoPanel(new(205f, 190f, 30f, 30f), true, "R", $"Toggle input recording [{Settings.kbToggleRecording.Value}]", true)
+            Panel recordingButton =
+                main.CreateAndGotoPanel(new(205f, 190f, 30f, 30f), true, "R", $"Toggle input recording [{Settings.kbToggleRecording.Value}]", true)
                 .CreateFireEvent(MacroLibrary.ToggleRecording);
+            MacroLibrary.OnToggleRecording += now => (recordingButton["title"] as FLabel).text = now ? "!REC!" : "R";
 
             main.CreateLabel("curdir", ".", new(5f, 180f), out var curdirlabel);
             curdirlabel.alignment = FLabelAlignment.Left;

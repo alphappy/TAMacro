@@ -28,7 +28,6 @@ namespace alphappy.TAMacro
         public static void ChangePage(int delta)
         {
             currentContainer.ViewedPage += delta;
-            //DisplayPanel.UpdateSelectMenu();
             OnPageChange?.Invoke(currentContainer);
         }
 
@@ -111,7 +110,6 @@ namespace alphappy.TAMacro
                 {
                     Mod.Log($"Macro {macro.name} finished");
                     stack.Pop();
-                    //DisplayPanel.TrackMe(activeMacro);
                     Update(self);
                 }
                 OnMacroTick?.Invoke(macro);
@@ -144,10 +142,14 @@ namespace alphappy.TAMacro
             MacroContainer container = basis.parent;
             foreach (string identifier in path.Split('/'))
             {
+                if (identifier == "")
+                {
+                    container = topContainer;
+                }
                 if (identifier == "..")
                 {
                     container = container.parent;
-                    if (container == null) throw new FileNotFoundException($"Couldn't find {path} (navigation tried to access parent of root)");
+                    if (container == null) throw new FileNotFoundException($"Couldn't find `{path}` (tried to access parent of root)");
                 }
                 else if (identifier == ".")
                 {
@@ -163,10 +165,10 @@ namespace alphappy.TAMacro
                 }
                 else
                 {
-                    throw new ArgumentException($"Couldn't find {identifier} while searching for {path}");
+                    throw new ArgumentException($"Couldn't find `{identifier}` while searching for `{path}`");
                 }
             }
-            throw new ArgumentException($"Could not find a macro by the name {path}");
+            throw new ArgumentException($"Could not find a macro by the name `{path}`");
         }
 
         public static void PushNewMacro(string path, Player player)
@@ -175,6 +177,7 @@ namespace alphappy.TAMacro
             activeMacro.Initialize(player);
         }
         private static bool nowRecording;
+        public static event Action<bool> OnToggleRecording;
         private static List<List<Player.InputPackage>> recorded;
         private static Vector2 recordingStartPosition;
         private static string recordingStartRoom;
@@ -201,6 +204,7 @@ namespace alphappy.TAMacro
                     File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, $"{Macro.RepFromInputList(recorded, setup)}\n");
                 }
             }
+            OnToggleRecording?.Invoke(nowRecording);
         }
     }
 }
