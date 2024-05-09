@@ -130,7 +130,7 @@ namespace alphappy.TAMacro
         }
         public static List<Instruction> ExecuteMacro(string line)
         {
-            if (Regex.Match(line, "^>execute ([\\w\\d\\-+ /]+)$") is Match match && match.Success)
+            if (Regex.Match(line, "^>execute ([\\w\\d\\-+. /]+)$") is Match match && match.Success)
             {
                 return new List<Instruction>
                 {
