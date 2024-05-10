@@ -1,4 +1,4 @@
-### TAMacro 0.8.4.4 (preview)
+### TAMacro 0.8.4.5 (preview)
 - **BREAKING CHANGE:** `!execute` now accepts Unix-style relative paths.
   - Existing `!execute` commands which were absolute paths in prior versions will be interpreted as relative paths in this version.
   - Existing absolute paths must now start with `/` (e.g., `>execute foo/bar/baz` must be changed to `>execute /foo/bar/baz`) or be converted to relative paths.
