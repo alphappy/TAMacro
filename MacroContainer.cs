@@ -23,7 +23,8 @@ namespace alphappy.TAMacro
         }
 
         public string sysPath;
-        public string DisplayName => parent == null ? "." : (Settings.showFullPath.Value ? $"{parent.DisplayName}/{name}" : name);
+        public string DisplayName => parent == null ? "." : (Settings.showFullPath.Value ? FullName : name);
+        public string FullName => $"{parent.FullName}/{name}";
         public string name;
         private int viewedPage;
         public int ViewedPage

@@ -20,6 +20,7 @@ namespace alphappy.TAMacro
         public Instruction current => instructions[currentIndex];
         public int currentLine => lineNumbers[currentIndex];
         public string name => metadata.TryGetValue("NAME", out string s) ? s : "";
+        public string FullName => $"/{parent.FullName}/{name}";
 
         public int currentIndex = -1;
         public int hold;

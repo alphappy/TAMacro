@@ -146,10 +146,10 @@ namespace alphappy.TAMacro
                 {
                     container = topContainer;
                 }
-                if (identifier == "..")
+                else if (identifier == "..")
                 {
                     container = container.parent;
-                    if (container == null) throw new FileNotFoundException($"Couldn't find `{path}` (tried to access parent of root)");
+                    if (container == null) throw new Exceptions.InvalidExecuteTargetException(basis, $"`{path}` points to parent of root.");
                 }
                 else if (identifier == ".")
                 {
@@ -165,10 +165,10 @@ namespace alphappy.TAMacro
                 }
                 else
                 {
-                    throw new ArgumentException($"Couldn't find `{identifier}` while searching for `{path}`");
+                    throw new Exceptions.InvalidExecuteTargetException(basis, $"`{path}` points to `{identifier}`, which could not be found.");
                 }
             }
-            throw new ArgumentException($"Could not find a macro by the name `{path}`");
+            throw new Exceptions.InvalidExecuteTargetException(basis, $"{path}` points to a cookbook, not a macro.");
         }
 
         public static void PushNewMacro(string path, Player player)
