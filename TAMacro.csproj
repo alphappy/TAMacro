@@ -117,4 +117,8 @@
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetFileName) $(ProjectDir)mod\plugins\TAMacro.dll
+chdir \D $(ProjectDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

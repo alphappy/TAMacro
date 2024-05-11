@@ -1,0 +1,16 @@
+{
+  "Title": "Debug - TAMacro [ALPHA]",
+  "Description": "TAMacro enables tick-by-tick input macros for experimenting with movement.  Check [url=https://github.com/alphappy/TAMacro/blob/master/README.md]the README on GitHub[/url] for an explanation of how to use TAMacro.",
+  "ID": "alphappy.tamacro",
+  "Version": "0.6.0.3",
+  "TargetGameVersion": "v1.9.07",
+  "Requirements": "",
+  "RequirementNames": "",
+  "Authors": "alphappy",
+  "Visibility": "Public",
+  "Tags": [
+    "Debug"
+  ],
+  "WorkshopID": 3163948083,
+  "UploadFilesOnly": false
+}
