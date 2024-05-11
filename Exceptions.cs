@@ -19,7 +19,7 @@ namespace alphappy.TAMacro
         }
         public class MacroRuntimeException : TAMacroException
         {
-            public MacroRuntimeException(Macro macro, string message) : base($"An exception occured while running {macro.FullName}:  {message}") { }
+            public MacroRuntimeException(string message) : base(message) { }
         }
         public class IllegalCommandException : TAMacroException
         {
@@ -27,7 +27,7 @@ namespace alphappy.TAMacro
         }
         public class InvalidExecuteTargetException : MacroRuntimeException
         {
-            public InvalidExecuteTargetException(Macro macro, string message) : base(macro, $"`>execute` command failed:  {message}") { }
+            public InvalidExecuteTargetException(string message) : base($"`>execute` command failed:  {message}") { }
         }
     }
 }

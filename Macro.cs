@@ -13,15 +13,17 @@ namespace alphappy.TAMacro
         public List<Instruction> instructions = new List<Instruction>();
         public int lines;
         public List<int> lineNumbers = new List<int>();
+        public List<string> lineTexts = new();
         public Dictionary<string, string> metadata = new Dictionary<string, string>();
         public StringBuilder text = new StringBuilder();
         public Dictionary<string, int> labels = new Dictionary<string, int>();
         public List<int> newlinePositions = new() { 0 };
 
         public Instruction current => instructions[currentIndex];
-        public int currentLine => lineNumbers[Mathf.Clamp(currentIndex, 0, lineNumbers.Count - 1)];
+        public int currentLine => lineNumbers[Mathf.Clamp(currentIndex, 0, lineTexts.Count - 1)];
+        public string currentLineText => lineTexts.Count > 0 ? lineTexts[currentLine] : "<NONE>";
         public string name => metadata.TryGetValue("NAME", out string s) ? s : "";
-        public string FullName => $"/{parent.FullName}/{name}";
+        public string FullName => $"{parent.FullName}/{name}";
 
         public int currentIndex = -1;
         public int hold;

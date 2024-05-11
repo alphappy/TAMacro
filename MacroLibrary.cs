@@ -95,24 +95,31 @@ namespace alphappy.TAMacro
             }
             if (activeMacro is Macro macro)
             {
-                if (macro.GetPackage(self) is Player.InputPackage package)
+                try
                 {
-                    if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
-                    self.input[0] = package.WithDownDiagonals();
-                    instructionsWithoutTick = 0;
+                    if (macro.GetPackage(self) is Player.InputPackage package)
+                    {
+                        if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
+                        self.input[0] = package.WithDownDiagonals();
+                        instructionsWithoutTick = 0;
+                    }
+                    else if (activeMacro != macro)  // did the macro just call another
+                    {
+                        Mod.Log($"Macro {macro.name} called {activeMacro.name}");
+                        Update(self);
+                    }
+                    else
+                    {
+                        Mod.Log($"Macro {macro.name} finished");
+                        stack.Pop();
+                        Update(self);
+                    }
+                    OnMacroTick?.Invoke(macro);
                 }
-                else if (activeMacro != macro)  // did the macro just call another
+                catch (Exceptions.TAMacroException e)
                 {
-                    Mod.Log($"Macro {macro.name} called {activeMacro.name}");
-                    Update(self);
+                    Mod.Log($"An exception occurred while running a macro.\n  Macro: {macro.FullName}\n  Line number: {macro.currentLine}\n  Line: {macro.currentLineText}\n  Instruction number: {macro.currentIndex}\n  Instruction: {macro.current}\n{e}");
                 }
-                else
-                {
-                    Mod.Log($"Macro {macro.name} finished");
-                    stack.Pop();
-                    Update(self);
-                }
-                OnMacroTick?.Invoke(macro);
             }
         }
 
@@ -149,7 +156,7 @@ namespace alphappy.TAMacro
                 else if (identifier == "..")
                 {
                     container = container.parent;
-                    if (container == null) throw new Exceptions.InvalidExecuteTargetException(basis, $"`{path}` points to parent of root.");
+                    if (container == null) throw new Exceptions.InvalidExecuteTargetException($"`{path}` points to parent of root.");
                 }
                 else if (identifier == ".")
                 {
@@ -165,10 +172,10 @@ namespace alphappy.TAMacro
                 }
                 else
                 {
-                    throw new Exceptions.InvalidExecuteTargetException(basis, $"`{path}` points to `{identifier}`, which could not be found.");
+                    throw new Exceptions.InvalidExecuteTargetException($"Could not find `{container.FullName}/{identifier}` while searching for `{path}`.");
                 }
             }
-            throw new Exceptions.InvalidExecuteTargetException(basis, $"{path}` points to a cookbook, not a macro.");
+            throw new Exceptions.InvalidExecuteTargetException($"`{path}` points to a cookbook, not a macro.");
         }
 
         public static void PushNewMacro(string path, Player player)
