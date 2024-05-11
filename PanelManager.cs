@@ -37,10 +37,11 @@ namespace alphappy.TAMacro
             main.CreateAndGotoPanel(new(165f, 190f, 30f, 30f), true, "X", $"Interrupt currently running macro [{Settings.kbInterrupt.Value}]", true)
                 .CreateFireEvent(MacroLibrary.TerminateMacro);
 
-            Panel recordingButton =
-                main.CreateAndGotoPanel(new(205f, 190f, 30f, 30f), true, "R", $"Toggle input recording [{Settings.kbToggleRecording.Value}]", true)
+            Panel recordingButton = 
+                main.CreateAndGotoPanel(new(205f, 190f, 30f, 30f), true, null, $"Toggle input recording [{Settings.kbToggleRecording.Value}]", true)
                 .CreateFireEvent(MacroLibrary.ToggleRecording);
-            MacroLibrary.OnToggleRecording += now => (recordingButton["title"] as FLabel).text = now ? "!REC!" : "R";
+            recordingButton.CreateLabelCentered("title", "R", out var recordingButtonLabel);
+            MacroLibrary.OnToggleRecording += now => recordingButtonLabel.text = now ? "!REC!" : "R";
 
             main.CreateLabel("curdir", ".", new(5f, 180f), out var curdirlabel);
             curdirlabel.alignment = FLabelAlignment.Left;
@@ -98,6 +99,7 @@ namespace alphappy.TAMacro
                 var line_offset = line < initial_jump_at ? 0 : jump_size * (1 + (line - initial_jump_at) / jump_size);
                 var firstLine = line_offset;
                 var lastLine = Math.Min(line_offset + total_lines, macro.lines);
+                if (Const.SUPER_DEBUG_MODE) Mod.Log($"{line} {line_offset} {firstLine} {lastLine} {macro.newlinePositions.Count}");
                 var firstPos = macro.newlinePositions[firstLine];
                 var lastPos = macro.newlinePositions[lastLine];
                 macroLabel.text = macro.text.ToString().Substring(firstPos, lastPos - firstPos);

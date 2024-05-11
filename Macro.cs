@@ -4,6 +4,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace alphappy.TAMacro
 {
@@ -18,7 +19,7 @@ namespace alphappy.TAMacro
         public List<int> newlinePositions = new() { 0 };
 
         public Instruction current => instructions[currentIndex];
-        public int currentLine => lineNumbers[currentIndex];
+        public int currentLine => lineNumbers[Mathf.Clamp(currentIndex, 0, lineNumbers.Count - 1)];
         public string name => metadata.TryGetValue("NAME", out string s) ? s : "";
         public string FullName => $"/{parent.FullName}/{name}";
 
