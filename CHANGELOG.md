@@ -3,9 +3,9 @@
 - TAMacro now supports fastroll!  Use a lowercase `d` to indicate a fastroll input.
   - This sets analog `y` to -0.06, the value used by Fast Roll Button 1.0.0.
 - Inputs may now be specified using <code>\`</code> instead of `~`.
-- **BREAKING CHANGE:** `>execute` now accepts Unix-style relative paths.
-  - Existing `>execute` commands which were absolute paths in prior versions will be interpreted as relative paths in this version.
-  - Existing absolute paths must now start with `/` (e.g., `>execute foo/bar/baz` must be changed to `>execute /foo/bar/baz`) or be converted to relative paths.
+- **BREAKING CHANGE:** `>execute` now requires Unix-style paths (which means relative paths are now supported).
+  - Existing `>execute` commands were always specified as absolute paths in previous versions, but will be interpreted incorrectly as absolute paths in this version.
+  - Existing absolute paths must either start with `/` to remain absolute (e.g., `>execute foo/bar/baz` must be changed to `>execute /foo/bar/baz`) or be converted to relative paths (e.g., `>execute foo/bar/baz` must be changed to `>execute baz` if `baz` is in the same cookbook as the current macro).
 - Display panel now indicates whether recording is in progress.
 - Exceptions rewritten a bit.
 - Hopefully finally fixed the `ArgumentOutOfRangeException`s that occured at the end of macros.
