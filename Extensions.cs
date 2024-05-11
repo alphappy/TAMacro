@@ -37,12 +37,12 @@ namespace alphappy.TAMacro
 
         public static string AsString(this Player.InputPackage package, string filler = "")
         {
-            return $"{(package.x == -1 ? "L" : (package.x == 1 ? "R" : filler))}{(package.y == -1 ? "D" : (package.y == 1 ? "U" : filler))}{(package.jmp ? "J" : filler)}{(package.pckp ? "G" : filler)}{(package.thrw ? "T" : filler)}{(package.mp ? "M" : filler)}";
+            return $"{(package.x == -1 ? "L" : (package.x == 1 ? "R" : filler))}{(package.y == -1 ? "D" : (package.y == 1 ? "U" : (package.analogueDir.y == -0.06f ? "d" : filler)))}{(package.jmp ? "J" : filler)}{(package.pckp ? "G" : filler)}{(package.thrw ? "T" : filler)}{(package.mp ? "M" : filler)}";
         }
 
         public static bool EqualTo(this Player.InputPackage self, Player.InputPackage other)
         {
-            return self.x == other.x && self.y == other.y && self.jmp == other.jmp && self.pckp == other.pckp && self.thrw == other.thrw && self.mp == other.mp;
+            return self.analogueDir == other.analogueDir && self.x == other.x && self.y == other.y && self.jmp == other.jmp && self.pckp == other.pckp && self.thrw == other.thrw && self.mp == other.mp;
         }
 
         public static Rect BoundingBox(this FSprite self)

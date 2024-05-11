@@ -1,4 +1,7 @@
-### TAMacro 0.8.4.11 (preview)
+### TAMacro 0.8.5.0 (preview)
+
+- TAMacro now supports fastroll!  Use a lowercase `d` to indicate a fastroll input.
+  - This sets analog `y` to -0.06, which is not exactly the minimum deviation required for a down-diagonal input (-0.05), but is the value used by Fast Roll Button 1.0.0.
 - **BREAKING CHANGE:** `>execute` now accepts Unix-style relative paths.
   - Existing `>execute` commands which were absolute paths in prior versions will be interpreted as relative paths in this version.
   - Existing absolute paths must now start with `/` (e.g., `>execute foo/bar/baz` must be changed to `>execute /foo/bar/baz`) or be converted to relative paths.

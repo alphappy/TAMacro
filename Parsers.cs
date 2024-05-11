@@ -15,7 +15,7 @@ namespace alphappy.TAMacro
         {
             var ret = new List<Instruction>();
 
-            if (Regex.Match(line, "^([LRFBUDJGTM]+)(?:~(\\d+))?$") is Match match && match.Success)
+            if (Regex.Match(line, "^([LRFBUDdJGTM]+)(?:~(\\d+))?$") is Match match && match.Success)
             {
                 Player.InputPackage package = new Player.InputPackage();
                 bool flippable = false;
@@ -27,8 +27,9 @@ namespace alphappy.TAMacro
                         case 'R': package.analogueDir.x = 1; package.x = 1; break;
                         case 'B': package.analogueDir.x = -1; package.x = -1; flippable = true; break;
                         case 'F': package.analogueDir.x = 1; package.x = 1; flippable = true; break;
-                        case 'D': package.y = -1; break;
-                        case 'U': package.y = 1; break;
+                        case 'D': package.analogueDir.y = -1; package.y = -1; break;
+                        case 'd': package.analogueDir.y = -0.06f; package.y = 0; break;
+                        case 'U': package.analogueDir.y = 1; package.y = 1; break;
                         case 'J': package.jmp = true; break;
                         case 'G': package.pckp = true; break;
                         case 'T': package.thrw = true; break;
