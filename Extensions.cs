@@ -71,6 +71,10 @@ namespace alphappy.TAMacro
             var height = lines.Length * self.FontLineHeight;
             return new(self.x - width / 2, self.y - height / 2, width, height);
         }
+        public static void RootTop(this FLabel self, float yRoot)
+        {
+            self.y = yRoot - self.GetFixedWidthBounds().height / 2;
+        }
 
         public static Rect Resized(this Rect self, Vector2 resize) => new(self.position, self.size + resize);
         public static Rect Resized(this Rect self, float w, float h) => new(self.x, self.y, self.width + w, self.height + h);

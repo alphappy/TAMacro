@@ -20,7 +20,7 @@ namespace alphappy.TAMacro
         public List<int> newlinePositions = new() { 0 };
 
         public Instruction current => instructions[currentIndex];
-        public int currentLine => lineNumbers[Mathf.Clamp(currentIndex, 0, lineTexts.Count - 1)];
+        public int currentLine => lineNumbers[Mathf.Clamp(currentIndex, 0, instructions.Count - 1)];
         public string currentLineText => lineTexts.Count > 0 ? lineTexts[currentLine] : "<NONE>";
         public string name => metadata.TryGetValue("NAME", out string s) ? s : "";
         public string FullName => $"{parent.FullName}/{name}";

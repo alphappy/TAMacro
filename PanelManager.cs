@@ -124,13 +124,16 @@ namespace alphappy.TAMacro
                 .CreateFireEvent(() => errorPanel.isVisible = false);
 
             Panel errorPanelTextPanel = new(new(5f, 100f, 600f, 430f), errorPanel);
-            errorPanelTextPanel.CreateLabelCentered("text", "", out var errorPanelTextPanelLabel);
-            errorPanelTextPanelLabel.alignment = FLabelAlignment.Left;
-            errorPanelTextPanelLabel.color = new(0.8f, 0.6f, 0.6f);
+            FLabel eptpLabel = new(Const.Font, "");
+            eptpLabel.SetAnchor(0f, 1f);
+            eptpLabel.SetPosition(5.05f, 425.05f);
+            eptpLabel.color = new(0.8f, 0.6f, 0.6f);
+            errorPanelTextPanel.AddChild(eptpLabel);
 
             void ReceivedException(string text)
             {
-                errorPanelTextPanelLabel.text = text;
+                eptpLabel.text = text;
+                eptpLabel.RootTop(425.05f);
                 errorPanel.isVisible = true;
             }
 
