@@ -1,4 +1,4 @@
-### TAMacro 0.8.5.6 (preview)
+### TAMacro 0.8.6.1 (preview)
 
 - TAMacro now supports fastroll!  Use a lowercase `d` to indicate a fastroll input.
   - This sets analog `y` to -0.06, the value used by Fast Roll Button 1.0.0.
@@ -7,7 +7,8 @@
   - Existing `>execute` commands were always specified as absolute paths in previous versions, but will be interpreted incorrectly as relative paths in this version.
   - Existing absolute paths must either start with `/` to remain absolute (e.g., `>execute foo/bar/baz` must be changed to `>execute /foo/bar/baz`) or be converted to relative paths (e.g., `>execute foo/bar/baz` must be changed to `>execute baz` if `baz` is in the same cookbook as the current macro).
 - Display panel now indicates whether recording is in progress.
-- Exceptions rewritten a bit.
+- Exception text rewritten a bit.
+- Exceptions raised during macro execution now appear in-game.
 - Hopefully finally fixed the `ArgumentOutOfRangeException`s that occured at the end of macros.
 - Remove leftover debug logging (hopefully for the last time).
 

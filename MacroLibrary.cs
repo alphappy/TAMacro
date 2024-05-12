@@ -19,6 +19,7 @@ namespace alphappy.TAMacro
         public static event Action<MacroContainer> OnDirectoryChange;
         public static event Action<MacroContainer> OnPageChange;
         public static event Action<Macro> OnMacroTick;
+        public static event Action<string> OnMacroException;
 
         public static void ClearEvents()
         {
@@ -116,9 +117,12 @@ namespace alphappy.TAMacro
                     }
                     OnMacroTick?.Invoke(macro);
                 }
-                catch (Exceptions.TAMacroException e)
+                catch (Exception e)
                 {
-                    Mod.Log($"An exception occurred while running a macro.\n  Macro: {macro.FullName}\n  Line number: {macro.currentLine}\n  Line: {macro.currentLineText}\n  Instruction number: {macro.currentIndex}\n  Instruction: {macro.current}\n{e}");
+                    var s = $"An exception occurred while running a macro.\n  Macro: {macro.FullName}\n  Line number: {macro.currentLine}\n  Line: {macro.currentLineText}\n  Instruction number: {macro.currentIndex}\n  Instruction: {macro.current}\n{e}";
+                    Mod.Log(s);
+                    Mod.Log(e);
+                    OnMacroException?.Invoke(s);
                 }
             }
         }
@@ -172,7 +176,7 @@ namespace alphappy.TAMacro
                 }
                 else
                 {
-                    throw new Exceptions.InvalidExecuteTargetException($"Could not find `{container.FullName}/{identifier}` while searching for `{path}`.");
+                    throw new Exceptions.InvalidExecuteTargetException($"Could not find `{container.FullName}/{identifier}`  while searching for `{path}`.");
                 }
             }
             throw new Exceptions.InvalidExecuteTargetException($"`{path}` points to a cookbook, not a macro.");

@@ -109,6 +109,32 @@ namespace alphappy.TAMacro
                 macroCursor.isVisible = MacroLibrary.activeMacro != null;
                 macroCursor.SetPosition(150.05f, 425.05f - ((line - line_offset) * macroLabel.FontLineHeight));
             };
+
+            Panel errorPanel = new(new(100f, 100f, 600f, 450f), this);
+            errorPanel.CreateBackdrop()
+                .CreateAndGotoPanel(new(5f, 435f, 575f, 15f), true, null, "Drag to move", true)
+                .CreateLabelCentered("title", "TAMacro - Something went wrong!")
+                .CreateMouseEvent(PanelReactions.DragParent);
+            errorPanel.isVisible = false;
+
+            Panel errorPanelCloseButton = new(new(585f, 435f, 15f, 15f), errorPanel);
+            errorPanelCloseButton.CreateBackdrop()
+                .CreateLabelCentered("title", "x")
+                .CreateMouseEvent(PanelReactions.Simple)
+                .CreateFireEvent(() => errorPanel.isVisible = false);
+
+            Panel errorPanelTextPanel = new(new(5f, 100f, 600f, 430f), errorPanel);
+            errorPanelTextPanel.CreateLabelCentered("text", "", out var errorPanelTextPanelLabel);
+            errorPanelTextPanelLabel.alignment = FLabelAlignment.Left;
+            errorPanelTextPanelLabel.color = new(0.8f, 0.6f, 0.6f);
+
+            void ReceivedException(string text)
+            {
+                errorPanelTextPanelLabel.text = text;
+                errorPanel.isVisible = true;
+            }
+
+            MacroLibrary.OnMacroException += ReceivedException;
         }
 
         public void Update()
