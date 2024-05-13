@@ -34,7 +34,7 @@ namespace alphappy.TAMacro
                 pos += new Vector2(0f, -45f);
             }
 
-            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath })
+            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath, blinkRecordingButton })
             {
                 list.Add(new OpCheckBox(c, pos));
                 list.Add(new OpLabel(pos.x + 35f, pos.y + 3f, c.info.description));

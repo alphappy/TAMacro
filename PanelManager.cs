@@ -90,6 +90,7 @@ namespace alphappy.TAMacro
                 alpha = 0.15f,
                 color = new Color(0.7f, 0.7f, 0.1f),
                 anchorY = 1,
+                anchorX = 0,
                 _isVisible = false,
             };
             macroTextPanel.AddChild(macroCursor, "cursor");
@@ -113,7 +114,7 @@ namespace alphappy.TAMacro
 
                 macroPanelTitle.text = macro.name;
                 macroCursor.isVisible = MacroLibrary.activeMacro != null;
-                macroCursor.SetPosition(150.05f, 425.05f - ((line - line_offset) * macroLabel.FontLineHeight));
+                macroCursor.SetPosition(0.05f, 425.05f - ((line - line_offset) * macroLabel.FontLineHeight));
             };
 
             Panel errorPanel = new(new(100f, 100f, 600f, 450f), this);
