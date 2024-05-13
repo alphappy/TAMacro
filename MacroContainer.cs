@@ -13,6 +13,11 @@ namespace alphappy.TAMacro
         public MacroContainer parent;
         public Dictionary<string, MacroContainer> children = new Dictionary<string, MacroContainer>();
         public Dictionary<string, Macro> macros = new Dictionary<string, Macro>();
+
+        public Dictionary<string, string> bookMeta = new() 
+        {
+        };
+
         public int SelectableCount => (IsCookbook ? macros.Count : children.Count) - ViewedPage * MacroLibrary.macrosPerPage;
         public string SelectableName(int offset)
         {
@@ -85,14 +90,13 @@ namespace alphappy.TAMacro
                 {
                     Mod.Log($"Reading cookbook at {filename}");
                     string[] lines = File.ReadAllLines(filename);
-                    Dictionary<string, string> bookMeta = new Dictionary<string, string>();
                     for (int lineNumber = 0; lineNumber < lines.Length; lineNumber++)
                     {
                         string rawline = lines[lineNumber];
                         string line = rawline.Trim(' ');
                         if (line.Length == 0) { continue; }
                         if (line[0] == '#') { continue; }
-                        if (line.Length > 2 && line.Substring(0, 2) == "//") { ParseAsBookMetadata(line, bookMeta); continue; }
+                        if (line.Length > 2 && line.Substring(0, 2) == "//") { ParseAsBookMetadata(line); continue; }
                         if (line[0] == '/') { ParseAsMacroMetadata(line); continue; }
                         if (ParseAsInstruction(line, rawline)) { continue; }
                         Mod.Log($"  Unrecognized instruction ignored at line {lineNumber + 1}: {line}");
@@ -103,7 +107,7 @@ namespace alphappy.TAMacro
             catch (Exception e) { Mod.Log(e); }
         }
 
-        public bool ParseAsBookMetadata(string line, Dictionary<string, string> bookMeta)
+        public bool ParseAsBookMetadata(string line)
         {
             if (Regex.Match(line, "^\\/\\/(\\w+): (.+)$") is Match match && match.Success)
             {
