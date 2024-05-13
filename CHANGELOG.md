@@ -1,4 +1,4 @@
-### TAMacro 0.8.6.29 (preview)
+### TAMacro 0.8.6.30
 
 - TAMacro now supports fastroll!  Use a lowercase `d` to indicate a fastroll input.
   - This sets analog `y` to -0.06, the value used by Fast Roll Button 1.0.0.
