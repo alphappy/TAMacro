@@ -19,6 +19,7 @@ namespace alphappy.TAMacro
         public static Configurable<KeyCode> kbToggleRecording = instance.config.Bind("kbToggleRecording", KeyCode.F7, new ConfigurableInfo("Record"));
         public static Configurable<bool> useDevconsolas = instance.config.Bind("useDevconsolas", true, new ConfigurableInfo("Use devconsolas font instead of default\n(requires Dev Console to be enabled)"));
         public static Configurable<bool> showFullPath = instance.config.Bind("showFullPath", false, new ConfigurableInfo("Show full macro paths"));
+        public static Configurable<bool> blinkRecordingButton = instance.config.Bind("blinkRecordingButton", true, new ConfigurableInfo("Blink recording button while recording"));
         public override void Initialize()
         {
             base.Initialize();

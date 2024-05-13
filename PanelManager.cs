@@ -38,10 +38,14 @@ namespace alphappy.TAMacro
                 .CreateFireEvent(MacroLibrary.TerminateMacro);
 
             Panel recordingButton = 
-                main.CreateAndGotoPanel(new(205f, 190f, 30f, 30f), true, null, $"Toggle input recording [{Settings.kbToggleRecording.Value}]", true)
+                main.CreateAndGotoPanel(new(205f, 190f, 30f, 30f), false, null, $"Toggle input recording [{Settings.kbToggleRecording.Value}]", true)
                 .CreateFireEvent(MacroLibrary.ToggleRecording);
+            recordingButton.CreateBackdrop(new(Vector2.zero, recordingButton.size), Color.black, 0.3f, out var recordingButtonBackdrop);
             recordingButton.CreateLabelCentered("title", "R", out var recordingButtonLabel);
             MacroLibrary.OnToggleRecording += now => recordingButtonLabel.text = now ? "!REC!" : "R";
+
+            void BlinkRecordingButton(int age) => recordingButtonBackdrop.color = MacroLibrary.nowRecording && (age % 60 < 30) ? Color.red : Color.black;
+            if (Settings.blinkRecordingButton.Value) OnFrame += BlinkRecordingButton;
 
             main.CreateLabel("curdir", ".", new(5f, 180f), out var curdirlabel);
             curdirlabel.alignment = FLabelAlignment.Left;
@@ -107,7 +111,7 @@ namespace alphappy.TAMacro
                 macroLabel.SetPosition(5.05f, 425.05f - (macroLabel.GetFixedWidthBounds().height / 2));
                 macroPanelTitle.text = macro.name;
                 macroCursor.isVisible = MacroLibrary.activeMacro != null;
-                macroCursor.SetPosition(150.05f, 402.05f - ((line - line_offset) * macroLabel.FontLineHeight));
+                macroCursor.SetPosition(150.05f, 415.05f - ((line - line_offset) * macroLabel.FontLineHeight));
             };
 
             Panel errorPanel = new(new(100f, 100f, 600f, 450f), this);
@@ -140,8 +144,12 @@ namespace alphappy.TAMacro
             MacroLibrary.OnMacroException += ReceivedException;
         }
 
+        public int age;
+        public event Action<int> OnFrame;
+
         public void Update()
         {
+            age++;
             Vector2 nowCursor = Input.mousePosition;
             var nowClicking = Input.GetMouseButton(0);
 
@@ -175,6 +183,8 @@ namespace alphappy.TAMacro
                 lastClicked = null;
                 clicking = false;
             }
+
+            OnFrame?.Invoke(age);
         }
 
         public static PanelManager instance;

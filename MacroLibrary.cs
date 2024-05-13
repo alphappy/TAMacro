@@ -198,7 +198,7 @@ namespace alphappy.TAMacro
             stack.Push(GetMacroByRelativePath(path, activeMacro));
             activeMacro.Initialize(player);
         }
-        private static bool nowRecording;
+        internal static bool nowRecording;
         public static event Action<bool> OnToggleRecording;
         private static List<List<Player.InputPackage>> recorded;
         private static Vector2 recordingStartPosition;
