@@ -15,7 +15,7 @@ namespace alphappy.TAMacro
         {
             var ret = new List<Instruction>();
 
-            if (Regex.Match(line, "^([LRFBUDdJGTM]+)(?:[~`](\\d+))?$") is Match match && match.Success)
+            if (Regex.Match(line, "^([LRFBUDdJGTM]+)(?:[~`\\-](\\d+))?$") is Match match && match.Success)
             {
                 Player.InputPackage package = new Player.InputPackage();
                 bool flippable = false;
@@ -44,7 +44,7 @@ namespace alphappy.TAMacro
                 ret.Add(new Instruction(InstructionType.Tick));
                 return ret;
             }
-            else if (Regex.Match(line, "^[~`](\\d+)$") is Match match2 && match2.Success)
+            else if (Regex.Match(line, "^[~`\\-](\\d+)$") is Match match2 && match2.Success)
             {
                 ret.Add(new Instruction(InstructionType.SetPackageFromPackage, default(Player.InputPackage)));
                 if (int.TryParse(match2.Groups[1].Value, out int i) && i > 0)

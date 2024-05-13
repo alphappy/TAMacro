@@ -107,7 +107,7 @@ namespace alphappy.TAMacro
                 macroLabel.SetPosition(5.05f, 425.05f - (macroLabel.GetFixedWidthBounds().height / 2));
                 macroPanelTitle.text = macro.name;
                 macroCursor.isVisible = MacroLibrary.activeMacro != null;
-                macroCursor.SetPosition(150.05f, 425.05f - ((line - line_offset) * macroLabel.FontLineHeight));
+                macroCursor.SetPosition(150.05f, 402.05f - ((line - line_offset) * macroLabel.FontLineHeight));
             };
 
             Panel errorPanel = new(new(100f, 100f, 600f, 450f), this);
@@ -133,7 +133,7 @@ namespace alphappy.TAMacro
             void ReceivedException(string text)
             {
                 eptpLabel.text = text.Trim();
-                eptpLabel.RootTop(405.05f);
+                eptpLabel.RootTop(395.05f);
                 errorPanel.isVisible = true;
             }
 
