@@ -79,52 +79,63 @@ namespace alphappy.TAMacro
         public static void Update(Player self)
         {
             if (self.AI != null || !self.Consious) return;
-            if (nowRecording)
+            try
             {
-                if (recordingStartRoom == null)
+                if (nowRecording)
                 {
-                    recordingStartRoom = self.room?.game.IsArenaSession == true ? "" : self.room?.abstractRoom.name;
-                    recordingStartPosition = self.mainBodyChunk.pos;
+                    if (recordingStartRoom == null)
+                    {
+                        recordingStartRoom = self.room?.game.IsArenaSession == true ? "" : self.room?.abstractRoom.name;
+                        recordingStartPosition = self.mainBodyChunk.pos;
+                    }
+                    recorded[0].Add(self.input[0]);
                 }
-                recorded[0].Add(self.input[0]);
+                if (instructionsWithoutTick > Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK)
+                {
+                    TerminateMacro();
+                    throw new Exceptions.MacroHangException($"{Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK} instructions ran without ticking, probably because of an infinite loop.");
+                }
+                if (activeMacro is Macro macro)
+                {
+                    try
+                    {
+                        if (macro.GetPackage(self) is Player.InputPackage package)
+                        {
+                            if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
+                            self.input[0] = package.WithDownDiagonals();
+                            instructionsWithoutTick = 0;
+                        }
+                        else if (activeMacro != macro)  // did the macro just call another
+                        {
+                            Mod.Log($"Macro {macro.name} called {activeMacro.name}");
+                            Update(self);
+                        }
+                        else
+                        {
+                            Mod.Log($"Macro {macro.name} finished");
+                            stack.Pop();
+                            Update(self);
+                        }
+                        OnMacroTick?.Invoke(macro);
+                    }
+                    catch (Exception e)
+                    {
+                        var s = $"An exception occurred while running a macro.\n  Macro: {macro.FullName}\n  Line number: {macro.currentLine}\n  Line: {macro.currentLineText}\n  Instruction number: {macro.currentIndex}\n  Instruction: {macro.current}\n{e}";
+                        Mod.Log(s);
+                        Mod.Log(e);
+                        OnMacroException?.Invoke(s);
+                    }
+                }
+
             }
-            if (instructionsWithoutTick > Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK)
+            catch (Exception e)
             {
-                Mod.Log($"WARNING: {Const.MAXIMUM_INSTRUCTIONS_WITHOUT_TICK} instructions ran without ticking!");
-                TerminateMacro();
-                return;
+                var s = $"An exception occurred while running a macro*.\n  Macro: {activeMacro?.FullName}\n  Line number: {activeMacro?.currentLine}\n  Line: {activeMacro?.currentLineText}\n  Instruction number: {activeMacro?.currentIndex}\n  Instruction: {activeMacro?.current}\n{e}";
+                Mod.Log(s);
+                Mod.Log(e);
+                OnMacroException?.Invoke(s);
             }
-            if (activeMacro is Macro macro)
-            {
-                try
-                {
-                    if (macro.GetPackage(self) is Player.InputPackage package)
-                    {
-                        if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
-                        self.input[0] = package.WithDownDiagonals();
-                        instructionsWithoutTick = 0;
-                    }
-                    else if (activeMacro != macro)  // did the macro just call another
-                    {
-                        Mod.Log($"Macro {macro.name} called {activeMacro.name}");
-                        Update(self);
-                    }
-                    else
-                    {
-                        Mod.Log($"Macro {macro.name} finished");
-                        stack.Pop();
-                        Update(self);
-                    }
-                    OnMacroTick?.Invoke(macro);
-                }
-                catch (Exception e)
-                {
-                    var s = $"An exception occurred while running a macro.\n  Macro: {macro.FullName}\n  Line number: {macro.currentLine}\n  Line: {macro.currentLineText}\n  Instruction number: {macro.currentIndex}\n  Instruction: {macro.current}\n{e}";
-                    Mod.Log(s);
-                    Mod.Log(e);
-                    OnMacroException?.Invoke(s);
-                }
-            }
+            
         }
 
         public static Macro GetMacroByAbsolutePath(string path)

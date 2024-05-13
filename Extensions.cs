@@ -66,7 +66,7 @@ namespace alphappy.TAMacro
 
         public static Rect GetFixedWidthBounds(this FLabel self)
         {
-            var lines = self.text.Split('\n');
+            var lines = self.text.Trim().Split('\n');
             var width = lines.Max(line => line.Length) * 8;
             var height = lines.Length * self.FontLineHeight;
             return new(self.x - width / 2, self.y - height / 2, width, height);

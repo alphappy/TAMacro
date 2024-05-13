@@ -126,14 +126,14 @@ namespace alphappy.TAMacro
             Panel errorPanelTextPanel = new(new(5f, 100f, 600f, 430f), errorPanel);
             FLabel eptpLabel = new(Const.Font, "");
             eptpLabel.SetAnchor(0f, 1f);
-            eptpLabel.SetPosition(5.05f, 425.05f);
+            eptpLabel.SetPosition(5.05f, 405.05f);
             eptpLabel.color = new(0.8f, 0.6f, 0.6f);
             errorPanelTextPanel.AddChild(eptpLabel);
 
             void ReceivedException(string text)
             {
-                eptpLabel.text = text;
-                eptpLabel.RootTop(425.05f);
+                eptpLabel.text = text.Trim();
+                eptpLabel.RootTop(405.05f);
                 errorPanel.isVisible = true;
             }
 

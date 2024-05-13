@@ -145,11 +145,11 @@ namespace alphappy.TAMacro
                 loading.text.AppendLine(rawline);
                 loading.lineTexts.Add(rawline.Trim());
                 loading.newlinePositions.Add(loading.text.Length);
-                loading.lines += 1;
                 foreach (Instruction instruction in list)
                 {
                     loading.AddInstruction(instruction);
                 }
+                loading.lines += 1;
                 return true;
             }
             return false;

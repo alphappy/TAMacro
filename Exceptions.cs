@@ -32,5 +32,15 @@ namespace alphappy.TAMacro
             public InvalidExecuteTargetException(Macro macro, string message) : base(macro, $"`>execute` command failed:  \n{message}") { }
             public InvalidExecuteTargetException(string message) : base($"`>execute` command failed:  \n{message}") { }
         }
+        public class MacroHangException : MacroRuntimeException
+        {
+            public MacroHangException(string message) : base($"Macro hung:  {message}") { }
+        }
+
+
+        public class CookbookLoadingException : TAMacroException
+        {
+            public CookbookLoadingException(string message) : base($"An exception occurred while loading a cookbook.  \n{message}") { }
+        }
     }
 }

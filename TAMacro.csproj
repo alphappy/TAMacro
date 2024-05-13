@@ -118,6 +118,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetDir)$(TargetFileName) $(ProjectDir)mod\plugins\TAMacro.dll</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetFileName) $(ProjectDir)mod\plugins\TAMacro.dll &amp; copy $(TargetDir)\TAMacro.pdb $(ProjectDir)mod\plugins\TAMacro.pdb</PostBuildEvent>
   </PropertyGroup>
 </Project>
