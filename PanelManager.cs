@@ -89,8 +89,9 @@ namespace alphappy.TAMacro
                 isVisible = false,
                 alpha = 0.15f,
                 color = new Color(0.7f, 0.7f, 0.1f),
+                anchorY = 1,
+                _isVisible = false,
             };
-            macroCursor.isVisible = false;
             macroTextPanel.AddChild(macroCursor, "cursor");
 
             int total_lines = 26;
@@ -106,12 +107,13 @@ namespace alphappy.TAMacro
                 if (Const.SUPER_DEBUG_MODE) Mod.Log($"{line} {line_offset} {firstLine} {lastLine} {macro.newlinePositions.Count}");
                 var firstPos = macro.newlinePositions[firstLine];
                 var lastPos = macro.newlinePositions[lastLine];
-                macroLabel.text = macro.text.ToString().Substring(firstPos, lastPos - firstPos);
 
-                macroLabel.SetPosition(5.05f, 425.05f - (macroLabel.GetFixedWidthBounds().height / 2));
+                var text = macro.text.ToString().Substring(firstPos, lastPos - firstPos);
+                macroLabel.SetTextAndRootTop(text, 425.05f);
+
                 macroPanelTitle.text = macro.name;
                 macroCursor.isVisible = MacroLibrary.activeMacro != null;
-                macroCursor.SetPosition(150.05f, 415.05f - ((line - line_offset) * macroLabel.FontLineHeight));
+                macroCursor.SetPosition(150.05f, 425.05f - ((line - line_offset) * macroLabel.FontLineHeight));
             };
 
             Panel errorPanel = new(new(100f, 100f, 600f, 450f), this);
