@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace alphappy.TAMacro
 {
@@ -43,6 +44,11 @@ namespace alphappy.TAMacro
         public static bool EqualTo(this Player.InputPackage self, Player.InputPackage other)
         {
             return self.analogueDir == other.analogueDir && self.x == other.x && self.y == other.y && self.jmp == other.jmp && self.pckp == other.pckp && self.thrw == other.thrw && self.mp == other.mp;
+        }
+
+        public static bool IsNeutral(this Player.InputPackage self)
+        {
+            return self.analogueDir == Vector2.zero && self.x == 0 && self.y == 0 && !self.jmp && !self.pckp && !self.thrw && !self.mp;
         }
 
         public static Rect BoundingBox(this FSprite self)

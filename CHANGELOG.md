@@ -1,3 +1,7 @@
+### TAMacro 0.8.7.2
+
+- It is now possible to set the player interference mode for a macro.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Macro-options) for details.
+
 ### TAMacro 0.8.6.30
 
 - TAMacro now supports fastroll!  Use a lowercase `d` to indicate a fastroll input.

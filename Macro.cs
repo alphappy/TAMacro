@@ -14,15 +14,54 @@ namespace alphappy.TAMacro
         public int lines;
         public List<int> lineNumbers = new List<int>();
         public List<string> lineTexts = new();
-        public Dictionary<string, string> metadata = new Dictionary<string, string>();
         public StringBuilder text = new StringBuilder();
         public Dictionary<string, int> labels = new Dictionary<string, int>();
         public List<int> newlinePositions = new() { 0 };
 
+        public class Options
+        {
+            public enum Interference { Block, Overwrite, Pause, Kill }
+            public Interference interference = Interference.Block;
+            public string name = "";
+            public Dictionary<string, string> unrecognized = new();
+
+            public void Set(string key, string value, bool store = true)
+            {
+                switch (key)
+                {
+                    case "PLAYER_INTERFERENCE":
+                        interference = value switch
+                        {
+                            "block" => Interference.Block,
+                            "overwrite" => Interference.Overwrite,
+                            "pause" => Interference.Pause,
+                            "kill" => Interference.Kill,
+                            _ => throw new Exceptions.InvalidMacroOptionException("`PLAYER_INTERFERENCE` must have one of the following values:\n`block`, `overwrite`, `pause`, `kill`"),
+                        };
+                        break;
+
+                    case "NAME":
+                        name = value; break;
+
+                    default:
+                        if (store) unrecognized[key] = value; break;
+                }
+            }
+
+            public void SetFromCookbookMetadata(Dictionary<string, string> metadata)
+            {
+                foreach (var pair in metadata)
+                {
+                    Set(pair.Key, pair.Value, false);
+                }
+            }
+        }
+        public Options options = new();
+
         public Instruction current => instructions[currentIndex];
         public int currentLine => lineNumbers[Mathf.Clamp(currentIndex, 0, instructions.Count - 1)];
         public string currentLineText { get { try { return lineTexts[currentLine]; } catch { return "<NONE>"; } } }
-        public string name => metadata.TryGetValue("NAME", out string s) ? s : "";
+        public string name => options.name ?? "";
         public string FullName => $"{parent.FullName}/{name}";
 
         public int currentIndex = -1;

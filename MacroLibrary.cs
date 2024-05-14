@@ -99,10 +99,15 @@ namespace alphappy.TAMacro
                 {
                     try
                     {
+                        var playerInputNeutral = self.input[0].IsNeutral();
+                        if (!playerInputNeutral && macro.options.interference == Macro.Options.Interference.Pause) return;
+                        if (!playerInputNeutral && macro.options.interference == Macro.Options.Interference.Kill) { TerminateMacro(); return; }
+
                         if (macro.GetPackage(self) is Player.InputPackage package)
                         {
                             if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
-                            self.input[0] = package.WithDownDiagonals();
+                            if (playerInputNeutral || macro.options.interference != Macro.Options.Interference.Overwrite)
+                                self.input[0] = package.WithDownDiagonals();
                             instructionsWithoutTick = 0;
                         }
                         else if (activeMacro != macro)  // did the macro just call another

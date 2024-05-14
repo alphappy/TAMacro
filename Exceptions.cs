@@ -11,8 +11,9 @@ namespace alphappy.TAMacro
     {
         public class TAMacroException : Exception
         {
+            public static event Action<TAMacroException> OnException;
             public TAMacroException() { }
-            public TAMacroException(string message) : base(message) { }
+            public TAMacroException(string message) : base(message) { OnException?.Invoke(this); }
             public TAMacroException(string message, Exception innerException) : base(message, innerException) { }
             protected TAMacroException(SerializationInfo info, StreamingContext context) : base(info, context) { }
             public string MultiLineMessage => Message.Replace("  ", "\n");
@@ -41,6 +42,10 @@ namespace alphappy.TAMacro
         public class CookbookLoadingException : TAMacroException
         {
             public CookbookLoadingException(string message) : base($"An exception occurred while loading a cookbook.  \n{message}") { }
+        }
+        public class InvalidMacroOptionException: CookbookLoadingException
+        {
+            public InvalidMacroOptionException(string message) : base($"Invalid macro setting:  \n{message}") { }
         }
     }
 }

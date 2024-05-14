@@ -137,14 +137,17 @@ namespace alphappy.TAMacro
             eptpLabel.color = new(0.8f, 0.6f, 0.6f);
             errorPanelTextPanel.AddChild(eptpLabel);
 
-            void ReceivedException(string text)
+            void ReceivedExceptionText(string text)
             {
                 eptpLabel.text = text.Trim();
                 eptpLabel.RootTop(395.05f);
                 errorPanel.isVisible = true;
             }
 
-            MacroLibrary.OnMacroException += ReceivedException;
+            void ReceivedException(Exceptions.TAMacroException exc) => ReceivedExceptionText(exc.Message);
+
+            //MacroLibrary.OnMacroException += ReceivedExceptionText;
+            Exceptions.TAMacroException.OnException += ReceivedException;
         }
 
         public int age;

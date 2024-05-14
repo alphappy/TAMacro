@@ -126,9 +126,10 @@ namespace alphappy.TAMacro
                 if (key == "NAME")
                 {
                     loading = new Macro(this);
+                    loading.options.SetFromCookbookMetadata(bookMeta);
                     macros.Add(value, loading);
                 }
-                loading.metadata.Add(key, value);
+                loading.options.Set(key, value);
                 return true;
             }
             return false;
