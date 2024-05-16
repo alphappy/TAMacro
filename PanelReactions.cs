@@ -41,8 +41,12 @@ namespace alphappy.TAMacro
                 var bounds = panel.BoundsAbsolute;
                 var screen = RWCustom.Custom.rainWorld.options.ScreenSize;
 
-                if (bounds.xMin < 0) panel.container.x += -bounds.xMin;
-                if (bounds.xMax > screen.x) panel.container.x -= bounds.xMax - screen.x;
+                var leftmostAllowable = -bounds.width + 30f;
+                var rightmostAllowable = screen.x - 30f;
+
+                if (bounds.xMin < leftmostAllowable) panel.container.x = leftmostAllowable;
+                if (bounds.xMin > rightmostAllowable) panel.container.x = rightmostAllowable;
+
                 if (bounds.yMin < 0) panel.container.y += -bounds.yMin;
                 if (bounds.yMax > screen.y) panel.container.y -= bounds.yMax - screen.y;
             }

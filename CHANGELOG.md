@@ -1,6 +1,7 @@
-### TAMacro 0.8.7.13 (preview)
+### TAMacro 0.8.7.17 (preview)
 
 - It is now possible to set the player interference mode for a macro.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Macro-options) for details.
+- It is now possible to drag any panel mostly (but not completely) off the left or right sides of the screen.
 - Comments (prefixed with `#`) will now appear on the in-game display panel.
 - Fixed misaligned exception text on the in-game interface.
 

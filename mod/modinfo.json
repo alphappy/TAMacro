@@ -1,7 +1,7 @@
 {
 	"id": "alphappy.tamacro",
 	"name": "Debug - TAMacro [ALPHA]",
-	"version": "0.8.6.30",
+	"version": "0.8.7.17",
 	"target_game_version": "v1.9.15b",
 	"authors": "alphappy",
 	"description": "TAMacro enables tick-by-tick input macros for experimenting with movement.  Check [url=https://github.com/alphappy/TAMacro/blob/master/README.md]the README on GitHub[/url] for an explanation of how to use TAMacro.",
