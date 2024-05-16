@@ -95,6 +95,7 @@ namespace alphappy.TAMacro
                         string rawline = lines[lineNumber];
                         string line = rawline.Trim(' ');
                         if (line.Length == 0) { continue; }
+                        if (line.StartsWith("# #")) { continue; }
                         if (line[0] == '#') { ParseAsComment(line); continue; }
                         if (line.Length > 2 && line.Substring(0, 2) == "//") { ParseAsBookMetadata(line); continue; }
                         if (line[0] == '/') { ParseAsMacroMetadata(line); continue; }
