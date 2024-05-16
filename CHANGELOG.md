@@ -1,6 +1,7 @@
-### TAMacro 0.8.7.2
+### TAMacro 0.8.7.11 (preview)
 
 - It is now possible to set the player interference mode for a macro.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Macro-options) for details.
+- Fixed misaligned exception text.
 
 ### TAMacro 0.8.6.30
 

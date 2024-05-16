@@ -6,10 +6,10 @@ namespace alphappy.TAMacro
     {
         public const string PLUGIN_GUID = "alphappy.tamacro";
         public const string PLUGIN_NAME = "Debug - TAMacro";
-        public const string PLUGIN_VERSION = "0.8.7.2";
+        public const string PLUGIN_VERSION = "0.8.7.11";
         public const int MAXIMUM_INSTRUCTIONS_WITHOUT_TICK = 100;
-        
-        public static bool SUPER_DEBUG_MODE = false;
+        public const bool SUPER_DEBUG_MODE = true;
+
         public static string COOKBOOK_ROOT_PATH = Application.persistentDataPath + "\\ModConfigs\\TAMacro";
         public static string COOKBOOK_MAIN_FILE = Application.persistentDataPath + "\\ModConfigs\\TAMacro\\main.tmc";
         public static string COOKBOOK_RECORDED_FILE = Application.persistentDataPath + "\\ModConfigs\\TAMacro\\recorded.tmc";

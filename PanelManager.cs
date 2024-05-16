@@ -110,7 +110,7 @@ namespace alphappy.TAMacro
                 var lastPos = macro.newlinePositions[lastLine];
 
                 var text = macro.text.ToString().Substring(firstPos, lastPos - firstPos);
-                macroLabel.SetTextAndRootTop(text, 425.05f);
+                macroLabel.SetTextAndRootTop(text.Trim(), 425.05f);
 
                 macroPanelTitle.text = macro.name;
                 macroCursor.isVisible = MacroLibrary.activeMacro != null;
@@ -130,17 +130,18 @@ namespace alphappy.TAMacro
                 .CreateMouseEvent(PanelReactions.Simple)
                 .CreateFireEvent(() => errorPanel.isVisible = false);
 
-            Panel errorPanelTextPanel = new(new(5f, 100f, 600f, 430f), errorPanel);
-            FLabel eptpLabel = new(Const.Font, "");
-            eptpLabel.SetAnchor(0f, 1f);
-            eptpLabel.SetPosition(5.05f, 405.05f);
-            eptpLabel.color = new(0.8f, 0.6f, 0.6f);
+            Panel errorPanelTextPanel = new(new(5f, 0f, 590f, 430f), errorPanel);
+            FLabel eptpLabel = new(Const.Font, "")
+            {
+                alignment = FLabelAlignment.Left,
+                color = new(0.8f, 0.6f, 0.6f),
+                x = 5.05f, y = 425.05f
+            };
             errorPanelTextPanel.AddChild(eptpLabel);
 
             void ReceivedExceptionText(string text)
             {
-                eptpLabel.text = text.Trim();
-                eptpLabel.RootTop(395.05f);
+                eptpLabel.SetTextAndRootTop(text.Trim(), 425.05f);
                 errorPanel.isVisible = true;
             }
 

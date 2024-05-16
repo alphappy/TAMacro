@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System;
 
 namespace alphappy.TAMacro
 {
@@ -83,10 +84,11 @@ namespace alphappy.TAMacro
         }
         public static void SetTextAndRootTop(this FLabel self, string text, float yRoot)
         {
-            var lines = text.Trim().Split('\n');
             self.text = text;
+            var lines = text.Split(new string[] { "\r\n", "\r", "\n", Environment.NewLine }, StringSplitOptions.None);
             var height = lines.Length * self.FontLineHeight;
             self.y = yRoot - height / 2;
+            if (Const.SUPER_DEBUG_MODE) Mod.Log($"This text has {lines.Length} lines, moving from {yRoot} to {self.y}:\n{text}");
         }
 
         public static Rect Resized(this Rect self, Vector2 resize) => new(self.position, self.size + resize);
