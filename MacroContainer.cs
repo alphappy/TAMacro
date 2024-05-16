@@ -95,7 +95,7 @@ namespace alphappy.TAMacro
                         string rawline = lines[lineNumber];
                         string line = rawline.Trim(' ');
                         if (line.Length == 0) { continue; }
-                        if (line[0] == '#') { continue; }
+                        if (line[0] == '#') { ParseAsComment(line); continue; }
                         if (line.Length > 2 && line.Substring(0, 2) == "//") { ParseAsBookMetadata(line); continue; }
                         if (line[0] == '/') { ParseAsMacroMetadata(line); continue; }
                         if (ParseAsInstruction(line, rawline)) { continue; }
@@ -154,6 +154,19 @@ namespace alphappy.TAMacro
                 {
                     loading.AddInstruction(instruction);
                 }
+                loading.lines += 1;
+                return true;
+            }
+            return false;
+        }
+
+        public bool ParseAsComment(string line)
+        {
+            if (loading != null)
+            {
+                loading.text.AppendLine(line);
+                loading.lineTexts.Add(line.Trim());
+                loading.newlinePositions.Add(loading.text.Length);
                 loading.lines += 1;
                 return true;
             }
