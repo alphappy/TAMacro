@@ -22,6 +22,7 @@ namespace alphappy.TAMacro
         private void OnEnable()
         {
             On.RainWorld.OnModsInit += RainWorldOnModsInitHook;
+            Serialization.Populate();
         }
 
         private void RainWorldOnModsInitHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)

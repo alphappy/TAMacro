@@ -45,6 +45,8 @@
     <Compile Include="PanelManager.cs" />
     <Compile Include="PanelReactions.cs" />
     <Compile Include="PaneManager.cs" />
+    <Compile Include="ScugState.cs" />
+    <Compile Include="Serialization.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Parsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

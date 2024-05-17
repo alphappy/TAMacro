@@ -1,5 +1,7 @@
-### TAMacro 0.8.7.18
+### TAMacro 0.9.0.9 (preview)
 
+- It is now possible to set most of Slugcat's state with `!scugstate`!  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#scugstate) for details.
+  - IMPORTANT: This is not a savestate.  There are some things this does not preserve.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Cheat#scugstate) for details.
 - It is now possible to set the player interference mode for a macro.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Macro-options) for details.
 - It is now possible to drag any panel mostly (but not completely) off the left or right sides of the screen.
 - Comments (prefixed with `#`) will now appear on the in-game display panel.

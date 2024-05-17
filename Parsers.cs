@@ -9,7 +9,7 @@ namespace alphappy.TAMacro
     internal class Parsers
     {
         public delegate List<Instruction> Parser(string line);
-        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, CheatWarp, CheatGetItem };
+        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, CheatWarp, CheatGetItem, CheatScugState };
 
         public static List<Instruction> Simple(string line)
         {
@@ -177,6 +177,15 @@ namespace alphappy.TAMacro
                 if (item == "ExplosiveSpear") return new List<Instruction> { new Instruction(InstructionType.GetSpear, true), };
 
                 return new List<Instruction> { new Instruction(InstructionType.GetGenericItem, item), };
+            }
+            return null;
+        }
+
+        public static List<Instruction> CheatScugState(string line)
+        {
+            if (Regex.Match(line, "!scugstate (.+)") is Match match && match.Success)
+            {
+                return new List<Instruction> { new Instruction(InstructionType.SetCompleteScugStateFromString, match.Groups[1].Value), };
             }
             return null;
         }
