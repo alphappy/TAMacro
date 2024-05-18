@@ -56,7 +56,7 @@ namespace alphappy.TAMacro
                         if (MacroLibrary.globalHotkeys.TryGetValue(code, out var otherMacro))
                             throw new Exceptions.InvalidMacroOptionException($"`GLOBAL_HOTKEY` received a KeyCode that is already in use by  macro `{otherMacro.FullName}`.");
 
-                        if (Settings.allKeyCodes.FirstOrDefault(c => c.Value == code) is Configurable<KeyCode> configurable)
+                        if (Settings.AllKeys.FirstOrDefault(c => c.Value == code) is Configurable<KeyCode> configurable)
                             throw new Exceptions.InvalidMacroOptionException($"`GLOBAL_HOTKEY` received a KeyCode that is already in use by  `{configurable.key}` ({configurable.info.description}).");
 
                         MacroLibrary.globalHotkeys[code] = macro;

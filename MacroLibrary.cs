@@ -23,7 +23,6 @@ namespace alphappy.TAMacro
         public static event Action<string> OnMacroException;
 
         public static Dictionary<KeyCode, Macro> globalHotkeys = new();
-        public static KeyCode[] AllHotkeys => globalHotkeys.Keys.Concat(Settings.allKeyCodes.Select(e => e.Value)).ToArray();
 
         public static void ClearEvents()
         {

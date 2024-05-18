@@ -160,12 +160,12 @@ namespace alphappy.TAMacro
                     return;
                 }
 
-                for (int i = 0; i < Const.SELECT_KEYS.Length; i++)
+                for (int i = 0; i < Settings.allSelectorKeys.Length; i++)
                 {
-                    if (Input.GetKey(Const.SELECT_KEYS[i]))
+                    if (Input.GetKey(Settings.allSelectorKeys[i].Value))
                     {
                         MacroLibrary.SelectOnPage(i, self);
-                        keyDown = Const.SELECT_KEYS[i];
+                        keyDown = Settings.allSelectorKeys[i].Value;
                         return;
                     }
                 }
