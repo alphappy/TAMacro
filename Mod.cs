@@ -170,6 +170,16 @@ namespace alphappy.TAMacro
                     }
                 }
 
+                foreach (var pair in MacroLibrary.globalHotkeys)
+                {
+                    if (Input.GetKey(pair.Key))
+                    {
+                        MacroLibrary.StartMacro(pair.Value, self);
+                        keyDown = pair.Key;
+                        return;
+                    }
+                }
+
                 keyDown = KeyCode.None;
             }
             catch (Exception e) { Log(e); }

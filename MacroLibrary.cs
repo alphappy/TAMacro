@@ -22,6 +22,9 @@ namespace alphappy.TAMacro
         public static event Action<Macro> OnMacroTick;
         public static event Action<string> OnMacroException;
 
+        public static Dictionary<KeyCode, Macro> globalHotkeys = new();
+        public static KeyCode[] AllHotkeys => globalHotkeys.Keys.Concat(Settings.allKeyCodes.Select(e => e.Value)).ToArray();
+
         public static void ClearEvents()
         {
             OnDirectoryChange = null; OnPageChange = null; OnMacroTick = null;
@@ -38,19 +41,23 @@ namespace alphappy.TAMacro
             if (currentContainer == null) return;
             if (currentContainer.IsCookbook)
             {
-                if (currentContainer.SelectMacroOnViewedPage(offset) is Macro macro 
-                    && game.Players.Count > 0 && game.Players[0]?.realizedCreature is Player player)
-                {
-                    macro.Initialize(player);
-                    stack.Push(macro);
-                    instructionsWithoutTick = 0;
-                }
+                if (currentContainer.SelectMacroOnViewedPage(offset) is Macro macro) StartMacro(macro, game);
             }
             else
             {
                 currentContainer = currentContainer.SelectContainerOnViewedPage(offset) ?? currentContainer;
                 OnDirectoryChange?.Invoke(currentContainer);
                 ChangePage(0);
+            }
+        }
+
+        public static void StartMacro(Macro macro, RainWorldGame game)
+        {
+            if (game.Players.Count > 0 && game.Players[0]?.realizedCreature is Player player)
+            {
+                macro.Initialize(player);
+                stack.Push(macro);
+                instructionsWithoutTick = 0;
             }
         }
 
@@ -63,6 +70,7 @@ namespace alphappy.TAMacro
 
         public static void ReloadFromTopLevel()
         {
+            globalHotkeys.Clear();
             topContainer = new MacroContainer(Const.COOKBOOK_ROOT_PATH, null);
             currentContainer = topContainer;
             stack.Clear();

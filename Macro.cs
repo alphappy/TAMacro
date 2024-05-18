@@ -24,6 +24,9 @@ namespace alphappy.TAMacro
             public Interference interference = Interference.Block;
             public string name = "";
             public Dictionary<string, string> unrecognized = new();
+            public Macro macro;
+
+            public Options(Macro macro) { this.macro = macro; }
 
             public void Set(string key, string value, bool store = true)
             {
@@ -36,12 +39,29 @@ namespace alphappy.TAMacro
                             "overwrite" => Interference.Overwrite,
                             "pause" => Interference.Pause,
                             "kill" => Interference.Kill,
-                            _ => throw new Exceptions.InvalidMacroOptionException("`PLAYER_INTERFERENCE` must have one of the following values:\n`block`, `overwrite`, `pause`, `kill`"),
+                            _ => throw new Exceptions.InvalidMacroOptionException("`PLAYER_INTERFERENCE` must have one of the following values:  `block`, `overwrite`, `pause`, `kill`"),
                         };
                         break;
 
                     case "NAME":
                         name = value; break;
+
+                    case "GLOBAL_HOTKEY":
+                        if (!Settings.allowMacroGlobalHotkeys.Value)
+                            return;
+
+                        if (!Enum.TryParse<KeyCode>(value, out var code))
+                            throw new Exceptions.InvalidMacroOptionException($"`GLOBAL_HOTKEY` received an invalid KeyCode.  See https://docs.unity3d.com/ScriptReference/KeyCode.html for a list of valid KeyCodes.");
+
+                        if (MacroLibrary.globalHotkeys.TryGetValue(code, out var otherMacro))
+                            throw new Exceptions.InvalidMacroOptionException($"`GLOBAL_HOTKEY` received a KeyCode that is already in use by  macro `{otherMacro.FullName}`.");
+
+                        if (Settings.allKeyCodes.FirstOrDefault(c => c.Value == code) is Configurable<KeyCode> configurable)
+                            throw new Exceptions.InvalidMacroOptionException($"`GLOBAL_HOTKEY` received a KeyCode that is already in use by  `{configurable.key}` ({configurable.info.description}).");
+
+                        MacroLibrary.globalHotkeys[code] = macro;
+
+                        break;
 
                     default:
                         if (store) unrecognized[key] = value; break;
@@ -52,11 +72,12 @@ namespace alphappy.TAMacro
             {
                 foreach (var pair in metadata)
                 {
+                    if (pair.Key == "GLOBAL_HOTKEY") throw new Exceptions.InvalidMacroOptionException($"`{pair.Key}` cannot be a cookbook option.");
                     Set(pair.Key, pair.Value, false);
                 }
             }
         }
-        public Options options = new();
+        public Options options;
 
         public Instruction current => instructions[currentIndex];
         public int currentLine => lineNumbers[Mathf.Clamp(currentIndex, 0, instructions.Count - 1)];
@@ -76,6 +97,7 @@ namespace alphappy.TAMacro
         public Macro(MacroContainer parent)
         {
             this.parent = parent;
+            options = new(this);
         }
 
         public Player.InputPackage? GetPackage(Player player)
