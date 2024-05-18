@@ -88,7 +88,7 @@ namespace alphappy.TAMacro
                     {
                         recordingStartRoom = self.room?.game.IsArenaSession == true ? "" : self.room?.abstractRoom.name;
                         recordingStartPosition = self.mainBodyChunk.pos;
-                        scugState = self.Serialize();
+                        if (Settings.recordScugState.Value) scugState = self.Serialize();
                     }
                     recorded[0].Add(self.input[0]);
                 }
@@ -210,7 +210,7 @@ namespace alphappy.TAMacro
         private static List<List<Player.InputPackage>> recorded;
         private static Vector2 recordingStartPosition;
         private static string recordingStartRoom;
-        private static string scugState;
+        private static string scugState = null;
         public static void ToggleRecording()
         {
             if (!nowRecording)
@@ -231,7 +231,7 @@ namespace alphappy.TAMacro
                     string setup = recordingStartRoom == string.Empty 
                         ? $"!warp {recordingStartPosition.x} {recordingStartPosition.y}\n" 
                         : $"!warp {recordingStartRoom} {recordingStartPosition.x} {recordingStartPosition.y}\n";
-                    setup = $"{setup}!scugstate {scugState}\n";
+                    if (scugState != null) setup = $"{setup}!scugstate {scugState}\n";
                     File.AppendAllText(Const.COOKBOOK_RECORDED_FILE, $"{Macro.RepFromInputList(recorded, setup)}\n");
                 }
             }

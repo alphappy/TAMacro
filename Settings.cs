@@ -20,10 +20,13 @@ namespace alphappy.TAMacro
         public static Configurable<bool> useDevconsolas = instance.config.Bind("useDevconsolas", true, new ConfigurableInfo("Use devconsolas font instead of default\n(requires Dev Console to be enabled)"));
         public static Configurable<bool> showFullPath = instance.config.Bind("showFullPath", false, new ConfigurableInfo("Show full macro paths"));
         public static Configurable<bool> blinkRecordingButton = instance.config.Bind("blinkRecordingButton", true, new ConfigurableInfo("Blink recording button while recording"));
+        public static Configurable<bool> recordScugState = instance.config.Bind("recordScugState", true, new ConfigurableInfo("Save scug state when recording"));
+        public static Configurable<bool> discardFinalNeutral = instance.config.Bind("discardFinalNeutral", true, new ConfigurableInfo("Discard final input of recording if neutral"));
+
         public override void Initialize()
         {
             base.Initialize();
-            Tabs = new OpTab[] { new OpTab(this, "Settings") };
+            Tabs = new OpTab[] { new OpTab(this, "Bindings"), new OpTab(this, "Toggles") };
             Vector2 pos = new(50f, 550f);
             List<UIelement> list = new();
 
@@ -34,15 +37,18 @@ namespace alphappy.TAMacro
                 pos += new Vector2(0f, -45f);
             }
 
-            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath, blinkRecordingButton })
+            Tabs[0].AddItems(list.ToArray());
+            list.Clear();
+            pos = new(50f, 550f);
+
+            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath, blinkRecordingButton, recordScugState, discardFinalNeutral })
             {
                 list.Add(new OpCheckBox(c, pos));
                 list.Add(new OpLabel(pos.x + 35f, pos.y + 3f, c.info.description));
                 pos += new Vector2(0f, -35f);
             }
 
-
-            Tabs[0].AddItems(list.ToArray());
+            Tabs[1].AddItems(list.ToArray());
         }
     }
 }

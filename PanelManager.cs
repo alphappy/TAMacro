@@ -49,7 +49,14 @@ namespace alphappy.TAMacro
 
             main.CreateLabel("curdir", ".", new(5f, 180f), out var curdirlabel);
             curdirlabel.alignment = FLabelAlignment.Left;
-            MacroLibrary.OnDirectoryChange += c => { if (curdirlabel != null) curdirlabel.text = c.parent == null ? "<root>" : c.DisplayName; };
+
+            void ChangeDirectoryOrPage(MacroContainer c)
+            {
+                curdirlabel.text = (c.parent == null ? "<root>" : c.DisplayName) + $"  ({c.ViewedPage + 1} / {c.PageCount})";
+            }
+
+            MacroLibrary.OnDirectoryChange += ChangeDirectoryOrPage;
+            MacroLibrary.OnPageChange += ChangeDirectoryOrPage;
 
             for (int i = 0; i < 10; i++)
             {

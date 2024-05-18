@@ -148,7 +148,8 @@ namespace alphappy.TAMacro
                 var list = parser.Invoke(line);
                 if (list == null) continue; // parser recognized the line (so it's not an invalid command) but chose to add no instructions
 
-                loading.text.AppendLine(rawline);
+                var text = rawline.Length >= 50 ? rawline.Substring(0, 47) + "..." : rawline;
+                loading.text.AppendLine(text);
                 loading.lineTexts.Add(rawline.Trim());
                 loading.newlinePositions.Add(loading.text.Length);
                 foreach (Instruction instruction in list)

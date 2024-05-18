@@ -138,6 +138,7 @@ namespace alphappy.TAMacro
                         previous = input;
                     }
                 }
+                if (!previous.IsNeutral() || !Settings.discardFinalNeutral.Value) sb.Append($"{previous.AsString()}~{consecutive}\n");
             }
             return sb.ToString();
         }
