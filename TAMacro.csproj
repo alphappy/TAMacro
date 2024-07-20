@@ -35,6 +35,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Instruction.cs" />
+    <Compile Include="Keyboard.cs" />
     <Compile Include="Macro.cs" />
     <Compile Include="MacroContainer.cs" />
     <Compile Include="MacroLibrary.cs" />

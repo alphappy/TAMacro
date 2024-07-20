@@ -39,7 +39,8 @@ namespace alphappy.TAMacro
             { InstructionType.SuperHardSetPosition, EnterSuperHardSetPosition },
             { InstructionType.GetGenericItem, EnterGetGenericItem },
             { InstructionType.GetSpear, EnterGetSpear },
-            { InstructionType.SetCompleteScugStateFromString, EnterSetCompleteScugStateFromString }
+            { InstructionType.SetCompleteScugStateFromString, EnterSetCompleteScugStateFromString },
+            { InstructionType.SetDisplacementRefPoint, EnterSetDisplacementRefPoint }
         };
         public void Enter(Macro macro, Player player)
         {
@@ -155,6 +156,7 @@ namespace alphappy.TAMacro
             if (player.FreeHand() is int f && f > -1) player.SlugcatGrab(obj.realizedObject, f);
         }
         public static void EnterSetCompleteScugStateFromString(Instruction self, Macro macro, Player player) => player.Deserialize((string)self.value);
+        public static void EnterSetDisplacementRefPoint(Instruction self, Macro macro, Player player) => MacroLibrary.refPoint = player.bodyChunks[1].pos;
     }
 
     public enum InstructionType
@@ -167,7 +169,8 @@ namespace alphappy.TAMacro
         ExecuteMacroByString, ReturnTempNull,
         RequestWarp, PushWarpWactive, SuperHardSetPosition,
         GetGenericItem, GetSpear,
-        SetCompleteScugStateFromString
+        SetCompleteScugStateFromString,
+        SetDisplacementRefPoint,
     }
 
     public struct WarpTarget

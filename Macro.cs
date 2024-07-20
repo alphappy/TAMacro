@@ -100,6 +100,7 @@ namespace alphappy.TAMacro
             options = new(this);
         }
 
+        public static event Action<Macro> OnMacroEnded;
         public Player.InputPackage? GetPackage(Player player)
         {
             if (Const.SUPER_DEBUG_MODE) Mod.Log($"  enter GetPackage");
@@ -113,6 +114,7 @@ namespace alphappy.TAMacro
                 if (returnNull) { returnNull = false; return null; }
                 currentIndex++;
             }
+            OnMacroEnded?.Invoke(this);
             return null;
         }
 

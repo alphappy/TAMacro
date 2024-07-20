@@ -78,6 +78,36 @@ namespace alphappy.TAMacro
                 };
             }
 
+            FLabel displacementLabel = new(Const.Font, "")
+            {
+                x=5.05f, y=10.05f, alignment=FLabelAlignment.Left
+            };
+            main.AddChild(displacementLabel);
+
+            float maxDispX = 0f;
+            float maxDispY = 0f;
+            void DisplacementUpdate(Vector2 disp)
+            {
+                maxDispX = Mathf.Max(Mathf.Abs(disp.x), maxDispX);
+                maxDispY = Mathf.Max(Mathf.Abs(disp.y), maxDispY);
+                displacementLabel.text = $"Max displacement: {maxDispX:F1}, {maxDispY:F1}";
+            };
+            MacroLibrary.OnDisplacementUpdate += DisplacementUpdate;
+
+            void DisplacementReset(Macro m, RainWorldGame g)
+            {
+                maxDispX = 0;
+                maxDispY = 0;
+                displacementLabel.text = "";
+            }
+            MacroLibrary.OnMacroStart += DisplacementReset;
+
+            void DisplacementWrite(Macro m)
+            {
+                Mod.Log($"disp:{m.name}:{maxDispX:F1}:{maxDispY:F1}");
+            }
+            Macro.OnMacroEnded += DisplacementWrite;
+
             Panel macroPanel = new(new(600f, 300f, 300f, 450f), this);
             macroPanel.CreateBackdrop()
                 .CreateAndGotoPanel(new(5f, 435f, 290f, 15f), true, null, "Drag to move", true)

@@ -39,6 +39,7 @@ namespace alphappy.TAMacro
         public static Configurable<bool> recordScugState = instance.config.Bind("recordScugState", true, new ConfigurableInfo("Save scug state when recording"));
         public static Configurable<bool> discardFinalNeutral = instance.config.Bind("discardFinalNeutral", true, new ConfigurableInfo("Discard final input of recording if neutral"));
         public static Configurable<bool> allowMacroGlobalHotkeys = instance.config.Bind("allowMacroGlobalHotkeys", true, new ConfigurableInfo("Allow macros to set global hotkeys"));
+        public static Configurable<bool> autoAddDisplacementRefPoint = instance.config.Bind("autoAddDisplacementRefPoint", true, new ConfigurableInfo("Automatically set refpoint at start of every macro"));
 
         public override void Initialize()
         {
@@ -67,7 +68,7 @@ namespace alphappy.TAMacro
             list.Clear();
             pos = new(50f, 550f);
 
-            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath, blinkRecordingButton, recordScugState, discardFinalNeutral, allowMacroGlobalHotkeys })
+            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath, blinkRecordingButton, recordScugState, discardFinalNeutral, allowMacroGlobalHotkeys, autoAddDisplacementRefPoint })
             {
                 list.Add(new OpCheckBox(c, pos));
                 list.Add(new OpLabel(pos.x + 35f, pos.y + 3f, c.info.description));

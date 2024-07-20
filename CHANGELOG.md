@@ -1,7 +1,9 @@
-### TAMacro 0.9.1.4 (preview)
+### TAMacro 0.9.2.3 (preview)
 
 - It is now possible to set a global hotkey for a specific macro.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Macro-options#GLOBAL_HOTKEY) for details.
   - If needed, all global macro hotkeys can be disabled in the Remix settings.
+- It is now possible to track the maximum displacement during macro runtime from a `>refpoint` set during macro execution.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Commands#refpoint) for details.
+  - You can also automatically set the refpoint at the start of every macro through an option in the Remix settings.
 - It is now possible to rebind the selector keys (normally `1`-`9` and `0`) in the Remix settings.
 
 ### TAMacro 0.9.0.25

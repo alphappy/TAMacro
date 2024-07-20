@@ -9,7 +9,7 @@ namespace alphappy.TAMacro
     internal class Parsers
     {
         public delegate List<Instruction> Parser(string line);
-        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, CheatWarp, CheatGetItem, CheatScugState };
+        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, SetDisplacementRefPoint, CheatWarp, CheatGetItem, CheatScugState };
 
         public static List<Instruction> Simple(string line)
         {
@@ -137,6 +137,17 @@ namespace alphappy.TAMacro
                 {
                     new Instruction(InstructionType.ExecuteMacroByString, match.Groups[1].Value),
                     new Instruction(InstructionType.ReturnTempNull)
+                };
+            }
+            return null;
+        }
+        public static List<Instruction> SetDisplacementRefPoint(string line)
+        {
+            if (Regex.Match(line, "^>refpoint$") is Match match && match.Success)
+            {
+                return new List<Instruction>
+                {
+                    new Instruction(InstructionType.SetDisplacementRefPoint)
                 };
             }
             return null;

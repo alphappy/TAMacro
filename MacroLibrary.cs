@@ -24,6 +24,8 @@ namespace alphappy.TAMacro
 
         public static Dictionary<KeyCode, Macro> globalHotkeys = new();
 
+        public static Vector2? refPoint = null;
+
         public static void ClearEvents()
         {
             OnDirectoryChange = null; OnPageChange = null; OnMacroTick = null;
@@ -50,6 +52,7 @@ namespace alphappy.TAMacro
             }
         }
 
+        public static event Action<Macro, RainWorldGame> OnMacroStart;
         public static void StartMacro(Macro macro, RainWorldGame game)
         {
             if (game.Players.Count > 0 && game.Players[0]?.realizedCreature is Player player)
@@ -57,6 +60,8 @@ namespace alphappy.TAMacro
                 macro.Initialize(player);
                 stack.Push(macro);
                 instructionsWithoutTick = 0;
+                refPoint = Settings.autoAddDisplacementRefPoint.Value ? player.bodyChunks[1].pos : null;
+                OnMacroStart?.Invoke(macro, game);
             }
         }
 
@@ -243,6 +248,12 @@ namespace alphappy.TAMacro
                 }
             }
             OnToggleRecording?.Invoke(nowRecording);
+        }
+
+        public static event Action<Vector2> OnDisplacementUpdate;
+        public static void UpdateDisplacement(Player player)
+        {
+            if (activeMacro is not null && refPoint is Vector2 v) OnDisplacementUpdate?.Invoke(player.bodyChunks[1].pos - v);
         }
     }
 }

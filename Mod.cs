@@ -32,6 +32,7 @@ namespace alphappy.TAMacro
             try
             {
                 On.Player.checkInput += Player_checkInput;
+                On.Player.Update += Player_Update;
                 On.RainWorldGame.Update += RainWorldGame_Update;
                 On.RoomCamera.ClearAllSprites += RoomCamera_ClearAllSprites;
                 On.RainWorldGame.GrafUpdate += RainWorldGame_GrafUpdate;
@@ -49,6 +50,16 @@ namespace alphappy.TAMacro
                     File.WriteAllText(Const.COOKBOOK_MAIN_FILE, "");
                 }
 
+            }
+            catch (Exception e) { Log(e); }
+        }
+
+        private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+        {
+            orig(self, eu);
+            try
+            {
+                MacroLibrary.UpdateDisplacement(self);
             }
             catch (Exception e) { Log(e); }
         }
@@ -125,37 +136,37 @@ namespace alphappy.TAMacro
 
                 if (Input.GetKey(Settings.kbInterrupt.Value))
                 {
-                    keyDown = KeyCode.F2;
+                    keyDown = Settings.kbInterrupt.Value;
                     MacroLibrary.TerminateMacro(); Log("User requested macro termination");
                     return;
                 }
                 if (Input.GetKey(Settings.kbReloadLibrary.Value))
                 {
-                    keyDown = KeyCode.F5;
+                    keyDown = Settings.kbReloadLibrary.Value;
                     MacroLibrary.ReloadFromTopLevel();
                     return;
                 }
                 if (Input.GetKey(Settings.kbPrevPage.Value))
                 {
-                    keyDown = KeyCode.F1;
+                    keyDown = Settings.kbPrevPage.Value;
                     MacroLibrary.ChangePage(-1);
                     return;
                 }
                 if (Input.GetKey(Settings.kbNextPage.Value))
                 {
-                    keyDown = KeyCode.F3;
+                    keyDown = Settings.kbNextPage.Value;
                     MacroLibrary.ChangePage(1);
                     return;
                 }
                 if (Input.GetKey(Settings.kbUpOne.Value))
                 {
-                    keyDown = KeyCode.F4;
+                    keyDown = Settings.kbUpOne.Value;
                     MacroLibrary.UpOne();
                     return;
                 }
                 if (Input.GetKey(Settings.kbToggleRecording.Value))
                 {
-                    keyDown = KeyCode.F7;
+                    keyDown = Settings.kbToggleRecording.Value;
                     MacroLibrary.ToggleRecording();
                     return;
                 }
