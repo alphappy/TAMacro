@@ -135,6 +135,7 @@ namespace alphappy.TAMacro
             if (!Const.WARP_MENU_ENABLED) return;
             var arg = (WarpTarget)self.value;
             WarpModMenu.newRoom = arg.room;
+            WarpModMenu.newRegion = arg.room.Split('_')[0];
             WarpModMenu.coords = new RWCustom.IntVector2(arg.x, arg.y);
             WarpModMenu.warpActive = true;
         }
