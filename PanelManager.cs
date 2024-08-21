@@ -235,5 +235,6 @@ namespace alphappy.TAMacro
         public static void Initialize(RainWorldGame game) { instance = new PanelManager(game); Futile.stage.AddChild(instance); }
         public static void Shutdown() { instance.Destroy(); MacroLibrary.ClearEvents(); }
         public static void Frame() => instance.Update();
+        public static void ToggleVisible() => instance.isVisible = !instance.isVisible;
     }
 }

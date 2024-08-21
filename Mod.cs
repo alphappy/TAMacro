@@ -170,6 +170,12 @@ namespace alphappy.TAMacro
                     MacroLibrary.ToggleRecording();
                     return;
                 }
+                if (Input.GetKey(Settings.kbToggleVisible.Value))
+                {
+                    keyDown = Settings.kbToggleVisible.Value;
+                    PanelManager.ToggleVisible();
+                    return;
+                }
 
                 for (int i = 0; i < Settings.allSelectorKeys.Length; i++)
                 {
