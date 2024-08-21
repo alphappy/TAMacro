@@ -1,3 +1,7 @@
+### TAMacro 0.9.4.7 (preview)
+
+- It is now possible to check against Slugcat's animation in a `>goto`.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Condition#scug-animation) for details.
+
 ### TAMacro 0.9.3.1
 
 - It is now possible to set a global hotkey for a specific macro.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Macro-options#GLOBAL_HOTKEY) for details.

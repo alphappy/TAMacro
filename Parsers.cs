@@ -9,7 +9,7 @@ namespace alphappy.TAMacro
     internal class Parsers
     {
         public delegate List<Instruction> Parser(string line);
-        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, SetDisplacementRefPoint, CheatWarp, CheatGetItem, CheatScugState };
+        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, SetDisplacementRefPoint, CheatWarp, CheatGetItem, CheatScugState, ConditionScugAnimation };
 
         public static List<Instruction> Simple(string line)
         {
@@ -197,6 +197,24 @@ namespace alphappy.TAMacro
             if (Regex.Match(line, "!scugstate (.+)") is Match match && match.Success)
             {
                 return new List<Instruction> { new Instruction(InstructionType.SetCompleteScugStateFromString, match.Groups[1].Value), };
+            }
+            return null;
+        }
+
+        public static List<Instruction> ConditionScugAnimation(string line)
+        {
+            if (Regex.Match(line, "^>goto ([\\w\\d]+) (unless|if) scug animation (\\w+)") is { Success: true } match)
+            {
+                return new List<Instruction>
+                {
+                    new(InstructionType.PushMyAnimationIndexValue),
+                    new(InstructionType.PushConstant, match.Groups[3].Value),
+                    new(InstructionType.TestEqualStrings),
+                    new(
+                        match.Groups[2].Value == "if" ? InstructionType.GotoLabelFromStringIfTrue : InstructionType.GotoLabelFromStringUnlessTrue,
+                        match.Groups[1].Value
+                        )
+                };
             }
             return null;
         }

@@ -40,7 +40,10 @@ namespace alphappy.TAMacro
             { InstructionType.GetGenericItem, EnterGetGenericItem },
             { InstructionType.GetSpear, EnterGetSpear },
             { InstructionType.SetCompleteScugStateFromString, EnterSetCompleteScugStateFromString },
-            { InstructionType.SetDisplacementRefPoint, EnterSetDisplacementRefPoint }
+            { InstructionType.SetDisplacementRefPoint, EnterSetDisplacementRefPoint },
+            { InstructionType.PushMyAnimationIndexValue, EnterPushMyAnimationIndexValue },
+            { InstructionType.PushConstant, EnterPushConstant },
+            { InstructionType.TestEqualStrings, EnterTestEqualStrings },
         };
         public void Enter(Macro macro, Player player)
         {
@@ -126,6 +129,7 @@ namespace alphappy.TAMacro
         }
         public static void EnterPushMyX(Instruction self, Macro macro, Player player) => macro.stack.Push(player.DangerPos.x);
         public static void EnterPushMyY(Instruction self, Macro macro, Player player) => macro.stack.Push(player.DangerPos.y);
+        public static void EnterPushMyAnimationIndexValue(Instruction self, Macro macro, Player player) => macro.stack.Push(player.animation.value);
         public static void EnterTestGreaterThan(Instruction self, Macro macro, Player player) => macro.stack.Push((float)macro.stack.Pop() > (float)self.value);
         public static void EnterTestLessThan(Instruction self, Macro macro, Player player) => macro.stack.Push((float)macro.stack.Pop() < (float)self.value);
         public static void EnterExecuteMacroByString(Instruction self, Macro macro, Player player) => MacroLibrary.PushNewMacro((string)self.value, player);
@@ -158,15 +162,18 @@ namespace alphappy.TAMacro
         }
         public static void EnterSetCompleteScugStateFromString(Instruction self, Macro macro, Player player) => player.Deserialize((string)self.value);
         public static void EnterSetDisplacementRefPoint(Instruction self, Macro macro, Player player) => MacroLibrary.refPoint = player.bodyChunks[1].pos;
+        public static void EnterPushConstant(Instruction self, Macro macro, Player player) => macro.stack.Push(self.value);
+        public static void EnterTestEqualStrings(Instruction self, Macro macro, Player player) => macro.stack.Push((string)macro.stack.Pop() == (string)macro.stack.Pop());
     }
 
     public enum InstructionType
     {
         NoOp, SetPackageFromNumber, Tick, SetHoldFromNumber, SetPackageFromString, SetPackageFromPackage,
         DefineLabelFromString, GotoLabelFromStringIfTrue, GotoLabelFromStringUnlessTrue, SetFlippablePackageFromPackage,
-        TestScugTouch, TestGreaterThan, TestLessThan,
+        TestScugTouch, TestGreaterThan, TestLessThan, TestEqualStrings,
         PushHeldPhysicalObject, TestPhysicalObjectIs,
-        PushPickupCandidate, PushMyX, PushMyY,
+        PushPickupCandidate, PushMyX, PushMyY, PushMyAnimationIndexValue,
+        PushConstant,
         ExecuteMacroByString, ReturnTempNull,
         RequestWarp, PushWarpWactive, SuperHardSetPosition,
         GetGenericItem, GetSpear,
