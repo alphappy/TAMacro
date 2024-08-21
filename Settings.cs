@@ -17,6 +17,7 @@ namespace alphappy.TAMacro
         public static Configurable<KeyCode> kbUpOne = instance.config.Bind("kbUpOne", KeyCode.F4, new ConfigurableInfo("Up one level"));
         public static Configurable<KeyCode> kbReloadLibrary = instance.config.Bind("kbReloadLibrary", KeyCode.F5, new ConfigurableInfo("Reload library"));
         public static Configurable<KeyCode> kbToggleRecording = instance.config.Bind("kbToggleRecording", KeyCode.F7, new ConfigurableInfo("Toggle recording"));
+        public static Configurable<KeyCode> kbToggleVisible = instance.config.Bind("kbToggleVisible", KeyCode.F8, new ConfigurableInfo("Show/hide windows"));
 
         public static Configurable<KeyCode> kbSelect0 = instance.config.Bind("kbSelect0", KeyCode.Alpha1, new ConfigurableInfo("Select #1"));
         public static Configurable<KeyCode> kbSelect1 = instance.config.Bind("kbSelect1", KeyCode.Alpha2, new ConfigurableInfo("Select #2"));
@@ -30,7 +31,7 @@ namespace alphappy.TAMacro
         public static Configurable<KeyCode> kbSelect9 = instance.config.Bind("kbSelect9", KeyCode.Alpha0, new ConfigurableInfo("Select #10"));
 
         public static Configurable<KeyCode>[] allSelectorKeys = { kbSelect0, kbSelect1, kbSelect2, kbSelect3, kbSelect4, kbSelect5, kbSelect6, kbSelect7, kbSelect8, kbSelect9 };
-        public static Configurable<KeyCode>[] allNonselectorKeys = { kbPrevPage, kbInterrupt, kbNextPage, kbUpOne, kbReloadLibrary, kbToggleRecording };
+        public static Configurable<KeyCode>[] allNonselectorKeys = { kbPrevPage, kbInterrupt, kbNextPage, kbUpOne, kbReloadLibrary, kbToggleRecording, kbToggleVisible };
         public static Configurable<KeyCode>[] AllKeys => allSelectorKeys.Concat(allNonselectorKeys).ToArray();
 
         public static Configurable<bool> useDevconsolas = instance.config.Bind("useDevconsolas", true, new ConfigurableInfo("Use devconsolas font instead of default\n(requires Dev Console to be enabled)"));

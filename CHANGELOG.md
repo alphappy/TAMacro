@@ -1,6 +1,7 @@
-### TAMacro 0.9.4.7 (preview)
+### Upcoming
 
 - It is now possible to check against Slugcat's animation in a `>goto`.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Condition#scug-animation) for details.
+- It is now possible to show/hide TAMacro's windows.  This is bound to `F8` by default but may be changed in the Remix settings.
 
 ### TAMacro 0.9.3.1
 
