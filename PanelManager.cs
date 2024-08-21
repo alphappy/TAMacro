@@ -37,7 +37,7 @@ namespace alphappy.TAMacro
             main.CreateAndGotoPanel(new(165f, 190f, 30f, 30f), true, "X", $"Interrupt currently running macro [{Settings.kbInterrupt.Value}]", true)
                 .CreateFireEvent(MacroLibrary.TerminateMacro);
 
-            Panel recordingButton = 
+            Panel recordingButton =
                 main.CreateAndGotoPanel(new(205f, 190f, 30f, 30f), false, null, $"Toggle input recording [{Settings.kbToggleRecording.Value}]", true)
                 .CreateFireEvent(MacroLibrary.ToggleRecording);
             recordingButton.CreateBackdrop(new(Vector2.zero, recordingButton.size), Color.black, 0.3f, out var recordingButtonBackdrop);
@@ -72,15 +72,15 @@ namespace alphappy.TAMacro
                         p.isVisible = true;
                     }
                     else
-                    { 
-                        p.isVisible = false; 
+                    {
+                        p.isVisible = false;
                     }
                 };
             }
 
             FLabel displacementLabel = new(Const.Font, "")
             {
-                x=5.05f, y=10.05f, alignment=FLabelAlignment.Left
+                x = 5.05f, y = 10.05f, alignment = FLabelAlignment.Left
             };
             main.AddChild(displacementLabel);
 
@@ -235,6 +235,15 @@ namespace alphappy.TAMacro
         public static void Initialize(RainWorldGame game) { instance = new PanelManager(game); Futile.stage.AddChild(instance); }
         public static void Shutdown() { instance.Destroy(); MacroLibrary.ClearEvents(); }
         public static void Frame() => instance.Update();
-        public static void ToggleVisible() => instance.isVisible = !instance.isVisible;
+        public static void ToggleVisible() 
+        { 
+            instance.isVisible = !instance.isVisible;
+            // force stop hovering and clicking to prevent weird edge cases when toggling while interacting
+            instance.lastHovered?.StoppedHovering(instance.lastCursor);
+            instance.lastHovered = null;
+            instance.lastClicked?.StoppedClicking(instance.lastCursor);
+            instance.lastClicked = null;
+            instance.clicking = false;
+        }
     }
 }
