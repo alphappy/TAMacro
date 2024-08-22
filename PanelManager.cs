@@ -16,11 +16,12 @@ namespace alphappy.TAMacro
         public PanelManager() : base(new(-Futile.stage.GetPosition(), RWCustom.Custom.rainWorld.options.ScreenSize), Futile.stage) { }
         public PanelManager(RainWorldGame game) : base(new(-Futile.stage.GetPosition(), RWCustom.Custom.rainWorld.options.ScreenSize), Futile.stage)
         {
-            Panel main = new(new(300f, 300f, 300f, 250f), this);
+            Panel main = new(new(Settings.posWindowMainX.Value, Settings.posWindowMainY.Value, 300f, 250f), this);
             main.CreateBackdrop();
 
             main.CreateAndGotoPanel(new(5f, 235f, 290f, 15f), true, $"TAMacro v{Const.PLUGIN_VERSION}", "Drag to move", true)
-                .CreateMouseEvent(PanelReactions.DragParent);
+                .CreateMouseEvent(PanelReactions.DragParent)
+                .CreateMouseEvent(PanelReactions.SaveWindowPositionFactory(Settings.posWindowMainX, Settings.posWindowMainY));
 
             main.CreateAndGotoPanel(new(5f, 190f, 30f, 30f), true, "<", $"Back one page [{Settings.kbPrevPage.Value}]", true)
                 .CreateFireEvent(() => MacroLibrary.ChangePage(-1));
@@ -108,11 +109,12 @@ namespace alphappy.TAMacro
             }
             Macro.OnMacroEnded += DisplacementWrite;
 
-            Panel macroPanel = new(new(600f, 300f, 300f, 450f), this);
+            Panel macroPanel = new(new(Settings.posWindowCurrentMacroX.Value, Settings.posWindowCurrentMacroY.Value, 300f, 450f), this);
             macroPanel.CreateBackdrop()
                 .CreateAndGotoPanel(new(5f, 435f, 290f, 15f), true, null, "Drag to move", true)
                 .CreateLabelCentered("title", "No macro selected", out var macroPanelTitle)
-                .CreateMouseEvent(PanelReactions.DragParent);
+                .CreateMouseEvent(PanelReactions.DragParent)
+                .CreateMouseEvent(PanelReactions.SaveWindowPositionFactory(Settings.posWindowCurrentMacroX, Settings.posWindowCurrentMacroY));
 
             Panel macroTextPanel = macroPanel.CreateAndGotoPanel(new(5f, 5f, 290f, 420f), false);
 

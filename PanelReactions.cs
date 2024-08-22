@@ -52,6 +52,20 @@ namespace alphappy.TAMacro
             }
         }
 
+        public static Panel.MouseEvent SaveWindowPositionFactory(Configurable<float> configurableX, Configurable<float> configurableY)
+        {
+            void SaveWindowPosition(Panel panel, Panel.MouseEventType type, Vector2 dragVector)
+            {
+                if (type == Panel.MouseEventType.StopClick)
+                {
+                    configurableX.Value = panel.container.x;
+                    configurableY.Value = panel.container.y;
+                    Settings.instance.config.Save();
+                }
+            }
+            return SaveWindowPosition;
+        }
+
         public static void ResizeParent(Panel panel, Panel.MouseEventType type, Vector2 dragVector)
         {
             if (type != Panel.MouseEventType.Drag) return;
