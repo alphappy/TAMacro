@@ -42,6 +42,11 @@ namespace alphappy.TAMacro
         public static Configurable<bool> allowMacroGlobalHotkeys = instance.config.Bind("allowMacroGlobalHotkeys", true, new ConfigurableInfo("Allow macros to set global hotkeys"));
         public static Configurable<bool> autoAddDisplacementRefPoint = instance.config.Bind("autoAddDisplacementRefPoint", true, new ConfigurableInfo("Automatically set refpoint at start of every macro"));
 
+        public static Configurable<float> posWindowMainX = instance.config.Bind("posWindowMainX", 300f);
+        public static Configurable<float> posWindowMainY = instance.config.Bind("posWindowMainY", 300f);
+        public static Configurable<float> posWindowCurrentMacroX = instance.config.Bind("posWindowCurrentMacroX", 600f);
+        public static Configurable<float> posWindowCurrentMacroY = instance.config.Bind("posWindowCurrentMacroY", 300f);
+
         public override void Initialize()
         {
             base.Initialize();
