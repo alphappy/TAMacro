@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -254,6 +255,17 @@ namespace alphappy.TAMacro
         public static void UpdateDisplacement(Player player)
         {
             if (activeMacro is not null && refPoint is Vector2 v) OnDisplacementUpdate?.Invoke(player.bodyChunks[1].pos - v);
+        }
+
+        public static DateTime blockOpenUntil;
+        public static void OpenFolder()
+        {
+            DateTime now = DateTime.Now;
+            if (now < blockOpenUntil) return;
+            blockOpenUntil = now + new TimeSpan(0, 0, 3);
+
+            Mod.Log("Open: " + currentContainer.sysPath);
+            Process.Start("explorer.exe", currentContainer.sysPath.Replace('/', '\\') + "\\");
         }
     }
 }

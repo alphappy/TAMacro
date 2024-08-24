@@ -10,9 +10,9 @@ namespace alphappy.TAMacro
         public const int MAXIMUM_INSTRUCTIONS_WITHOUT_TICK = 100;
 
         public static bool SUPER_DEBUG_MODE = false;
-        public static string COOKBOOK_ROOT_PATH = Application.persistentDataPath + "\\ModConfigs\\TAMacro";
-        public static string COOKBOOK_MAIN_FILE = Application.persistentDataPath + "\\ModConfigs\\TAMacro\\main.tmc";
-        public static string COOKBOOK_RECORDED_FILE = Application.persistentDataPath + "\\ModConfigs\\TAMacro\\recorded.tmc";
+        public static string COOKBOOK_ROOT_PATH = Application.persistentDataPath.Replace('/', '\\') + "\\ModConfigs\\TAMacro";
+        public static string COOKBOOK_MAIN_FILE = COOKBOOK_ROOT_PATH + "\\main.tmc";
+        public static string COOKBOOK_RECORDED_FILE = COOKBOOK_ROOT_PATH + "\\recorded.tmc";
 
         public static bool WARP_MENU_ENABLED = false;
         public static bool DEVCONSOLAS_AVAILABLE = false;
