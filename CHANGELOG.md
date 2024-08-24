@@ -3,6 +3,7 @@
 - It is now possible to check against Slugcat's animation in a `>goto`.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Condition#scug-animation) for details.
 - It is now possible to show/hide TAMacro's windows.  This is bound to `F8` by default but may be changed in the Remix settings.
 - The window positions are now saved automatically instead of defaulting to the middle of the screen every session.
+- There is now a button for opening the currently focused folder in Explorer (Windows only).
 
 ### TAMacro 0.9.3.1
 

@@ -55,7 +55,7 @@ namespace alphappy.TAMacro
             try
             {
                 this.parent = parent;
-                sysPath = path;
+                sysPath = path.Replace('/', '\\');
                 if (File.Exists(path))
                 {
                     if (Path.GetExtension(path) == ".tmc")
@@ -83,7 +83,7 @@ namespace alphappy.TAMacro
         private Macro loading;
         public void LoadCookbook(string filename)
         {
-            sysPath = filename;
+            sysPath = filename.Replace('/', '\\');
             try
             {
                 if (File.Exists(filename))

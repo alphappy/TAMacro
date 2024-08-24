@@ -48,6 +48,9 @@ namespace alphappy.TAMacro
             void BlinkRecordingButton(int age) => recordingButtonBackdrop.color = MacroLibrary.nowRecording && (age % 60 < 30) ? Color.red : Color.black;
             if (Settings.blinkRecordingButton.Value) OnFrame += BlinkRecordingButton;
 
+            main.CreateAndGotoPanel(new(245f, 190f, 30f, 30f), true, "O", $"Open folder in Explorer [{Settings.kbOpenFolder.Value}]", true)
+                .CreateFireEvent(MacroLibrary.OpenFolder);
+
             main.CreateLabel("curdir", ".", new(5f, 180f), out var curdirlabel);
             curdirlabel.alignment = FLabelAlignment.Left;
 
