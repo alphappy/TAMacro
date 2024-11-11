@@ -103,12 +103,12 @@ namespace alphappy.TAMacro
         public static event Action<Macro> OnMacroEnded;
         public Player.InputPackage? GetPackage(Player player)
         {
-            if (Const.SUPER_DEBUG_MODE) Mod.Log($"  enter GetPackage");
+            Mod.LogDebug($"  enter GetPackage");
             readyToTick = false;
             if (hold > 0) hold--; else currentIndex++;
             while (currentIndex < instructions.Count)
             {
-                if (Const.SUPER_DEBUG_MODE) Mod.Log($"  ({currentIndex:D4}) {current}");
+                Mod.LogDebug($"  ({currentIndex:D4}) {current}");
                 current.Enter(this, player);
                 if (readyToTick) { return package; }
                 if (returnNull) { returnNull = false; return null; }

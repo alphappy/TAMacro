@@ -120,7 +120,7 @@ namespace alphappy.TAMacro
 
                         if (macro.GetPackage(self) is Player.InputPackage package)
                         {
-                            if (Const.SUPER_DEBUG_MODE) Mod.Log($"Received {package.AsString()}");
+                            Mod.LogDebug($"Received {package.AsString()}");
                             if (playerInputNeutral || macro.options.interference != Macro.Options.Interference.Overwrite)
                                 self.input[0] = package.WithDownDiagonals();
                             instructionsWithoutTick = 0;

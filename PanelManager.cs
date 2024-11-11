@@ -147,7 +147,7 @@ namespace alphappy.TAMacro
                 var line_offset = line < initial_jump_at ? 0 : jump_size * (1 + (line - initial_jump_at) / jump_size);
                 var firstLine = line_offset;
                 var lastLine = Math.Min(line_offset + total_lines, macro.lines);
-                if (Const.SUPER_DEBUG_MODE) Mod.Log($"{line} {line_offset} {firstLine} {lastLine} {macro.newlinePositions.Count}");
+                Mod.LogDebug($"{line} {line_offset} {firstLine} {lastLine} {macro.newlinePositions.Count}");
                 var firstPos = macro.newlinePositions[firstLine];
                 var lastPos = macro.newlinePositions[lastLine];
 

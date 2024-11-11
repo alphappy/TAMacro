@@ -40,13 +40,9 @@
     <Compile Include="MacroContainer.cs" />
     <Compile Include="MacroLibrary.cs" />
     <Compile Include="Mod.cs" />
-    <Compile Include="Pane.cs" />
-    <Compile Include="PaneElement.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="PanelManager.cs" />
     <Compile Include="PanelReactions.cs" />
-    <Compile Include="PaneManager.cs" />
-    <Compile Include="ScugState.cs" />
     <Compile Include="Serialization.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Parsers.cs" />

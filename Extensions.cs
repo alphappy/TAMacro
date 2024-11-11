@@ -88,7 +88,7 @@ namespace alphappy.TAMacro
             var lines = text.Split(new string[] { "\r\n", "\r", "\n", Environment.NewLine }, StringSplitOptions.None);
             var height = lines.Length * self.FontLineHeight;
             self.y = yRoot - height / 2;
-            if (Const.SUPER_DEBUG_MODE) Mod.Log($"This text has {lines.Length} lines, moving from {yRoot} to {self.y}:\n{text}");
+            Mod.LogDebug($"This text has {lines.Length} lines, moving from {yRoot} to {self.y}:\n{text}");
         }
 
         public static Rect Resized(this Rect self, Vector2 resize) => new(self.position, self.size + resize);

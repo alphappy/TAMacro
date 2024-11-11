@@ -6,6 +6,7 @@ using System.IO;
 using BepInEx;
 using UnityEngine;
 using System.Resources;
+using BepInEx.Logging;
 
 namespace alphappy.TAMacro
 {
@@ -15,12 +16,15 @@ namespace alphappy.TAMacro
     {
         private static bool initialized = false;
 
-        public static void Log(object obj) { Debug.Log($"[TAMacro]  {obj}"); }
-        public static void Log(Exception exc) { Log($"UNCAUGHT EXCEPTION: {exc}"); }
+        private static ManualLogSource logger;
+
+        public static void Log(object obj) { logger.LogDebug(obj); }
+        public static void Log(Exception exc) { logger.LogError(exc); }
         public static void LogDebug(object obj) { if (Const.SUPER_DEBUG_MODE) Log(obj); }
 
-        private void OnEnable()
+        public void OnEnable()
         {
+            logger = Logger;
             On.RainWorld.OnModsInit += RainWorldOnModsInitHook;
             Serialization.Populate();
         }
@@ -69,7 +73,6 @@ namespace alphappy.TAMacro
             orig(self, manager);
             try
             {
-                //DisplayPanel.Initialize();
                 PanelManager.Initialize(self);
                 MacroLibrary.ReloadFromTopLevel();
             }
@@ -97,7 +100,6 @@ namespace alphappy.TAMacro
 
         private void RoomCamera_ClearAllSprites(On.RoomCamera.orig_ClearAllSprites orig, RoomCamera self)
         {
-            //DisplayPanel.Remove();
             PanelManager.Shutdown();
             orig(self);
         }
@@ -105,11 +107,6 @@ namespace alphappy.TAMacro
         private static void RainWorldGame_GrafUpdate(On.RainWorldGame.orig_GrafUpdate orig, RainWorldGame self, float timeStacker)
         {
             orig(self, timeStacker);
-            //if (Input.GetKey(KeyCode.Backslash) && DisplayPanel.label != null)
-            //{
-            //    DisplayPanel.AnchorToCursor();
-            //}
-            //DisplayPanel.Update();
             PanelManager.Frame();
         }
 

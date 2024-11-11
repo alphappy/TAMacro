@@ -14,7 +14,5 @@ The exact file path is printed to the console log (<code>Steam/steamapps/common/
 Pressing <code>F5</code> while the simulation is running reads from this folder again.
 Any errors that occur while reading the file will be printed to the console log and do not currently show up in-game.
 
-See [the wiki](https://github.com/alphappy/TAMacro/wiki) for:
-- a detailed explanation of creating [cookbooks](https://github.com/alphappy/TAMacro/wiki/Cookbook) and [macros](https://github.com/alphappy/TAMacro/wiki/Macro).
-- a list of all [known issues](https://github.com/alphappy/TAMacro/wiki/Known-issues).
-- a list of all [planned features](https://github.com/alphappy/TAMacro/wiki/Planned-features).
+See [the wiki](https://github.com/alphappy/TAMacro/wiki) for how to get started 
+(how to create [cookbooks](https://github.com/alphappy/TAMacro/wiki/Cookbook) and [macros](https://github.com/alphappy/TAMacro/wiki/Macro)).
