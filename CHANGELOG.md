@@ -1,9 +1,11 @@
-### Upcoming
+### TAMacro 0.9.5.0
 
+- It is now possible to set a single part of Slugcat's state with `!state`.
 - It is now possible to check against Slugcat's animation in a `>goto`.  See [the wiki](https://github.com/alphappy/TAMacro/wiki/Condition#scug-animation) for details.
 - It is now possible to show/hide TAMacro's windows.  This is bound to `F8` by default but may be changed in the Remix settings.
 - The window positions are now saved automatically instead of defaulting to the middle of the screen every session.
 - There is now a button for opening the currently focused folder in Explorer (Windows only).
+- TAMacro now logs through BepInEx (`Rain World\BepInEx\LogOutput.log`) instead of through Unity.
 
 ### TAMacro 0.9.3.1
 
