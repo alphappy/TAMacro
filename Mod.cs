@@ -7,6 +7,7 @@ using BepInEx;
 using UnityEngine;
 using System.Resources;
 using BepInEx.Logging;
+using System.Reflection;
 
 namespace alphappy.TAMacro
 {
@@ -17,6 +18,8 @@ namespace alphappy.TAMacro
         private static bool initialized = false;
 
         private static ManualLogSource logger;
+
+        internal static BindingFlags bfAll = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
         public static void Log(object obj) { logger.LogDebug(obj); }
         public static void Log(Exception exc) { logger.LogError(exc); }

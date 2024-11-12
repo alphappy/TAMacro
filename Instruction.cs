@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
@@ -44,6 +47,7 @@ namespace alphappy.TAMacro
             { InstructionType.PushMyAnimationIndexValue, EnterPushMyAnimationIndexValue },
             { InstructionType.PushConstant, EnterPushConstant },
             { InstructionType.TestEqualStrings, EnterTestEqualStrings },
+            { InstructionType.SetPartialScugState, EnterSetPartialScugState }
         };
         public void Enter(Macro macro, Player player)
         {
@@ -164,6 +168,68 @@ namespace alphappy.TAMacro
         public static void EnterSetDisplacementRefPoint(Instruction self, Macro macro, Player player) => MacroLibrary.refPoint = player.bodyChunks[1].pos;
         public static void EnterPushConstant(Instruction self, Macro macro, Player player) => macro.stack.Push(self.value);
         public static void EnterTestEqualStrings(Instruction self, Macro macro, Player player) => macro.stack.Push((string)macro.stack.Pop() == (string)macro.stack.Pop());
+        public static void EnterSetPartialScugState(Instruction self, Macro macro, Player player)
+        {
+            string value = (string)macro.stack.Pop();
+            string fieldName = (string)macro.stack.Pop();
+            string objName = (string)macro.stack.Pop();
+            System.Reflection.FieldInfo field;
+            object obj;
+
+            switch (objName)
+            {
+                case "player":
+                    field = typeof(Player).GetField(fieldName, Mod.bfAll);
+                    obj = player;
+                    break;
+
+                case "bc0":
+                    field = typeof(BodyChunk).GetField(fieldName, Mod.bfAll);
+                    obj = player.bodyChunks[0];
+                    break;
+
+                case "bc1":
+                    field = typeof(BodyChunk).GetField(fieldName, Mod.bfAll);
+                    obj = player.bodyChunks[1];
+                    break;
+
+                case "bcc":
+                    field = typeof(PhysicalObject.BodyChunkConnection).GetField(fieldName, Mod.bfAll);
+                    obj = player.bodyChunkConnections[0];
+                    break;
+
+                default:
+                    throw new Exceptions.IllegalCommandException($"'{objName}' is not a valid object identifier");
+            }
+
+            if (field is null) throw new Exceptions.IllegalCommandException($"'{fieldName}' is not a valid field for {obj.GetType()}");
+
+            Func<string, object> parser = null;
+            if (field.FieldType == typeof(bool)) parser = Serialization.Parse.Bool;
+            else if (field.FieldType == typeof(int)) parser = Serialization.Parse.Int;
+            else if (field.FieldType == typeof(float)) parser = Serialization.Parse.Float;
+            else if (field.FieldType == typeof(float[])) parser = Serialization.Parse.FloatArray;
+            else if (field.FieldType == typeof(string)) parser = Serialization.Parse.String;
+            else if (field.FieldType == typeof(Vector2)) parser = Serialization.Parse.Vector2;
+            else if (field.FieldType == typeof(Vector2?)) parser = Serialization.Parse.Vector2;
+            else if (field.FieldType == typeof(RWCustom.IntVector2)) parser = Serialization.Parse.IntVector2;
+            else if (field.FieldType == typeof(RWCustom.IntVector2?)) parser = Serialization.Parse.IntVector2;
+            else if (field.FieldType == typeof(Player.InputPackage)) parser = Serialization.Parse.InputPackage;
+            else if (field.FieldType == typeof(Player.InputPackage[])) parser = Serialization.Parse.InputPackageArray;
+            else if (field.FieldType == typeof(Player.AnimationIndex)) parser = Serialization.Parse.AnimationIndex;
+            else if (field.FieldType == typeof(Player.BodyModeIndex)) parser = Serialization.Parse.BodyModeIndex;
+            else if (field.FieldType == typeof(PhysicalObject.BodyChunkConnection.Type)) parser = Serialization.Parse.ConnectionType;
+            else throw new Exceptions.IllegalCommandException($"'{fieldName}' is not a supported field type ({field.FieldType.FullName})");
+
+            try
+            {
+                field.SetValue(obj, parser(value));
+            }
+            catch (ArgumentException)
+            {
+                throw new Exceptions.IllegalCommandException($"'{value}' is not a valid value for field {field.Name}");
+            }
+        }
     }
 
     public enum InstructionType
@@ -177,7 +243,7 @@ namespace alphappy.TAMacro
         ExecuteMacroByString, ReturnTempNull,
         RequestWarp, PushWarpWactive, SuperHardSetPosition,
         GetGenericItem, GetSpear,
-        SetCompleteScugStateFromString,
+        SetCompleteScugStateFromString, SetPartialScugState,
         SetDisplacementRefPoint,
     }
 

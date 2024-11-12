@@ -9,7 +9,11 @@ namespace alphappy.TAMacro
     internal class Parsers
     {
         public delegate List<Instruction> Parser(string line);
-        public static List<Parser> parsers = new List<Parser> { Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, SetDisplacementRefPoint, CheatWarp, CheatGetItem, CheatScugState, ConditionScugAnimation };
+        public static List<Parser> parsers = new()
+        { 
+            Simple, DefineLabel, ConditionScugTouch, ConditionScugHold, ConditionScugWant, ConditionScugPosition, ExecuteMacro, 
+            SetDisplacementRefPoint, CheatWarp, CheatGetItem, CheatScugState, ConditionScugAnimation, CheatScugStateSingle 
+        };
 
         public static List<Instruction> Simple(string line)
         {
@@ -214,6 +218,20 @@ namespace alphappy.TAMacro
                         match.Groups[2].Value == "if" ? InstructionType.GotoLabelFromStringIfTrue : InstructionType.GotoLabelFromStringUnlessTrue,
                         match.Groups[1].Value
                         )
+                };
+            }
+            return null;
+        }
+
+        public static List<Instruction> CheatScugStateSingle(string line)
+        {
+            if (Regex.Match(line, "^!state ([\\w\\d]+) ([\\w\\d]+) (.+)") is { Success: true } match)
+            {
+                return new List<Instruction> { 
+                    new Instruction(InstructionType.PushConstant, match.Groups[1].Value),
+                    new Instruction(InstructionType.PushConstant, match.Groups[2].Value),
+                    new Instruction(InstructionType.PushConstant, match.Groups[3].Value),
+                    new Instruction(InstructionType.SetPartialScugState), 
                 };
             }
             return null;
