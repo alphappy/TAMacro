@@ -26,7 +26,7 @@ namespace alphappy.TAMacro
         }
         public class IllegalCommandException : TAMacroException
         {
-            public IllegalCommandException() { }
+            public IllegalCommandException(string message) : base(message) { }
         }
         public class InvalidExecuteTargetException : MacroRuntimeException
         {
