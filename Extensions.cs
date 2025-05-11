@@ -37,6 +37,18 @@ namespace alphappy.TAMacro
             return package;
         }
 
+        public static void PhantomInterference(this Player self)
+        {
+            if (self.superLaunchJump > 10 && self.input[0].jmp && self.input[1].jmp && self.input[2].jmp && self.input[0].y < 1)
+            {
+                self.input[0].x = 0;
+            }
+            if (self.animation == Player.AnimationIndex.Roll && self.input[0].x == 0 && self.input[0].downDiagonal != 0)
+            {
+                self.input[0].x = self.input[0].downDiagonal;
+            }
+        }
+
         public static string AsString(this Player.InputPackage package, string filler = "")
         {
             return $"{(package.x == -1 ? "L" : (package.x == 1 ? "R" : filler))}{(package.y == -1 ? "D" : (package.y == 1 ? "U" : (package.analogueDir.y == -0.06f ? "d" : filler)))}{(package.jmp ? "J" : filler)}{(package.pckp ? "G" : filler)}{(package.thrw ? "T" : filler)}{(package.mp ? "M" : filler)}";

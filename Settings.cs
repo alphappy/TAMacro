@@ -42,6 +42,7 @@ namespace alphappy.TAMacro
         public static Configurable<bool> discardFinalNeutral = instance.config.Bind("discardFinalNeutral", true, new ConfigurableInfo("Discard final input of recording if neutral"));
         public static Configurable<bool> allowMacroGlobalHotkeys = instance.config.Bind("allowMacroGlobalHotkeys", true, new ConfigurableInfo("Allow macros to set global hotkeys"));
         public static Configurable<bool> autoAddDisplacementRefPoint = instance.config.Bind("autoAddDisplacementRefPoint", true, new ConfigurableInfo("Automatically set refpoint at start of every macro"));
+        public static Configurable<bool> phantomInputInterference = instance.config.Bind("phantomInputInterference", true, new ConfigurableInfo("Account for phantom input interference\n(RTA input overwriting by the game in specific circumstances)"));
 
         public static Configurable<float> posWindowMainX = instance.config.Bind("posWindowMainX", 300f);
         public static Configurable<float> posWindowMainY = instance.config.Bind("posWindowMainY", 300f);
@@ -75,7 +76,7 @@ namespace alphappy.TAMacro
             list.Clear();
             pos = new(50f, 550f);
 
-            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath, blinkRecordingButton, recordScugState, discardFinalNeutral, allowMacroGlobalHotkeys, autoAddDisplacementRefPoint })
+            foreach (var c in new List<Configurable<bool>> { useDevconsolas, showFullPath, blinkRecordingButton, recordScugState, discardFinalNeutral, allowMacroGlobalHotkeys, autoAddDisplacementRefPoint, phantomInputInterference })
             {
                 list.Add(new OpCheckBox(c, pos));
                 list.Add(new OpLabel(pos.x + 35f, pos.y + 3f, c.info.description));

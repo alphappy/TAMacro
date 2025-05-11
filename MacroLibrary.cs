@@ -122,7 +122,10 @@ namespace alphappy.TAMacro
                         {
                             Mod.LogDebug($"Received {package.AsString()}");
                             if (playerInputNeutral || macro.options.interference != Macro.Options.Interference.Overwrite)
+                            {
                                 self.input[0] = package.WithDownDiagonals();
+                                if (Settings.phantomInputInterference.Value) self.PhantomInterference();
+                            }
                             instructionsWithoutTick = 0;
                         }
                         else if (activeMacro != macro)  // did the macro just call another
