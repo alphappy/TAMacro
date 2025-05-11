@@ -1,3 +1,8 @@
+### TAMacro 0.9.6.0
+- Updated for Rain World 1.10.3.
+- Some cases of phantom input interference - specific circumstances where the game overwrites inputs - are now accounted for.
+This can be disabled in the Remix settings if needed, but doing so may lead to input sequences that are impossible RTA.
+
 ### TAMacro 0.9.5.0
 
 - It is now possible to set a single part of Slugcat's state with `!state`.
